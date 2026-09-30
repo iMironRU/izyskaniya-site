@@ -1,0 +1,19 @@
+# Навигация: шапка (после «Услуги▾») и подвал. r — ключ маршрута из src/site/routes.ts.
+header:
+  - { label: Цены, r: ceny }
+  - { label: Образцы, r: obrazcy }
+  - { label: Объекты, r: obekty }
+  - { label: О компании, r: o-kompanii }
+  - { label: Контакты, r: kontakty }
+footer_sections:
+  - { label: Цены, r: ceny }
+  - { label: Частным застройщикам, r: chastnym }
+  - { label: Проектировщикам, r: proektirovshchikam }
+  - { label: Образцы отчётов, r: obrazcy }
+  - { label: Объекты, r: obekty }
+  - { label: О компании, r: o-kompanii }
+  - { label: Как мы работаем, r: kak-rabotaem }
+  - { label: Как проверить подрядчика, r: proverka }
+  - { label: Вопросы и ответы, r: voprosy }
+  - { label: Статьи, r: stati }
+  - { label: Контакты, r: kontakty }

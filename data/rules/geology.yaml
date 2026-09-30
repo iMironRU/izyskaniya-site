@@ -9,23 +9,25 @@ service: geology
 title: Инженерно-геологические изыскания
 
 quantities:
-  # TODO: верифицировать инженером — число скважин от размеров и типа объекта
+  - id: footprint_m2
+    title: Пятно застройки
+    unit: м²
+    expr: { dims: dims, part: area }
+    basis: Длина × ширина здания.
+    verified: true
+    demo: false
+
+  # TODO: верифицировать инженером — число скважин от площади пятна и типа объекта
   - id: boreholes
     title: Количество скважин
     unit: шт
     expr:
       if: { q: object_type, in: [light] }
-      then: { table: { q: length_m, rows: [{ max: 10, value: 1 }, { max: null, value: 2 }] } }
+      then: { ceil: { min: [2, { max: [1, { div: [{ ref: footprint_m2 }, 50] }] }] } }
       else:
-        table:
-          q: length_m
-          rows:
-            - { max: 15, value: 3 }
-            - { max: 25, value: 4 }
-            - { max: 40, value: 5 }
-            - { max: 60, value: 6 }
-            - { max: 100, value: 8 }
-            - { max: null, value: 10 }
+        if: { q: object_type, in: [commercial] }
+        then: { ceil: { max: [5, { div: [{ ref: footprint_m2 }, 250] }] } }
+        else: { ceil: { max: [3, { div: [{ ref: footprint_m2 }, 80] }] } }
     basis: Скважины ставятся по контуру здания и в центре пятна застройки, чтобы увидеть грунты под всем фундаментом.
     norm: { code: "СП 47.13330.2016" }
     verified: false
@@ -39,11 +41,16 @@ quantities:
       if: { q: object_type, in: [light] }
       then: 5
       else:
-        sum:
-          - { lookup: { q: foundation, map: { slab: 6, strip: 8, piles: 12 } } }
-          - { lookup: { q: floors, map: { "1": 0, "2": 2, "3": 4 } } }
-          - { if: { q: basement, in: [true] }, then: 3, else: 0 }
-          - { if: { q: object_type, in: [commercial] }, then: 5, else: 0 }
+        if: { q: object_type, in: [commercial] }
+        then:
+          sum:
+            - 12
+            - { lookup: { q: floors_commercial, map: { low: 0, mid: 6, high: 13 } } }
+        else:
+          sum:
+            - { lookup: { q: foundation, map: { slab: 6, strip: 8, piles: 12 } } }
+            - { lookup: { q: floors, map: { "1": 0, "2": 2, "3": 4 } } }
+            - { if: { q: object_type, in: [house_basement] }, then: 2, else: 0 }
     basis: Скважина должна пройти ниже подошвы фундамента на глубину, где грунт ещё воспринимает нагрузку от здания.
     norm: { code: "СП 47.13330.2016" }
     verified: false
@@ -109,7 +116,7 @@ duration_days:
 checklist:
   - text: Адрес или точка участка на карте
   - text: Эскиз или проект дома с местом, где он будет стоять (если есть)
-    applies_if: { q: object_type, in: [house, light] }
+    applies_if: { q: object_type, in: [house, house_basement, light] }
   - text: Свободный проезд для буровой установки к месту строительства
   - text: Техническое задание на изыскания от проектировщика
     applies_if: { q: object_type, in: [commercial] }

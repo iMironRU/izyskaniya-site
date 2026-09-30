@@ -26,8 +26,14 @@ export function crossCheck(data: CalcData): string[] {
     if (qById.has(q.id)) err(`Вопрос «${q.id}» объявлен дважды`);
     qById.set(q.id, q);
     if ((q.kind === 'choice' || q.kind === 'multi') && !q.options?.length) err(`Вопрос «${q.id}»: нет вариантов`);
-    if (q.kind === 'number' && !q.number) err(`Вопрос «${q.id}»: нет параметров числа`);
-    if (!q.lead_only && !q.unknown) err(`Вопрос «${q.id}»: нет варианта «не знаю»`);
+    if ((q.kind === 'number' || q.kind === 'dims') && !q.number) err(`Вопрос «${q.id}»: нет параметров числа`);
+    const neverAsked = !!q.ask_if && 'any' in q.ask_if && q.ask_if.any.length === 0;
+    if (!q.lead_only && !q.unknown && !(neverAsked && q.default !== undefined)) err(`Вопрос «${q.id}»: нет варианта «не знаю»`);
+    if (q.default !== undefined) {
+      const bad = checkValue(q, q.default);
+      if (bad) err(`Вопрос «${q.id}»: default не подходит — ${bad}`);
+    }
+    if (q.adds_service && q.kind !== 'boolean') err(`Вопрос «${q.id}»: adds_service только для да/нет`);
     if (q.unknown) {
       const bad = checkValue(q, q.unknown.assume);
       if (bad) err(`Вопрос «${q.id}»: допущение не подходит — ${bad}`);
@@ -47,7 +53,11 @@ export function crossCheck(data: CalcData): string[] {
     }
   };
 
-  for (const q of data.questions) checkQ(`Вопрос «${q.id}» show_if`, referencedQuestions(q.show_if));
+  for (const q of data.questions) {
+    checkQ(`Вопрос «${q.id}» show_if`, referencedQuestions(q.show_if));
+    checkQ(`Вопрос «${q.id}» ask_if`, referencedQuestions(q.ask_if));
+    if (q.embed && !qById.has(q.embed)) err(`Вопрос «${q.id}»: embed в несуществующий «${q.embed}»`);
+  }
 
   const rateIds = new Set<string>();
   for (const r of data.pricing.rates) {
@@ -87,6 +97,7 @@ export function crossCheck(data: CalcData): string[] {
         else if (rate.service !== svc.service) err(`${where(rule.id)}: тариф «${id}» из другой услуги`);
       }
       if (typeof rule.rate !== 'string') {
+        if (rule.rate.default && !data.pricing.rates.some((r) => r.id === (rule.rate as { default?: string }).default)) err(`${where(rule.id)}: нет тарифа «${rule.rate.default}»`);
         for (const o of optionsOf(rule.rate.by) ?? []) if (!(o in rule.rate.map)) err(`${where(rule.id)}: тариф не задан для «${rule.rate.by}=${o}»`);
       }
     }
@@ -96,6 +107,18 @@ export function crossCheck(data: CalcData): string[] {
       for (const ref of referencedRefs(e)) if (!defined.has(ref)) err(`${where(`duration.${k}`)}: нет величины «${ref}»`);
     }
     for (const c of svc.checklist) checkQ(where('checklist'), referencedQuestions(c.applies_if));
+  }
+
+  // Пресеты: ответы валидны и относятся к существующим вопросам.
+  for (const [key, preset] of Object.entries(data.presets ?? {})) {
+    for (const [id, v] of Object.entries(preset.answers)) {
+      const q = qById.get(id);
+      if (!q) err(`Пресет «${key}»: нет вопроса «${id}»`);
+      else {
+        const bad = checkValue(q, v);
+        if (bad) err(`Пресет «${key}»: «${id}» — ${bad}`);
+      }
+    }
   }
 
   return errors;

@@ -7,7 +7,7 @@ title: Инженерно-геодезические изыскания
 rules:
   - id: survey_area
     applies_if: { q: topo_geometry, in: [area] }
-    rate: { by: scale, map: { "500": topo.area.500, "1000": topo.area.1000, "2000": topo.area.2000 } }
+    rate: { by: scale, map: { "500": topo.area.500, "1000": topo.area.1000, "2000": topo.area.2000 }, default: topo.area.500 }
     qty: { answer: area_ha }
     basis: Съёмка всей площади участка с рельефом, строениями и наземными сетями.
     norm: { code: "СП 317.1325800.2017" }

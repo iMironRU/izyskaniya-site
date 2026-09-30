@@ -44,6 +44,11 @@ table(
     ...(pricing.range.demo ? [['Вилка цены', `×${pricing.range.low} … ×${pricing.range.high}`]] : []),
   ],
 );
+rows.push('### Каталог «от …» (направления вне калькулятора) — `data/pricing.yaml`', '');
+table(
+  ['id', 'Что', 'От'],
+  pricing.catalog.filter((c) => c.demo).map((c) => [`\`${c.id}\``, c.title, `${money(c.from)}${c.unit ? ` / ${c.unit}` : ''}`]),
+);
 rows.push('### Допущения для «не знаю» — `data/questions/`', '');
 table(
   ['Вопрос', 'Допущение'],
@@ -52,6 +57,8 @@ table(
 rows.push('### Паспорт компании — `data/company.yaml`', '');
 const company = loadCompany();
 rows.push(company.demo ? '- Все реквизиты и контакты — заглушки. Координаты офиса (точка отсчёта зон выезда) — пример, заменить.' : '- Заполнено.', '');
+rows.push('### Контент сайта — `data/site/`', '');
+rows.push('- Тексты, цифры-факты, кейсы, люди, отзывы и документы страниц — демо из прототипа дизайнера. Цены в текстах — метки движка, их менять не нужно.', '');
 rows.push('### Сроки — `data/rules/`', '');
 rows.push(...data.services.filter((s) => s.duration_days.demo).map((s) => `- ${s.title}`), '');
 

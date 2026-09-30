@@ -1,14 +1,32 @@
 # Общие вопросы. Порядок в файле = порядок показа.
-# У каждого вопроса, кроме lead_only, есть «не знаю» (unknown): подставляется
-# консервативное допущение, и оно явно показывается в результате.
+#
+# Ветки (сценарии с главной) задаёт скрытый ответ branch — его ставит пресет из data/presets.yaml.
+# show_if — вопрос нужен для расчёта при этих ответах; ask_if — задаётся ли он в этой ветке.
+# Незадаваемый вопрос берёт default (или unknown.assume) без пометки «допущение».
+# У каждого задаваемого вопроса есть «не знаю» (unknown): консервативное допущение, явно видное в результате.
+
+- id: branch
+  service: common
+  title: Сценарий
+  kind: choice
+  options:
+    - { value: general, label: Изыскания }
+    - { value: dom, label: Геология под дом }
+    - { value: proekt, label: Изыскания под проект }
+    - { value: topo, label: Топосъёмка для сетей }
+    - { value: granicy, label: Границы участка }
+  ask_if: { any: [] }
+  default: general
 
 - id: services
   service: common
   title: Что нужно сделать?
+  summary: Услуги
   kind: multi
   options:
     - { value: geology, label: Геология, hint: "Скважины и свойства грунтов — для расчёта фундамента" }
     - { value: topo, label: Топосъёмка, hint: "План участка с рельефом и коммуникациями" }
+  ask_if: { q: branch, in: [general] }
   unknown:
     label: Не знаю, что нужно
     assume: [geology, topo]
@@ -16,49 +34,21 @@
     demo: false
 
 - id: object_type
-  service: common
+  service: geology
   title: Что строите?
+  summary: Объект
+  why:
+    text: От типа объекта зависит, сколько нужно скважин и какой глубины.
   kind: choice
   options:
-    - { value: house, label: Жилой дом, hint: "Частный дом, ИЖС" }
-    - { value: light, label: "Баня, гараж, хозпостройка", hint: "Лёгкое одноэтажное здание" }
-    - { value: commercial, label: Коммерческий или многоквартирный объект, hint: "Магазин, склад, производство, МКД — цену покажем вилкой" }
+    - { value: house, label: Жилой дом, hint: "Каркасный, кирпичный, из бруса или газобетона" }
+    - { value: house_basement, label: Дом с подвалом, hint: "Или с цокольным этажом: скважины глубже на 2 м" }
+    - { value: light, label: "Баня, гараж, беседка", hint: "Лёгкая постройка, хватит одной-двух скважин" }
+    - { value: commercial, label: Коммерческий или многоквартирный объект, hint: "Цену покажем вилкой", show_if: { q: branch, in: [general] } }
+  show_if: { q: services, includes: geology }
+  ask_if: { q: branch, in: [general, dom] }
   unknown:
-    label: Пока не решил
+    label: Не знаю
     assume: house
-    note: "Посчитали как для жилого дома."
-    demo: false
-
-- id: distance_km
-  service: common
-  title: Где участок?
-  hint: Отметьте точку на карте — посчитаем расстояние от офиса.
-  kind: number
-  ui: map
-  number: { unit: км, min: 0, max: 2000, step: 1 }
-  unknown:
-    label: Не знаю точно
-    assume: 120
-    note: "Приняли выезд до 120 км. Точную стоимость выезда назовём, когда узнаем адрес."
-    demo: true
-
-- id: cadastral
-  service: common
-  title: Кадастровый номер участка
-  hint: Необязательно. Нужен только инженеру, в расчёте не участвует.
-  kind: text
-  lead_only: true
-
-- id: urgency
-  service: common
-  title: Как срочно?
-  kind: choice
-  options:
-    - { value: normal, label: Обычный срок }
-    - { value: fast, label: Быстрее обычного }
-    - { value: urgent, label: Срочно }
-  unknown:
-    label: Не важно
-    assume: normal
-    note: "Посчитали в обычный срок."
+    note: "Примем жилой дом и отметим это в расчёте."
     demo: false

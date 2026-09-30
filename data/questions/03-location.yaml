@@ -1,0 +1,52 @@
+- id: distance_km
+  service: common
+  title: Где участок?
+  summary: Участок
+  hint: Укажите кадастровый номер или точку на карте — посчитаем выезд.
+  kind: number
+  ui: map
+  number: { unit: км, min: 0, max: 2000, step: 1 }
+  unknown:
+    label: Пропустить
+    assume: 120
+    note: "Приняли выезд до 120 км. Точную стоимость выезда назовём, когда узнаем адрес."
+    demo: true
+
+- id: cadastral
+  service: common
+  title: Кадастровый номер участка
+  hint: Необязательно. Нужен инженеру, в расчёте не участвует.
+  kind: text
+  lead_only: true
+  embed: distance_km
+
+- id: need_topo
+  service: topo
+  title: Нужна топосъёмка участка?
+  summary: Топосъёмка
+  hint: План М 1:500 — для проекта дома и подключения газа и воды. Вместе с геологией — скидка за пакет.
+  kind: boolean
+  adds_service: topo
+  show_if: { q: branch, in: [dom, proekt] }
+  unknown:
+    label: Не знаю
+    assume: false
+    note: "Не включили. Для проекта дома она обычно нужна — инженер скажет при звонке."
+    demo: false
+
+- id: urgency
+  service: common
+  title: Как срочно?
+  summary: Срочность
+  kind: choice
+  options:
+    - { value: normal, label: Обычный срок }
+    - { value: fast, label: Быстрее обычного }
+    - { value: urgent, label: Срочно }
+  ask_if: { q: branch, in: [general] }
+  default: normal
+  unknown:
+    label: Не важно
+    assume: normal
+    note: "Посчитали в обычный срок."
+    demo: false

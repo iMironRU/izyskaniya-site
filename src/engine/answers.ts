@@ -1,5 +1,6 @@
 // Разбор ответов: видимость вопросов, «не знаю» → допущение, проверка значений.
 import { evalCondition, type Resolved } from './expr';
+import { parseDims } from './dims';
 import { UNKNOWN, type Answers, type Assumption, type Question, type Value } from './schema';
 
 export class AnswerError extends Error {
@@ -15,8 +16,15 @@ export class AnswerError extends Error {
 export interface ResolvedAnswers {
   values: Resolved;
   assumptions: Assumption[];
-  /** Вопросы, которые клиент должен увидеть при этих ответах, в порядке показа */
+  /** Шаги, которые клиент видит при этих ответах, в порядке показа (без встроенных и незадаваемых) */
   visible: string[];
+  /** Все вопросы, нужные для расчёта при этих ответах (включая незадаваемые и встроенные) */
+  relevant: string[];
+}
+
+/** Задаётся ли вопрос в текущей ветке. Незадаваемый берёт default без пометки «допущение». */
+export function isAsked(q: Question, values: Resolved): boolean {
+  return !q.ask_if || evalCondition(q.ask_if, values);
 }
 
 export function isVisible(q: Question, values: Resolved): boolean {
@@ -40,6 +48,12 @@ export function checkValue(q: Question, v: Value): string | null {
     }
     case 'text':
       return typeof v === 'string' ? null : 'нужен текст';
+    case 'dims': {
+      const d = parseDims(v);
+      if (!d) return 'нужны длина и ширина';
+      const n = q.number!;
+      return [d.length, d.width].some((x) => x < n.min || x > n.max) ? `каждый размер — от ${n.min} до ${n.max} ${n.unit}` : null;
+    }
   }
 }
 
@@ -52,10 +66,20 @@ export function resolveAnswers(questions: Question[], raw: Answers): ResolvedAns
   const values: Resolved = {};
   const assumptions: Assumption[] = [];
   const visible: string[] = [];
+  const relevant: string[] = [];
 
   for (const q of questions) {
     if (!isVisible(q, values)) continue;
-    visible.push(q.id);
+    relevant.push(q.id);
+
+    if (!isAsked(q, values)) {
+      const given = raw[q.id];
+      const ok = given !== undefined && given !== UNKNOWN && !checkValue(q, given);
+      const v = ok ? given : (q.default ?? q.unknown?.assume);
+      if (v !== undefined && !q.lead_only) values[q.id] = v as Value;
+      continue;
+    }
+    if (!q.embed) visible.push(q.id);
     if (q.lead_only) continue;
 
     const given = raw[q.id];
@@ -70,5 +94,5 @@ export function resolveAnswers(questions: Question[], raw: Answers): ResolvedAns
     values[q.id] = given;
   }
 
-  return { values, assumptions, visible };
+  return { values, assumptions, visible, relevant };
 }

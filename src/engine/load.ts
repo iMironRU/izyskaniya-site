@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { load as parseYaml } from 'js-yaml';
 import { z } from 'zod';
 import { crossCheck } from './validate';
-import { Pricing, Questions, ServiceRules, type CalcData } from './schema';
+import { Presets, Pricing, Questions, ServiceRules, type CalcData } from './schema';
 
 const read = (file: string) => {
   try {
@@ -31,7 +31,9 @@ export function loadCalcData(root = 'data'): CalcData {
   const questions = yamls(join(root, 'questions')).flatMap((f) => parse(Questions, read(f), f));
   const services = yamls(join(root, 'rules')).map((f) => parse(ServiceRules, read(f), f));
 
-  const data = { pricing, questions, services };
+  const presets = parse(Presets, read(join(root, 'presets.yaml')), 'presets.yaml');
+
+  const data = { pricing, questions, services, presets };
   const errors = crossCheck(data);
   if (errors.length) throw new Error(`Ошибки в data/:\n- ${errors.join('\n- ')}`);
   return data;

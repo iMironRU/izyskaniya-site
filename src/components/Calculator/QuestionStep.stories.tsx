@@ -36,6 +36,7 @@ function Step({ question, initial = null, error, map }: { question: Question; in
   return (
     <QuestionStep
       question={question}
+      values={{}}
       draft={draft}
       onDraft={setDraft}
       error={error}

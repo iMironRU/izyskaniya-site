@@ -1,0 +1,40 @@
+# Профили цен для текстов сайта: метки {{от:ключ}}, {{цена:ключ}}, {{срок:ключ}} в data/site/**.
+# Считаются тем же движком, что калькулятор: правка data/pricing.yaml меняет калькулятор, «Цены» и карточки.
+#   preset + answers — расчёт калькулятора (preset — сценарий из data/presets.yaml);
+#   catalog — строка каталога data/pricing.yaml;
+#   rate — тариф data/pricing.yaml (цена за единицу).
+#
+# Кроме профилей, в тексте работают переменные модели цен {{v:…}}: bundle (скидка пакета),
+# urgent (наценка «быстрее»), free_km (радиус бесплатного выезда), vat (НДС).
+
+geo_dom:            { preset: dom, answers: { object_type: house, floors: "1", dims: "10×10", foundation: strip, distance_km: 20, need_topo: false } }
+geo_dom_10x12:      { preset: dom, answers: { object_type: house, floors: "2", dims: "10×12", foundation: strip, distance_km: 20, need_topo: false } }
+geo_basement_10x12: { preset: dom, answers: { object_type: house_basement, floors: "2", dims: "10×12", foundation: strip, distance_km: 20, need_topo: false } }
+geo_light:          { preset: dom, answers: { object_type: light, dims: "6×4", foundation: slab, distance_km: 20, need_topo: false } }
+pkg_dom150:         { preset: dom, answers: { object_type: house, floors: "1", dims: "12×12", foundation: strip, distance_km: 20, need_topo: true } }
+pkg_basement:       { preset: dom, answers: { object_type: house_basement, floors: "2", dims: "12×12", foundation: strip, distance_km: 20, need_topo: true } }
+pkg_light:          { preset: dom, answers: { object_type: light, dims: "6×4", foundation: slab, distance_km: 20, need_topo: false } }
+topo_dom:           { preset: topo, answers: { topo_purpose: house, topo_geometry: area, area_ha: 0.1, utilities: false, approvals: false, distance_km: 20 } }
+topo_gaz:           { preset: topo, answers: { topo_purpose: gas, topo_geometry: area, area_ha: 0.1, utilities: false, approvals: false, distance_km: 20 } }
+granicy:            { preset: granicy, answers: { stakeout_points: 4, distance_km: 20 } }
+proekt:             { preset: proekt, answers: { dims: "30×15", floors_commercial: low, distance_km: 20, need_topo: false } }
+
+check_egrn:  { catalog: egrn_check }
+eco:         { catalog: eco }
+hydromet:    { catalog: hydromet }
+geophys:     { catalog: geophys }
+inspection:  { catalog: inspection }
+kadastr:     { catalog: kadastr }
+cpt:         { catalog: cpt }
+geo_linear:  { catalog: geo_linear }
+mkd:         { catalog: mkd }
+lab_sample:  { rate: geo.lab }
+axes:        { catalog: axes }
+asbuilt:     { catalog: asbuilt }
+warehouse:   { catalog: warehouse }
+mkd9:        { catalog: mkd9 }
+mkd25:       { catalog: mkd25 }
+topo_large:  { rate: topo.area.1000 }
+topo_linear: { rate: topo.linear }
+topo_gaz_30: { preset: topo, answers: { topo_purpose: gas, topo_geometry: area, area_ha: 0.3, utilities: false, approvals: false, distance_km: 20 } }
+geo_2fl_200: { preset: dom, answers: { object_type: house, floors: "2", dims: "14×14", foundation: strip, distance_km: 20, need_topo: false } }

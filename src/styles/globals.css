@@ -2,16 +2,31 @@
 @import '../../build/css/tokens.css';
 @import '../../build/tailwind/theme.css';
 
+/* Позиции точек карты объектов (сетка 24×18) и выносок просмотрщика образцов (12×16). */
+@source inline('col-start-{1..24} row-start-{1..18}');
+
 @layer base {
   html {
-    background-color: var(--color-bg-page);
-    color: var(--color-text-primary);
+    background-color: var(--color-bg-default);
+    color: var(--color-text-default);
     font-family: var(--font-body);
-    font-variant-numeric: tabular-nums;
+    font-size: var(--text-15);
+    line-height: var(--leading-body);
     text-size-adjust: 100%;
+    scroll-padding-top: var(--tk-scroll-offset);
   }
 
-  /* Свой маркер у FAQ-аккордеона: прячем системный треугольник (Safari — отдельно). */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  a {
+    color: inherit;
+  }
+
+  /* Свой маркер у FAQ: прячем системный треугольник (Safari — отдельно). */
   summary {
     list-style: none;
   }
@@ -21,13 +36,19 @@
     display: none;
   }
 
+  /* README хендоффа: фокус — outline 2px gold, offset 2px. */
   :focus-visible {
-    outline: var(--tk-border-width-focus) solid var(--color-focus-ring);
-    outline-offset: var(--tk-space-px);
+    outline: var(--tk-focus-width) solid var(--color-focus-ring);
+    outline-offset: var(--tk-focus-offset);
   }
 }
 
 /* Отступ под «домашнюю полоску» iPhone для липких панелей. */
 @utility pb-safe {
   padding-bottom: max(var(--tk-space-3), env(safe-area-inset-bottom));
+}
+
+/* Числа вне сплошного текста — табличные. */
+@utility nums {
+  font-variant-numeric: tabular-nums;
 }

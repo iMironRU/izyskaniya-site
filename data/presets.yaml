@@ -1,0 +1,14 @@
+# Сценарии с главной: /raschet/?s=<ключ> ставит эти ответы и ветку.
+# Незадаваемые в ветке вопросы берут значения отсюда или default из data/questions.
+dom:
+  title: Геология под дом
+  answers: { branch: dom, services: [geology] }
+proekt:
+  title: Изыскания под проект
+  answers: { branch: proekt, services: [geology], object_type: commercial }
+topo:
+  title: Топосъёмка для газа или воды
+  answers: { branch: topo, services: [topo], topo_purpose: gas }
+granicy:
+  title: Границы и межевание
+  answers: { branch: granicy, services: [topo], topo_geometry: none, stakeout: true }

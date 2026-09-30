@@ -1,18 +1,37 @@
-# Button — кнопка
+# button
 
-`src/components/Button/Button.tsx`
+Кнопка действия. Основная — контур акцентом, без заливки.
 
-**Части:** контейнер, индикатор загрузки (слева), подпись.
+## Части
+- контейнер
+- иконка слева (опц.)
+- подпись
+- иконка справа (опц.)
 
-**Варианты (`variant`):**
-- `primary` — главное действие экрана. Графитовая заливка, светлый текст. Одна на экран.
-- `secondary` — второе действие. Белая заливка, графитовая рамка 1 px.
-- `text` — действие-ссылка внутри текста: цвет акцента, подчёркивание при наведении, без отступов по бокам.
+## Варианты
+- primary — рамка gold, текст accent-800
+- secondary — рамка border.default, текст ink
+- ghost — без рамки, текст gold
+- icon — 44×44, только иконка + aria-label
+- block — на всю ширину (мобильные панели)
 
-**Размеры (`size`):** `md` — 48 px (`button.height.md`), `lg` — 52 px (кнопка «Дальше» в калькуляторе). `block` — во всю ширину.
+## Состояния
+- default
+- hover — фон accent.hover-tint (secondary: ink 7%)
+- active — accent.active-tint
+- focus-visible — кольцо 2px gold, offset 2px
+- disabled — opacity 0.45, cursor not-allowed
+- loading — подпись «Отправляем…», disabled
 
-**Состояния:** default, hover (`button.*.bg-hover`), active, focus (общий контур), disabled (`button.disabled.*`, курсор not-allowed), loading (индикатор, `aria-busy`, нажатие заблокировано).
+## Слоты / props
+- children
+- iconStart
+- iconEnd
 
-**Поведение:** `type="button"` по умолчанию. Loading не меняет ширину кнопки подписью — подпись остаётся.
+## Поведение
+- Высота 48px на мобильном, 40px в шапке desktop
+- Один primary на экран
+- Шрифт Cormorant Garamond 600, 14–16px
 
-**Токены:** `button.*`, `space.5` (поля по бокам).
+## Токены
+component.button.*

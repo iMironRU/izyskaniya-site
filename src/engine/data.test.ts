@@ -14,9 +14,8 @@ const base: Answers = {
   object_type: 'house',
   distance_km: 20,
   urgency: 'normal',
-  length_m: 12,
+  dims: '12×10',
   floors: '2',
-  basement: false,
   foundation: 'strip',
   topo_purpose: 'house',
   topo_geometry: 'area',
@@ -52,6 +51,8 @@ const branchValues = (q: Question): Answers[string][] => {
       return [q.number!.min, q.number!.max];
     case 'text':
       return ['текст'];
+    case 'dims':
+      return [`${q.number!.min}×${q.number!.min}`, `${q.number!.max}×${q.number!.max}`];
   }
 };
 
@@ -68,7 +69,7 @@ describe('data/', () => {
     expect(p.bundle_discount).toBeDefined();
   });
 
-  const cases = data.questions.flatMap((q) => [
+  const cases = data.questions.filter((q) => q.id !== 'branch').flatMap((q) => [
     ...branchValues(q).map((v) => [q.id, JSON.stringify(v), { ...base, [q.id]: v }] as const),
     ...(q.unknown ? [[q.id, 'не знаю', { ...base, [q.id]: UNKNOWN }] as const] : []),
   ]);
@@ -100,6 +101,38 @@ describe('data/', () => {
     const at = (floors: string) => calculate(data, { ...base, services: ['geology'], floors }).subtotal;
     expect(at('2')).toBeGreaterThanOrEqual(at('1'));
     expect(at('3')).toBeGreaterThanOrEqual(at('2'));
+  });
+
+  describe('сценарии с главной', () => {
+    const presets = Object.entries(data.presets ?? {});
+    it.each(presets)('%s: всё «не знаю» — расчёт есть', (_, p) => {
+      sane(calculate(data, p.answers));
+    });
+
+    it('дом: 6 шагов, без услуг и срочности; этажность пропускается для бани', () => {
+      const dom = data.presets!.dom.answers;
+      const steps = (a: Answers) => resolveAnswers(data.questions, a).visible;
+      expect(steps(dom)).toEqual(['object_type', 'floors', 'dims', 'foundation', 'distance_km', 'need_topo']);
+      expect(steps({ ...dom, object_type: 'light' })).not.toContain('floors');
+    });
+
+    it('дом + топосъёмка → пакет со скидкой, съёмка по умолчанию без допущений', () => {
+      const p = calculate(data, { ...data.presets!.dom.answers, object_type: 'house', floors: '2', dims: '12×9', foundation: 'strip', distance_km: 20, need_topo: true });
+      expect(p.services).toEqual(['geology', 'topo']);
+      expect(p.bundle_discount).toBeDefined();
+      expect(p.assumptions).toEqual([]);
+      expect(p.items.map((i) => i.rule)).toContain('survey_area');
+    });
+
+    it('проект → коммерческий объект, вилка', () => {
+      const p = calculate(data, { ...data.presets!.proekt.answers, dims: '40×20', floors_commercial: 'mid', distance_km: 20, need_topo: false });
+      expect(p.price.kind).toBe('range');
+    });
+
+    it('границы → только вынос точек и отчёт', () => {
+      const p = calculate(data, { ...data.presets!.granicy.answers, stakeout_points: 6, distance_km: 20 });
+      expect(p.items.map((i) => i.rule).sort()).toEqual(['report', 'stakeout']);
+    });
   });
 
   it('пока данные демо, результат это показывает', () => {

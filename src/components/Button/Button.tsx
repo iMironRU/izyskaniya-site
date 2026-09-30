@@ -1,65 +1,61 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'react';
+import { cn } from '@/lib/cn';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'text';
-export type ButtonSize = 'md' | 'lg';
+export type ButtonVariant = 'primary' | 'secondary' | 'ghost';
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface Common {
   variant?: ButtonVariant;
-  size?: ButtonSize;
-  /** Растянуть на всю ширину контейнера */
+  /** Компактная высота 40px (шапка desktop) */
+  compact?: boolean;
+  /** На всю ширину — мобильные панели */
   block?: boolean;
-  /** Показать индикатор и заблокировать нажатие */
-  loading?: boolean;
-  children: ReactNode;
+  /** Квадратная кнопка 44×44 только с иконкой; обязателен aria-label */
+  icon?: boolean;
+  iconStart?: ReactNode;
+  iconEnd?: ReactNode;
+  children?: ReactNode;
 }
 
-// Классы — обычные строки, чтобы Onlook мог править их прямо в TSX.
+// components/button.md. Основная — контур акцентом, без заливки.
 const baseClasses =
-  'inline-flex items-center justify-center gap-2 px-button-padding-x font-body font-semibold text-md transition-colors cursor-pointer disabled:cursor-not-allowed';
+  'inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-button border font-heading text-16 leading-tight font-semibold no-underline transition-colors disabled:cursor-not-allowed disabled:opacity-disabled aria-disabled:cursor-not-allowed aria-disabled:opacity-disabled';
 
-const variantClasses: Record<ButtonVariant, string> = {
-  primary:
-    'bg-button-primary-bg text-button-primary-fg hover:bg-button-primary-bg-hover active:bg-button-primary-bg-active disabled:bg-button-disabled-bg disabled:text-button-disabled-fg',
-  secondary:
-    'border border-button-secondary-border bg-button-secondary-bg text-button-secondary-fg hover:bg-button-secondary-bg-hover disabled:border-border-default disabled:bg-button-disabled-bg disabled:text-button-disabled-fg',
-  text: 'px-0 text-button-text-fg underline-offset-4 hover:text-button-text-fg-hover hover:underline disabled:text-button-disabled-fg',
+export const buttonVariantClasses: Record<ButtonVariant, string> = {
+  primary: 'border-button-primary-border text-button-primary-text hover:bg-button-primary-bg-hover active:bg-button-primary-bg-active',
+  secondary: 'border-button-secondary-border text-button-secondary-text hover:bg-button-secondary-bg-hover active:bg-tint-ink',
+  ghost: 'border-transparent text-button-ghost-text hover:bg-button-ghost-bg-hover',
 };
 
-const sizeClasses: Record<ButtonSize, string> = {
-  md: 'min-h-button-height-md',
-  lg: 'min-h-button-height-lg text-lg',
-};
+export function buttonClasses({ variant = 'primary', compact, block, icon }: Omit<Common, 'children' | 'iconStart' | 'iconEnd'>) {
+  return cn(
+    baseClasses,
+    buttonVariantClasses[variant],
+    icon ? 'size-tap px-0' : 'px-button-padding-x',
+    !icon && (compact ? 'min-h-button-height-compact text-14' : 'min-h-button-height'),
+    block && 'w-full',
+  );
+}
 
-export function Button({
-  variant = 'primary',
-  size = 'md',
-  block = false,
-  loading = false,
-  disabled,
-  type = 'button',
-  className,
-  children,
-  ...rest
-}: ButtonProps) {
+export type ButtonProps = Common & ButtonHTMLAttributes<HTMLButtonElement> & { loading?: boolean };
+
+export function Button({ variant, compact, block, icon, iconStart, iconEnd, loading, disabled, type = 'button', className, children, ...rest }: ButtonProps) {
   return (
-    <button
-      type={type}
-      disabled={disabled || loading}
-      aria-busy={loading || undefined}
-      className={[baseClasses, variantClasses[variant], sizeClasses[size], block ? 'w-full' : '', className ?? ''].join(' ').trim()}
-      {...rest}
-    >
-      {loading ? <Spinner /> : null}
-      {children}
+    <button type={type} disabled={disabled || loading} aria-busy={loading || undefined} className={cn(buttonClasses({ variant, compact, block, icon }), className)} {...rest}>
+      {iconStart}
+      {loading ? 'Отправляем…' : children}
+      {iconEnd}
     </button>
   );
 }
 
-function Spinner() {
+export type ButtonLinkProps = Common & AnchorHTMLAttributes<HTMLAnchorElement> & { href: string };
+
+export function ButtonLink({ variant, compact, block, icon, iconStart, iconEnd, className, children, ...rest }: ButtonLinkProps) {
   return (
-    <svg className="size-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeOpacity="0.3" strokeWidth="2.5" />
-      <path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-    </svg>
+    <a className={cn(buttonClasses({ variant, compact, block, icon }), className)} {...rest}>
+      {iconStart}
+      {children}
+      {iconEnd}
+    </a>
   );
 }

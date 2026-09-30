@@ -30,11 +30,8 @@
     "pdf:sample": "node scripts/copy-pdf-fonts.mjs && tsx scripts/pdf-sample.tsx"
   },
   "dependencies": {
-    "@fontsource/ibm-plex-mono": "5.3.0",
-    "@fontsource/ibm-plex-sans": "5.3.0",
-    "@fontsource/pt-serif": "5.3.0",
-    "@ibm/plex-mono": "2.5.0",
-    "@ibm/plex-sans": "1.1.0",
+    "@fontsource/cormorant-garamond": "5.3.0",
+    "@fontsource/lora": "5.3.0",
     "@react-pdf/renderer": "4.9.0",
     "js-yaml": "5.4.2",
     "leaflet": "1.9.4",

@@ -1,4 +1,5 @@
 // Вычисление условий и выражений из правил. Чистые функции.
+import { parseDims } from './dims';
 import type { Condition, Expr, Value } from './schema';
 
 export type Resolved = Record<string, Value>;
@@ -40,6 +41,14 @@ function numberAnswer(q: string, answers: Resolved): number {
 export function evalExpr(e: Expr, ctx: ExprContext): number {
   if (typeof e === 'number') return e;
   if ('answer' in e) return numberAnswer(e.answer, ctx.answers);
+  if ('dims' in e) {
+    const d = parseDims(ctx.answers[e.dims]);
+    if (!d) throw new DataError(`Ответ «${e.dims}» — не габариты (${JSON.stringify(ctx.answers[e.dims])})`);
+    if (e.part === 'length') return d.length;
+    if (e.part === 'width') return d.width;
+    if (e.part === 'max') return Math.max(d.length, d.width);
+    return d.length * d.width;
+  }
   if ('ref' in e) {
     const r = ctx.refs[e.ref];
     if (r === undefined) throw new DataError(`Величина «${e.ref}» не определена`);
@@ -76,6 +85,7 @@ export function referencedQuestions(node: Expr | Condition | undefined, out = ne
   if (node === undefined || typeof node === 'number') return out;
   if ('q' in node) out.add(node.q);
   if ('answer' in node) out.add(node.answer);
+  if ('dims' in node) out.add(node.dims);
   if ('lookup' in node) out.add(node.lookup.q);
   if ('table' in node) out.add(node.table.q);
   if ('all' in node) node.all.forEach((x) => referencedQuestions(x, out));

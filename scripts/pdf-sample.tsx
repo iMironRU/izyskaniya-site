@@ -12,24 +12,16 @@ const out = process.argv[2] ?? 'sample.pdf';
 const data = loadCalcData();
 const company = loadCompany();
 const program = calculate(data, {
-  services: ['geology', 'topo'],
+  ...data.presets!.dom.answers,
   object_type: 'house',
-  distance_km: 40,
-  urgency: 'normal',
-  length_m: 12,
-  floors: '2',
-  basement: false,
+  floors: UNKNOWN,
+  dims: '12×9',
   foundation: UNKNOWN,
-  topo_purpose: 'gas',
-  topo_geometry: 'area',
-  area_ha: 0.12,
-  scale: '500',
-  utilities: true,
-  trees: false,
-  stakeout: false,
-  approvals: true,
+  distance_km: 40,
+  cadastral: '66:41:0206014:37',
+  need_topo: true,
 });
 
 registerFonts(resolve('public'));
-await renderToFile(<ProgramPdf data={data} program={program} company={company} shareUrl="https://example.com/calculator/?r=…" date={new Date()} />, out);
+await renderToFile(<ProgramPdf data={data} program={program} company={company} shareUrl="https://example.com/raschet/?r=…" date={new Date()} number="П-0412" />, out);
 console.log(`PDF: ${out}`);

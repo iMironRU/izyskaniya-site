@@ -45,6 +45,7 @@ export const Condition: z.ZodType<Condition> = z.lazy(() =>
 export type Expr =
   | number
   | { answer: string }
+  | { dims: string; part: 'length' | 'width' | 'area' | 'max' }
   | { ref: string }
   | { lookup: { q: string; map: Record<string, number> } }
   | { table: { q: string; rows: Array<{ max: number | null; value: number }> } }
@@ -60,6 +61,7 @@ export const Expr: z.ZodType<Expr> = z.lazy(() =>
   z.union([
     z.number(),
     z.strictObject({ answer: z.string() }),
+    z.strictObject({ dims: z.string(), part: z.enum(['length', 'width', 'area', 'max']) }),
     z.strictObject({ ref: z.string() }),
     z.strictObject({ lookup: z.strictObject({ q: z.string(), map: z.record(z.string(), z.number()) }) }),
     z.strictObject({
@@ -121,6 +123,10 @@ export const Pricing = z.strictObject({
     )
     .min(1),
   bundle_discount: z.strictObject({ percent: z.number().min(0).max(100), demo: z.boolean() }),
+  // Каталог «от …» для направлений и услуг вне модели калькулятора (экология, гидромет и т. п.)
+  catalog: z
+    .array(z.strictObject({ id: z.string(), title: z.string(), from: z.number().nonnegative(), unit: z.string().optional(), days: z.number().int().positive().optional(), demo: z.boolean() }))
+    .default([]),
   range: z.strictObject({
     // Вилка = расчёт × low … × high. Для коммерческих объектов и выезда «по согласованию».
     low: z.number().positive(),
@@ -135,13 +141,22 @@ export const Question = z.strictObject({
   id: z.string(),
   service: z.enum(['common', 'geology', 'topo']),
   title: z.string(),
+  // Короткая подпись для сводки «Ваш объект» и PDF («Объект», «Пятно»)
+  summary: z.string().optional(),
   hint: z.string().optional(),
   why: z.strictObject({ text: z.string(), norm: NormRef.optional() }).optional(),
-  kind: z.enum(['choice', 'multi', 'number', 'boolean', 'text']),
-  options: z.array(z.strictObject({ value: z.string(), label: z.string(), hint: z.string().optional() })).optional(),
+  kind: z.enum(['choice', 'multi', 'number', 'boolean', 'text', 'dims']),
+  options: z.array(z.strictObject({ value: z.string(), label: z.string(), hint: z.string().optional(), show_if: Condition.optional() })).optional(),
   number: z.strictObject({ unit: Unit, min: z.number(), max: z.number(), step: z.number().positive() }).optional(),
   // Особый ввод: map — точка на карте, ответом становится расстояние от офиса в км
   ui: z.enum(['map']).optional(),
+  // Вопрос нужен для расчёта, но в этой ветке не задаётся: берётся default (или unknown.assume) без пометки «допущение»
+  ask_if: Condition.optional(),
+  default: Value.optional(),
+  // Ответ «да» добавляет услугу (например, топосъёмку к геологии) — срабатывает скидка пакета
+  adds_service: ServiceId.optional(),
+  // Показывается внутри шага другого вопроса (кадастровый номер — на шаге «Участок»)
+  embed: z.string().optional(),
   // Вопрос только для заявки (кадастровый номер): в расчёте не участвует, «не знаю» не нужно.
   lead_only: z.boolean().optional(),
   unknown: z
@@ -159,7 +174,7 @@ export type Question = z.infer<typeof Question>;
 export const Questions = z.array(Question);
 
 // ── Правила ─────────────────────────────────────────────────────────
-export const RateChoice = z.union([z.string(), z.strictObject({ by: z.string(), map: z.record(z.string(), z.string()) })]);
+export const RateChoice = z.union([z.string(), z.strictObject({ by: z.string(), map: z.record(z.string(), z.string()), default: z.string().optional() })]);
 
 export const Rule = z.strictObject({
   id: z.string(),
@@ -197,11 +212,16 @@ export const ServiceRules = z.strictObject({
 });
 export type ServiceRules = z.infer<typeof ServiceRules>;
 
+// ── Сценарии (пресеты веток) ────────────────────────────────────────
+export const Presets = z.record(z.string(), z.strictObject({ title: z.string(), answers: z.record(z.string(), Value) }));
+export type Presets = z.infer<typeof Presets>;
+
 // ── Итог ────────────────────────────────────────────────────────────
 export interface CalcData {
   pricing: Pricing;
   questions: Question[];
   services: ServiceRules[];
+  presets?: Presets;
 }
 
 export type Answers = Record<string, Value | typeof UNKNOWN>;

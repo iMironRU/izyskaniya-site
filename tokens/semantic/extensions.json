@@ -1,0 +1,155 @@
+{
+  "$description": "Дополнения разработчика к токенам дизайнера (design/handoff/tokens). Значения взяты из README хендоффа, где они описаны текстом.",
+  "fluid": {
+    "$description": "Плавные кегли: на 390px — min, на 1280px — max (README: «H1 34 → 54, H2 26 → 40»; typography.h2 — «на мобильном 28px»)",
+    "viewport-min": {
+      "$type": "dimension",
+      "$value": "390px"
+    },
+    "viewport-max": {
+      "$type": "dimension",
+      "$value": "1280px"
+    },
+    "display": {
+      "min": {
+        "$type": "dimension",
+        "$value": "{font.size.34}"
+      },
+      "max": {
+        "$type": "dimension",
+        "$value": "{font.size.54}"
+      }
+    },
+    "h2": {
+      "min": {
+        "$type": "dimension",
+        "$value": "{font.size.28}"
+      },
+      "max": {
+        "$type": "dimension",
+        "$value": "{font.size.40}"
+      }
+    },
+    "gutter": {
+      "min": {
+        "$type": "dimension",
+        "$value": "{layout.gutter-mobile}"
+      },
+      "max": {
+        "$type": "dimension",
+        "$value": "{layout.gutter-desktop}"
+      }
+    },
+    "section-gap": {
+      "min": {
+        "$type": "dimension",
+        "$value": "{layout.section-gap-mobile}"
+      },
+      "max": {
+        "$type": "dimension",
+        "$value": "{layout.section-gap-desktop}"
+      }
+    }
+  },
+  "breakpoint-ext": {
+    "lg": {
+      "$type": "dimension",
+      "$value": "1080px",
+      "$description": "README: шапка переключается на мобильную ниже 1080px"
+    }
+  },
+  "scroll-offset": {
+    "$type": "dimension",
+    "$value": "80px",
+    "$description": "Отступ под шапку при прокрутке к разделу"
+  },
+  "color-ext": {
+    "$description": "Цвета, которые в хендоффе заданы примитивом прямо в анатомии компонентов",
+    "skeleton": {
+      "$type": "color",
+      "$value": "{color.neutral.200}",
+      "$description": "components/skeleton.md"
+    },
+    "tint-ink": {
+      "$type": "color",
+      "$value": "rgba(32,31,29,0.07)",
+      "$description": "Hover secondary и строк: 7% ink"
+    },
+    "row-hover": {
+      "$type": "color",
+      "$value": "rgba(32,31,29,0.04)",
+      "$description": "components/table.md: hover строки 4% ink"
+    },
+    "chart-fill": {
+      "$type": "color",
+      "$value": "rgba(182,130,53,0.14)",
+      "$description": "components/mini-chart.md: заливка 14%"
+    }
+  },
+  "space": {
+    "$description": "Нулевой отступ и волосяная линия — в хендоффе их нет, а Tailwind без --spacing не даёт p-0/m-0",
+    "0": {
+      "$type": "dimension",
+      "$value": "0px"
+    },
+    "px": {
+      "$type": "dimension",
+      "$value": "1px"
+    }
+  },
+  "grid": {
+    "$description": "Минимальная ширина колонки для сеток minmax(min(100%, N), 1fr). Подобрано так, чтобы на 1280 число колонок совпадало с прототипом. timeline и footer — auto-fit (по анатомии), остальные — auto-fill.",
+    "$type": "dimension",
+    "timeline": {
+      "$value": "190px",
+      "$description": "timeline.md"
+    },
+    "footer": {
+      "$value": "200px",
+      "$description": "footer.md"
+    },
+    "card": {
+      "$value": "260px",
+      "$description": "направления, услуги: 4 колонки на 1280"
+    },
+    "sample": {
+      "$value": "230px",
+      "$description": "образцы 3:4: 4 колонки"
+    },
+    "person": {
+      "$value": "200px",
+      "$description": "люди 4:5: 5 колонок"
+    },
+    "wide": {
+      "$value": "340px",
+      "$description": "кейсы, статьи, документы: 3 колонки"
+    },
+    "panel": {
+      "$value": "220px",
+      "$description": "services-panel.md: auto-fill minmax(220px)"
+    }
+  },
+  "size": {
+    "$description": "Размеры из анатомии компонентов",
+    "viewer-panel": {
+      "$type": "dimension",
+      "$value": "340px",
+      "$description": "sample-viewer.md: панель «Как читать» на desktop"
+    },
+    "viewer-sheet": {
+      "$type": "dimension",
+      "$value": "38vh",
+      "$description": "sample-viewer.md: нижняя шторка на mobile"
+    },
+    "contact-panel": {
+      "$type": "dimension",
+      "$value": "420px",
+      "$description": "contact-sheet.md: боковая панель desktop"
+    },
+    "map-point": {
+      "$type": "dimension",
+      "$value": "26px",
+      "$description": "map.md: выбранная точка"
+    }
+  }
+}

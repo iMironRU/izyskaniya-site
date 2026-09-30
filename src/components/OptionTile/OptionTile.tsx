@@ -2,13 +2,14 @@
 
 import type { ReactNode } from 'react';
 import { cn } from '@/lib/cn';
+import { AssumptionBadge } from '../Primitives/Primitives';
 
 export interface Option {
   value: string;
   label: string;
   hint?: string;
   icon?: ReactNode;
-  /** Вариант «Не знаю»: пунктирная рамка */
+  /** Вариант «Не знаю»: пунктирная точка и бейдж «по умолчанию» */
   unknown?: boolean;
   disabled?: boolean;
 }
@@ -20,31 +21,31 @@ interface OptionTileProps extends Option {
   onChange: (value: string, checked: boolean) => void;
 }
 
+// components/option-tile.md
 const tileClasses =
-  'group relative flex min-h-tile-min-height cursor-pointer items-center gap-3 border border-tile-border bg-tile-bg px-4 py-3 text-text-primary transition-colors hover:border-tile-border-hover hover:bg-tile-bg-hover has-checked:border-tile-border-selected has-checked:bg-tile-bg-selected has-checked:ring-1 has-checked:ring-tile-border-selected has-checked:ring-inset has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus-ring has-disabled:cursor-not-allowed has-disabled:text-text-disabled has-disabled:hover:border-tile-border has-disabled:hover:bg-tile-bg';
-
-const indicatorClasses =
-  'flex size-5 shrink-0 items-center justify-center border-2 border-tile-indicator group-has-checked:border-tile-indicator-selected';
+  'group relative flex min-h-option-tile-min-height cursor-pointer items-start gap-3 rounded-md border border-option-tile-border p-option-tile text-text-default hover:border-option-tile-border-selected has-checked:border-option-tile-border-selected has-checked:bg-option-tile-bg-selected has-checked:inset-ring has-checked:inset-ring-option-tile-border-selected has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus-ring has-disabled:cursor-not-allowed has-disabled:opacity-disabled has-disabled:hover:border-option-tile-border';
 
 export function OptionTile({ name, type, value, label, hint, icon, unknown, disabled, checked, onChange }: OptionTileProps) {
   return (
-    <label className={cn(tileClasses, unknown && 'border-dashed')}>
-      <input
-        type={type}
-        name={name}
-        value={value}
-        checked={checked}
-        disabled={disabled}
-        onChange={(e) => onChange(value, e.target.checked)}
-        className="sr-only"
-      />
-      <span aria-hidden="true" className={cn(indicatorClasses, type === 'radio' ? 'rounded-full' : 'rounded-sm')}>
-        <span className={cn('hidden size-2 bg-tile-indicator-selected group-has-checked:block', type === 'radio' ? 'rounded-full' : 'rounded-none')} />
+    <label className={tileClasses}>
+      <input type={type} name={name} value={value} checked={checked} disabled={disabled} onChange={(e) => onChange(value, e.target.checked)} className="sr-only" />
+      <span
+        aria-hidden="true"
+        className={cn(
+          'mt-1 flex size-option-tile-radio-size shrink-0 items-center justify-center border-2 border-text-muted group-has-checked:border-accent-default',
+          type === 'radio' ? 'rounded-full' : 'rounded-sm',
+          unknown && 'border-dashed',
+        )}
+      >
+        <span className={cn('hidden size-2 bg-accent-default group-has-checked:block', type === 'radio' ? 'rounded-full' : 'rounded-none')} />
       </span>
-      {icon ? <span className="flex shrink-0 text-text-accent">{icon}</span> : null}
-      <span className="flex flex-col gap-1">
-        <span className="text-lg leading-snug font-semibold">{label}</span>
-        {hint ? <span className="text-sm leading-snug text-text-secondary group-has-disabled:text-text-disabled">{hint}</span> : null}
+      {icon ? <span className="flex shrink-0 text-accent-default">{icon}</span> : null}
+      <span className="flex flex-1 flex-col gap-1">
+        <span className="flex flex-wrap items-center gap-2">
+          <span className="font-heading text-20 leading-heading font-semibold">{label}</span>
+          {unknown ? <AssumptionBadge>по умолчанию</AssumptionBadge> : null}
+        </span>
+        {hint ? <span className="type-small text-text-muted">{hint}</span> : null}
       </span>
     </label>
   );

@@ -46,7 +46,7 @@ function serviceItems(svc: ServiceRules, pricing: Pricing, ctx: ExprContext) {
   const items: ProgramItem[] = [];
   for (const rule of svc.rules) {
     if (rule.applies_if && !evalCondition(rule.applies_if, ctx.answers)) continue;
-    const rateId = typeof rule.rate === 'string' ? rule.rate : rule.rate.map[String(ctx.answers[rule.rate.by])];
+    const rateId = typeof rule.rate === 'string' ? rule.rate : (rule.rate.map[String(ctx.answers[rule.rate.by])] ?? rule.rate.default);
     const rate = pricing.rates.find((r) => r.id === rateId);
     if (!rate) throw new DataError(`Правило «${rule.id}»: нет тарифа «${rateId}»`);
     const qty = round2(evalExpr(rule.qty, ctx));
@@ -83,7 +83,11 @@ export function calculate(data: CalcData, raw: Answers): Program {
   const { pricing } = data;
   const { values, assumptions } = resolveAnswers(data.questions, raw);
 
-  const services = values[SYSTEM_QUESTIONS.services] as ServiceId[];
+  // Услуги: ответ на «Что нужно сделать» + добавленные ответом «да» (adds_service).
+  const services = [...((values[SYSTEM_QUESTIONS.services] as ServiceId[] | undefined) ?? [])];
+  for (const q of data.questions) {
+    if (q.adds_service && values[q.id] === true && !services.includes(q.adds_service)) services.push(q.adds_service);
+  }
   const ctx: ExprContext = { answers: values, refs: {} };
 
   const quantities: QuantityResult[] = [];

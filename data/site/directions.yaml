@@ -1,0 +1,75 @@
+# Направления (панель «Услуги», главная, /uslugi, подвал). Контент — демо из прототипа.
+# price — профиль из data/site/prices.yaml: «от …» и срок считает движок, руками цифры не пишем.
+# tasks — фильтр на /uslugi: dom (под дом), proekt (под проект), seti (газ и вода), granicy (границы).
+# page — есть ли у направления своя страница /uslugi/<id>/ (сейчас — геология и геодезия).
+
+- id: geologiya
+  title: Инженерная геология
+  short: Геология
+  text: Бурение, лаборатория, отчёт для проекта и экспертизы
+  price: geo_dom
+  tasks: [dom, proekt]
+  page: true
+  services:
+    - { title: Геология под частный дом, r: "raschet?s=dom", price: geo_dom }
+    - { title: Изыскания под проект и экспертизу, r: "raschet?s=proekt", price: proekt }
+    - { title: Статическое зондирование, r: geologiya, price: cpt }
+    - { title: Лабораторные испытания грунтов, r: laboratoriya, price: lab_sample }
+- id: geodeziya
+  title: Геодезия и топосъёмка
+  short: Геодезия
+  text: Топопланы, вынос осей, исполнительные съёмки
+  price: topo_gaz
+  tasks: [dom, proekt, seti]
+  page: true
+  services:
+    - { title: Топосъёмка для газа и воды, r: topo-gaz, price: topo_gaz }
+    - { title: Топосъёмка для проекта, r: "raschet?s=topo", price: topo_dom }
+    - { title: Вынос границ участка, r: "raschet?s=granicy", price: granicy }
+- id: ekologiya
+  title: Инженерная экология
+  short: Экология
+  text: Радиация, почвы, воздух, шум — для экспертизы
+  price: eco
+  tasks: [proekt]
+  services:
+    - { title: Экологические изыскания под проект, r: uslugi }
+    - { title: Радиационное обследование, r: uslugi }
+    - { title: Анализ почвы, r: uslugi }
+- id: gidromet
+  title: Гидрометеорология
+  short: Гидромет
+  text: Подтопление, паводки, климат площадки
+  price: hydromet
+  tasks: [proekt]
+  services:
+    - { title: Гидрометеорологические изыскания, r: uslugi }
+    - { title: Оценка подтопления участка, r: uslugi }
+- id: geofizika
+  title: Геофизика
+  short: Геофизика
+  text: Электроразведка, коррозия, блуждающие токи
+  price: geophys
+  tasks: [proekt]
+  services:
+    - { title: Электроразведка, r: uslugi }
+    - { title: Коррозионная агрессивность грунтов, r: uslugi }
+- id: obsledovanie
+  title: Обследование конструкций
+  short: Обследование
+  text: Фундаменты, стены, техническое заключение
+  price: inspection
+  tasks: [dom, proekt]
+  services:
+    - { title: Обследование фундамента, r: uslugi }
+    - { title: Техническое заключение о состоянии, r: uslugi }
+- id: kadastr
+  title: Кадастровые работы
+  short: Кадастр
+  text: Межевание, вынос границ, технический план
+  price: kadastr
+  tasks: [granicy]
+  services:
+    - { title: Межевание участка, r: uslugi }
+    - { title: Вынос границ в натуру, r: "raschet?s=granicy", price: granicy }
+    - { title: Технический план дома, r: uslugi }

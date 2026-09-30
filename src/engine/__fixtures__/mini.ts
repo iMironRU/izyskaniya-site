@@ -24,6 +24,7 @@ export const mini: CalcData = {
       { id: 'urgent', title: 'Срочно', multiplier: 1.5, days_factor: 0.5, demo: false },
     ],
     bundle_discount: { percent: 10, demo: false },
+    catalog: [],
     range: { low: 0.9, high: 1.5, demo: false },
   },
   questions: [

@@ -1,15 +1,10 @@
-// Полные woff-шрифты для PDF (react-pdf не умеет woff2 и разбивку по unicode-range).
-// Копируются из npm в public/fonts/pdf/ перед dev/build/storybook. В git не попадают.
-import { copyFileSync, mkdirSync } from 'node:fs';
+// Цельные TTF для PDF (react-pdf не умеет woff2 и разбивку по unicode-range).
+// Собираются scripts/build-pdf-fonts.py в assets/pdf-fonts/, отсюда копируются в public/fonts/pdf/.
+import { copyFileSync, mkdirSync, readdirSync } from 'node:fs';
 
+const SRC = 'assets/pdf-fonts';
 const OUT = 'public/fonts/pdf';
-const FILES = [
-  '@ibm/plex-sans/fonts/complete/woff/IBMPlexSans-Regular.woff',
-  '@ibm/plex-sans/fonts/complete/woff/IBMPlexSans-SemiBold.woff',
-  '@ibm/plex-sans/fonts/complete/woff/IBMPlexSans-Bold.woff',
-  '@ibm/plex-mono/fonts/complete/woff/IBMPlexMono-Regular.woff',
-];
-
 mkdirSync(OUT, { recursive: true });
-for (const f of FILES) copyFileSync(`node_modules/${f}`, `${OUT}/${f.split('/').pop()}`);
-console.log(`PDF-шрифты: ${FILES.length} файла → ${OUT}`);
+const files = readdirSync(SRC).filter((f) => f.endsWith('.ttf'));
+for (const f of files) copyFileSync(`${SRC}/${f}`, `${OUT}/${f}`);
+console.log(`PDF-шрифты: ${files.length} файлов → ${OUT}`);

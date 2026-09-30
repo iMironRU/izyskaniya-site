@@ -1,0 +1,12 @@
+# Услуги (design/handoff/pages/uslugi.md). Направления — из data/site/directions.yaml.
+title: Услуги
+lead: Семь направлений изысканий. Все работы, кроме гидрометеорологии, выполняем своими силами, без субподрядчиков.
+tasks:
+  - { value: all, label: Все направления }
+  - { value: dom, label: Под дом }
+  - { value: proekt, label: Под проект и экспертизу }
+  - { value: seti, label: Газ и вода }
+  - { value: granicy, label: Границы участка }
+notfound:
+  title: Не нашли свою задачу?
+  lead: Опишите её инженеру или пришлите ТЗ — ответим в течение рабочего дня.

@@ -1,0 +1,8 @@
+# Страница «404». Контент — демо из прототипа дизайнера (design/handoff/prototype/pages-data.js, ключ 404).
+# Цены — метки {{от:профиль}}, {{цена:профиль}}, {{срок:профиль}}: их считает движок по data/site/prices.yaml.
+# Схема блоков — src/site/blocks.ts; ссылки r: — ключи маршрутов из src/site/routes.ts.
+
+title: '404'
+noCta: true
+blocks:
+  - type: error

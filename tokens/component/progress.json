@@ -1,8 +1,0 @@
-{
-  "progress": {
-    "track":   { "$type": "color", "$value": "{color.border.default}" },
-    "done":    { "$type": "color", "$value": "{color.text.primary}" },
-    "current": { "$type": "color", "$value": "{color.accent.default}" },
-    "height":  { "$type": "dimension", "$value": "{space.1}" }
-  }
-}

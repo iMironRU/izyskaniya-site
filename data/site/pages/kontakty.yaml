@@ -1,0 +1,21 @@
+# Страница «Контакты». Контент — демо из прототипа дизайнера (design/handoff/prototype/pages-data.js, ключ kontakty).
+# Цены — метки {{от:профиль}}, {{цена:профиль}}, {{срок:профиль}}: их считает движок по data/site/prices.yaml.
+# Схема блоков — src/site/blocks.ts; ссылки r: — ключи маршрутов из src/site/routes.ts.
+
+title: Контакты
+blocks:
+  - type: hero
+    crumbs:
+      - - Главная
+        - home
+      - Контакты
+    h1: Контакты
+  - type: contacts
+  - type: kv
+    title: Реквизиты кратко
+    items:
+      - - '{{legal_name}}'
+        - ИНН {{inn}}, ОГРН {{ogrn}}
+    link:
+      t: Все документы и реквизиты
+      r: dokumenty

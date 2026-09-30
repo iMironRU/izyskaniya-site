@@ -32,7 +32,7 @@ export function OptionGroup(props: OptionGroupProps) {
 
   return (
     <fieldset className="m-0 border-0 p-0">
-      <legend className={cn('mb-3 text-lg font-semibold', legendHidden && 'sr-only')}>{legend}</legend>
+      <legend className={cn('mb-3 type-h3', legendHidden && 'sr-only')}>{legend}</legend>
       <div className={cn('grid grid-cols-1 gap-2', layout === 'grid' && 'md:grid-cols-2')}>
         {options.map((o) => (
           <OptionTile

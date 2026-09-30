@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { Home, Warehouse, Building2 } from 'lucide-react';
+import { Building2, Home, Warehouse } from 'lucide-react';
 import { useState } from 'react';
 import { OptionGroup } from './OptionGroup';
 import type { Option } from './OptionTile';
@@ -36,9 +36,9 @@ export const WithIcons: Story = {
     <Single
       initial="house"
       options={[
-        { value: 'house', label: 'Жилой дом', hint: 'Частный дом, ИЖС', icon: <Home className="size-6" strokeWidth={1.75} /> },
-        { value: 'light', label: 'Баня, гараж', hint: 'Лёгкая постройка', icon: <Warehouse className="size-6" strokeWidth={1.75} /> },
-        { value: 'commercial', label: 'Коммерческий объект', hint: 'Цену покажем вилкой', icon: <Building2 className="size-6" strokeWidth={1.75} /> },
+        { value: 'house', label: 'Жилой дом', hint: 'Частный дом, ИЖС', icon: <Home className="size-icon-lg" strokeWidth={1.5} /> },
+        { value: 'light', label: 'Баня, гараж', hint: 'Лёгкая постройка', icon: <Warehouse className="size-icon-lg" strokeWidth={1.5} /> },
+        { value: 'commercial', label: 'Коммерческий объект', hint: 'Цену покажем вилкой', icon: <Building2 className="size-icon-lg" strokeWidth={1.5} /> },
       ]}
     />
   ),
