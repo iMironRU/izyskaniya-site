@@ -33,7 +33,7 @@ export function FinalCta({ title = 'Посчитаем и выедем на уч
             <span className="flex items-center gap-2 type-title-card group-hover:text-text-accent-strong">
               Отправить ТЗ <ArrowRight className="size-16 text-accent-default" strokeWidth={1.5} aria-hidden="true" />
             </span>
-            <span className="type-small text-text-muted">Смета в течение рабочего дня</span>
+            <span className="type-small text-text-muted">Расчёт по вашему заданию</span>
           </a>
           <a href={`tel:${phone.tel}`} className={rowClasses}>
             <span className="font-heading text-24 leading-tight nums group-hover:text-text-accent-strong">{phone.display}</span>

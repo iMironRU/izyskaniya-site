@@ -34,6 +34,7 @@ interface DirectionContent {
   case: { kicker: string; title: string; text: string; facts: Array<{ value: string; label: string }> };
   faq: Array<{ q: string; a: string }>;
   related: Array<{ label: string; r: string }>;
+  factors?: { title: string; rows: Array<{ factor: string; effect: string }> };
 }
 
 const site = loadSite();
@@ -66,6 +67,7 @@ export default async function DirectionPage({ params }: Props) {
         { id: 'obekty', label: 'Объекты' },
         { id: 'sostav', label: 'Что входит' },
         { id: 'obem', label: 'Объём' },
+        ...(c?.factors ? [{ id: 'faktory', label: 'От чего цена' }] : []),
         { id: 'sroki', label: 'Сроки' },
         ...(matrix ? [{ id: 'ceny', label: 'Цены' }] : []),
         { id: 'obrazcy', label: 'Образцы' },
@@ -155,6 +157,25 @@ export default async function DirectionPage({ params }: Props) {
               <p className="m-0 max-w-measure type-small text-text-muted">{c.volume.note}</p>
             </Container>
           </Section>
+
+          {c.factors ? (
+            <Section id="faktory">
+              <Container className="flex flex-col gap-6">
+                <SectionHeading title={c.factors.title} />
+                <Table
+                  caption={c.factors.title}
+                  captionHidden
+                  rows={c.factors.rows}
+                  rowKey={(r) => r.factor}
+                  collapseAfter={c.factors.rows.length}
+                  columns={[
+                    { key: 'factor', header: 'Фактор', cell: (r) => r.factor, primary: true },
+                    { key: 'effect', header: 'Как влияет на цену и срок', cell: (r) => r.effect },
+                  ]}
+                />
+              </Container>
+            </Section>
+          ) : null}
 
           <Section id="sroki">
             <Container className="flex flex-col gap-6">

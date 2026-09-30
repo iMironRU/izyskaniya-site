@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 export const BLOCK_TYPES = [
   'hero', 'timeline', 'compare', 'cards', 'annotated', 'faq', 'rows', 'table', 'docs', 'norms', 'person',
-  'stats', 'map', 'kv', 'result', 'logos', 'people', 'checks', 'callout', 'article', 'contacts', 'error',
+  'stats', 'map', 'kv', 'result', 'logos', 'people', 'checks', 'callout', 'article', 'contacts', 'error', 'tz',
 ] as const;
 
 export type Link = string; // ключ маршрута, 'tel', '#якорь' или URL
@@ -34,10 +34,12 @@ export type Para = ['h', string] | ['p', string] | ['quote', string, string] | [
 export interface ArticleBlock { type: 'article'; toc?: string[]; paras: Para[]; author?: { n: string; r: string }; related?: { t: string; r: Link } }
 export interface ContactsBlock { type: 'contacts' }
 export interface ErrorBlock { type: 'error' }
+/** Блок «Прислать ТЗ»: что приложить + форма ТЗ на странице */
+export interface TzBlock { type: 'tz'; id?: string; title: string; lead?: string; items?: string[] }
 
 export type Block =
   | HeroBlock | TimelineBlock | CompareBlock | CardsBlock | AnnotatedBlock | FaqBlock | RowsBlock | TableBlock | DocsBlock | NormsBlock | PersonBlock
-  | StatsBlock | MapBlock | KvBlock | ResultBlock | LogosBlock | PeopleBlock | ChecksBlock | CalloutBlock | ArticleBlock | ContactsBlock | ErrorBlock;
+  | StatsBlock | MapBlock | KvBlock | ResultBlock | LogosBlock | PeopleBlock | ChecksBlock | CalloutBlock | ArticleBlock | ContactsBlock | ErrorBlock | TzBlock;
 
 export interface Page {
   title: string;

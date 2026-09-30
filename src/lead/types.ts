@@ -5,7 +5,9 @@ export type ContactMethod = 'call' | 'telegram' | 'whatsapp';
 
 interface Contact {
   name: string;
+  /** Для ТЗ контакт на выбор: телефон или почта (хотя бы одно) */
   phone: string;
+  email?: string;
   /** Страница, с которой отправлена заявка */
   page?: string;
 }
@@ -19,9 +21,13 @@ export interface CallbackLead extends Contact {
 /** «Отправить ТЗ» — с файлом */
 export interface TzLead extends Contact {
   kind: 'tz';
-  email?: string;
+  /** Где объект: адрес, кадастровый номер, координаты — как удобно */
+  location?: string;
+  /** Когда нужен результат */
+  when?: string;
   comment?: string;
-  file?: File;
+  /** ТЗ, границы (kml/kmz, dwg/dxf, координаты), скриншоты карты */
+  files: File[];
 }
 
 /** Контакт после результата калькулятора */

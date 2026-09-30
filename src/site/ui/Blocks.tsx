@@ -451,6 +451,26 @@ function BlockView({ block: b, ctx, toc }: { block: Block; ctx: Ctx; toc?: Array
         </article>,
       );
 
+    case 'tz':
+      return wrap(
+        <div className="grid gap-8 border-t border-border-strong pt-8 md:grid-cols-2">
+          <div className="flex flex-col gap-4">
+            <SectionHeading title={b.title} sub={b.lead} />
+            {b.items?.length ? (
+              <ul className="m-0 flex list-none flex-col border-t border-border-default p-0">
+                {b.items.map((it) => (
+                  <li key={it} className="border-b border-border-default py-2 type-body">
+                    {it}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+          <InlineForm kind="tz" title="Задача и файлы" contacts={site.contacts} privacyHref={privacyHref} thanksHref={thanksHref} />
+        </div>,
+        b.id ?? 'tz',
+      );
+
     case 'contacts':
       return wrap(
         <div className="grid gap-8 md:grid-cols-2">

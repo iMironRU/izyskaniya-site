@@ -69,10 +69,10 @@ function withFormat(format: (s: string) => string, onChange?: (e: ChangeEvent<HT
   };
 }
 
-export function TextField({ label, labelHidden, hint, error, className, ...input }: InputProps) {
+export function TextField({ label, labelHidden, hint, error, className, type = 'text', ...input }: InputProps & { type?: 'text' | 'email' }) {
   return (
     <Field label={label} labelHidden={labelHidden} hint={hint} error={error}>
-      {(a11y) => <input type="text" {...input} {...a11y} className={cn(controlClasses, className)} />}
+      {(a11y) => <input type={type} {...input} {...a11y} className={cn(controlClasses, className)} />}
     </Field>
   );
 }

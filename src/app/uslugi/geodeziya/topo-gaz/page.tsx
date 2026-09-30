@@ -30,6 +30,7 @@ interface ServiceContent {
   sample: { title: string; text: string };
   faq: Array<{ q: string; a: string }>;
   related: Array<{ label: string; r: string }>;
+  factors: { title: string; rows: Array<{ factor: string; effect: string }> };
 }
 
 const site = loadSite();
@@ -94,7 +95,7 @@ export default function ServicePage() {
 
       <Section>
         <Container className="flex flex-col gap-4">
-          <SectionHeading title="Цена и от чего она зависит" />
+          <SectionHeading title="Цена" />
           <Table
             caption="Цена"
             captionHidden
@@ -107,6 +108,23 @@ export default function ServicePage() {
             ]}
           />
           <p className="m-0 type-small text-text-muted">{s.travel}</p>
+        </Container>
+      </Section>
+
+      <Section>
+        <Container className="flex flex-col gap-4">
+          <SectionHeading title={s.factors.title} />
+          <Table
+            caption={s.factors.title}
+            captionHidden
+            rows={s.factors.rows}
+            rowKey={(r) => r.factor}
+            collapseAfter={s.factors.rows.length}
+            columns={[
+              { key: 'factor', header: 'Фактор', cell: (r) => r.factor, primary: true },
+              { key: 'effect', header: 'Как влияет на цену и срок', cell: (r) => r.effect },
+            ]}
+          />
         </Container>
       </Section>
 
