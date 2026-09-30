@@ -20,8 +20,8 @@ jobs:
     name: 'Гейт 1: токены, линтеры, типы, тесты, сборка'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with: { node-version: 22, cache: npm }
       - run: npm ci
       - run: npm run tokens
@@ -42,7 +42,7 @@ jobs:
       PLAYWRIGHT_DOCKER: '1'
       HOME: /root
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: npm ci --no-audit --no-fund
       - run: npm run build-storybook
       - name: Сравнение с бейзлайнами
@@ -57,7 +57,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add tests/visual/__snapshots__
           git diff --cached --quiet || git commit -m "Снапшоты: пересняты в CI" && git push
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: playwright-report
