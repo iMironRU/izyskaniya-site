@@ -18,7 +18,7 @@ const program = calculate(data, {
   dims: '12×9',
   foundation: UNKNOWN,
   distance_km: 40,
-  cadastral: '66:41:0206014:37',
+  cadastral: '56:44:0206014:37',
   need_topo: true,
 });
 

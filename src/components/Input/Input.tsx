@@ -113,7 +113,7 @@ export function CadastralField({ label, labelHidden, hint, error, className, onC
           inputMode="numeric"
           autoComplete="off"
           spellCheck={false}
-          placeholder="66:41:0000000:000"
+          placeholder="56:44:0000000:000"
           {...input}
           {...a11y}
           onChange={withFormat(formatCadastral, onChange)}
