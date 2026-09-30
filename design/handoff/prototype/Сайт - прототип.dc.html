@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/classical-4c742f67-1d29-4a03-bc1d-ef81b25fee22/styles.css">
+<script src="_ds/classical-4c742f67-1d29-4a03-bc1d-ef81b25fee22/_ds_bundle.js"></script>
+<script src="site-data.js"></script>
+<style>body{margin:0;background:var(--color-neutral-300)}a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}button{font:inherit;color:inherit}</style>
+</helmet>
+<section data-screen-label="Сайт" style="padding:40px 56px 80px;display:flex;flex-direction:column;gap:22px">
+  <header style="display:flex;flex-direction:column;gap:10px;max-width:1720px">
+    <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-accent-800)">Прототип сайта · направление 1a «Отчёт»</div>
+    <h1 style="font-size:40px;font-weight:400;margin:0">Desktop и mobile синхронно</h1>
+    <p style="margin:0;font-size:14px;color:var(--color-neutral-800);max-width:900px">Переход по ссылке в любом кадре открывает ту же страницу в другом. Прокрутка тоже синхронизирована. Страницы адаптивные: один и тот же файл работает на 390 и 1280 px.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px">
+      <sc-for list="{{ pages }}" as="p" hint-placeholder-count="6"><button onClick="{{ p.go }}" class="tag" style="font-size:13px;padding:6px 12px;cursor:pointer;border:1px solid {{ p.bc }};background:{{ p.bg }};color:{{ p.c }}">{{ p.t }}</button></sc-for>
+    </div>
+
+  </header>
+  <div style="display:flex;gap:40px;align-items:flex-start">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="font-size:12px;color:var(--color-neutral-800);font-variant-numeric:tabular-nums">Desktop · 1280 · {{ title }}</div>
+      <sc-if value="{{ built }}" hint-placeholder-val="{{ true }}"><iframe ref="{{ dRef }}" src="{{ src }}" onLoad="{{ onLoadD }}" title="Desktop" style="width:1280px;height:840px;border:0;background:var(--color-bg);box-shadow:var(--shadow-md);display:block"></iframe></sc-if>
+      <sc-if value="{{ notBuilt }}" hint-placeholder-val="{{ false }}"><div style="width:1280px;height:840px;background:var(--color-bg);box-shadow:var(--shadow-md);display:grid;place-items:center"><div style="display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center;max-width:520px"><h2 style="margin:0;font-size:34px;font-weight:400">{{ title }}</h2><p style="margin:0;color:var(--color-neutral-800)">{{ notBuiltText }}</p><sc-if value="{{ isCalc }}" hint-placeholder-val="{{ false }}"><a class="btn btn-primary" href="{{ calcHref }}" style="color:var(--color-accent-800);min-height:44px">Открыть прототип калькулятора</a></sc-if><button class="btn btn-secondary" onClick="{{ goHome }}" style="min-height:44px">На главную</button></div></div></sc-if>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="font-size:12px;color:var(--color-neutral-800)">Mobile · 390</div>
+      <sc-if value="{{ built }}" hint-placeholder-val="{{ true }}"><iframe ref="{{ mRef }}" src="{{ src }}" onLoad="{{ onLoadM }}" title="Mobile" style="width:390px;height:840px;border:0;background:var(--color-bg);box-shadow:var(--shadow-md);display:block"></iframe></sc-if>
+      <sc-if value="{{ notBuilt }}" hint-placeholder-val="{{ false }}"><div style="width:390px;height:840px;background:var(--color-bg);box-shadow:var(--shadow-md);display:grid;place-items:center;padding:24px;text-align:center;color:var(--color-neutral-800)">{{ title }} — ещё не собрана</div></sc-if>
+    </div>
+    <aside style="width:340px;display:flex;flex-direction:column;gap:12px;font-size:14px;color:var(--color-neutral-800)">
+      <h4 style="margin:0;color:var(--color-text)">Таблицы на телефоне</h4>
+      <p style="margin:0">Одно правило на весь сайт, без горизонтальной прокрутки.</p>
+      <div style="display:flex;flex-direction:column;border-top:1px solid var(--color-text)">
+        <div style="padding:10px 0;border-bottom:1px solid var(--color-divider)"><b style="font-weight:600">А. Справочная</b> (до 4 колонок: этап → работы → норматив). На телефоне каждая строка становится карточкой: первая колонка — заголовок, остальные идут парами «подпись — значение».</div>
+        <div style="padding:10px 0;border-bottom:1px solid var(--color-divider)"><b style="font-weight:600">Б. Матрица</b> (пятно × этажность). Одно измерение выбирается переключателем над таблицей, второе остаётся списком. Пример — на странице «Цены».</div>
+        <div style="padding:10px 0;border-bottom:1px solid var(--color-divider)"><b style="font-weight:600">В. Длинный список</b> (больше 6 строк). Показываются первые 5 строк и кнопка «Показать все».</div>
+      </div>
+    </aside>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { route: 'home' };
+  dRef = React.createRef(); mRef = React.createRef();
+  componentDidMount() {
+    try { const r = localStorage.getItem('site-proto-route'); if (r) this.setState({ route: r }); } catch (e) {}
+    this._msg = e => { if (e.data && e.data.type === 'site-nav') this.go(e.data.route); };
+    window.addEventListener('message', this._msg);
+    if (!window.SITE) this._p = setInterval(() => { if (window.SITE) { clearInterval(this._p); this.forceUpdate(); } }, 50);
+  }
+  componentWillUnmount() { window.removeEventListener('message', this._msg); clearInterval(this._p); }
+  go(route) { this.setState({ route }); try { localStorage.setItem('site-proto-route', route); } catch (e) {} }
+  bindScroll(from, to) {
+    try {
+      const w = from.current && from.current.contentWindow; if (!w) return;
+      w.addEventListener('scroll', () => {
+        if (this._lock === to) return;
+        const o = to.current && to.current.contentWindow; if (!o) return;
+        const de = w.document.documentElement, oe = o.document.documentElement;
+        const ratio = de.scrollTop / Math.max(1, de.scrollHeight - w.innerHeight);
+        this._lock = from; o.scrollTo(0, ratio * Math.max(0, oe.scrollHeight - o.innerHeight));
+        clearTimeout(this._lt); this._lt = setTimeout(() => { this._lock = null; }, 80);
+      });
+    } catch (e) {}
+  }
+  renderVals() {
+    const S = window.SITE || { ROUTES: {}, PLANNED: {} };
+    const route = this.state.route;
+    const R = S.ROUTES[route];
+    const built = !!R && !R.external;
+    const pages = Object.entries(S.ROUTES).map(([k, v]) => {
+      const on = k === route;
+      return { t: v.t, go: () => this.go(k), bc: on ? 'var(--color-accent)' : 'var(--color-divider)', bg: on ? 'var(--color-accent-100)' : 'var(--color-bg)', c: on ? 'var(--color-accent-800)' : 'var(--color-text)' };
+    });
+    const title = R ? R.t : (S.PLANNED[route] || route);
+    return {
+      pages, planned: Object.values(S.PLANNED), title, built, notBuilt: !built,
+      isCalc: route === 'raschet', calcHref: R && R.external ? encodeURI(R.file) : '#',
+      notBuiltText: route === 'raschet' ? 'Калькулятор собран отдельным прототипом со своими кадрами desktop и mobile.' : 'Эта страница будет в следующей партии.',
+      src: built ? encodeURI(R.file) : 'about:blank',
+      dRef: this.dRef, mRef: this.mRef,
+      onLoadD: () => this.bindScroll(this.dRef, this.mRef), onLoadM: () => this.bindScroll(this.mRef, this.dRef),
+      goHome: () => this.go('home'),
+    };
+  }
+}
+</script>
+</body>
+</html>

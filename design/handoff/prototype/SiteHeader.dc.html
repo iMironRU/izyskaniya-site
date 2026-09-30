@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/classical-4c742f67-1d29-4a03-bc1d-ef81b25fee22/styles.css">
+<script src="_ds/classical-4c742f67-1d29-4a03-bc1d-ef81b25fee22/_ds_bundle.js"></script>
+<script src="site-data.js"></script>
+</helmet>
+<sc-if value="{{ isDesk }}" hint-placeholder-val="{{ true }}">
+  <div style="position:sticky;top:0;z-index:20;background:var(--color-bg)">
+    <nav class="nav" style="padding:14px clamp(20px,4.4vw,56px);gap:clamp(16px,2.2vw,32px)">
+      <a href="#" onClick="{{ goHome }}" style="display:flex;flex-direction:column;margin-right:auto;text-decoration:none;color:var(--color-text)"><span class="nav-brand" style="font-size:22px;letter-spacing:.12em">ГЕОПЛАН</span><span style="font-size:10px;color:var(--color-neutral-700)">логотип — заглушка</span></a>
+      <button onClick="{{ togglePanel }}" aria-expanded="{{ panelOpen }}" style="display:flex;align-items:center;gap:4px;background:none;border:0;padding:6px 0;font:inherit;font-size:14px;cursor:pointer;color:{{ uslColor }}">Услуги<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="transform:{{ chevRot }}"><path d="m6 9 6 6 6-6"></path></svg></button>
+      <sc-for list="{{ links }}" as="l" hint-placeholder-count="5"><a href="#" onClick="{{ l.go }}" aria-current="{{ l.cur }}">{{ l.t }}</a></sc-for>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;font-variant-numeric:tabular-nums"><a href="tel:+73430000000" style="font-size:16px;color:var(--color-text)">+7 343 000-00-00</a><span style="font-size:11px;color:var(--color-neutral-700)">пн–пт 8:00–19:00</span></div>
+      <button class="btn btn-primary" onClick="{{ goCalc }}" style="color:var(--color-accent-800);min-height:40px">Рассчитать стоимость</button>
+    </nav>
+    <sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:0;right:0;top:100%;background:var(--color-bg);border-bottom:1px solid var(--color-divider);box-shadow:var(--shadow-md);padding:28px clamp(20px,4.4vw,56px) 32px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:28px 32px">
+        <sc-for list="{{ dirs }}" as="d" hint-placeholder-count="7">
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <a href="#" onClick="{{ d.go }}" style="font-family:var(--font-heading);font-size:19px;font-weight:600;color:var(--color-text);text-decoration:none;border-bottom:1px solid var(--color-text);padding-bottom:6px" style-hover="color:var(--color-accent-800)">{{ d.t }}</a>
+            <sc-for list="{{ d.list }}" as="s" hint-placeholder-count="3"><a href="#" onClick="{{ s.go }}" style="font-size:14px;color:var(--color-neutral-800);text-decoration:none;padding:3px 0" style-hover="color:var(--color-accent-800)">{{ s.t }}</a></sc-for>
+            <span style="font-size:12px;color:var(--color-neutral-700);font-variant-numeric:tabular-nums">{{ d.from }}</span>
+          </div>
+        </sc-for>
+        <a href="#" onClick="{{ goUslugi }}" style="align-self:end;font-size:14px;display:flex;align-items:center;gap:6px">Все услуги<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+      </div>
+    </sc-if>
+  </div>
+</sc-if>
+<sc-if value="{{ isMob }}" hint-placeholder-val="{{ false }}">
+  <div style="position:sticky;top:0;z-index:20;background:var(--color-bg);display:flex;align-items:center;gap:4px;padding:8px 10px 8px 20px;border-bottom:1px solid var(--color-divider)">
+    <a href="#" onClick="{{ goHome }}" class="nav-brand" style="letter-spacing:.12em;text-decoration:none;color:var(--color-text)">ГЕОПЛАН</a>
+    <a class="btn btn-icon" href="tel:+73430000000" aria-label="Позвонить" style="width:44px;height:44px;color:var(--color-text)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></a>
+    <button class="btn btn-icon" onClick="{{ openMenu }}" aria-label="Меню" style="width:44px;height:44px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button>
+  </div>
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <div role="dialog" aria-label="Меню" style="position:fixed;inset:0;z-index:50;background:var(--color-bg);display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;padding:8px 10px 8px 20px;border-bottom:1px solid var(--color-divider)"><span class="nav-brand" style="letter-spacing:.12em">ГЕОПЛАН</span><button class="btn btn-icon" onClick="{{ closeMenu }}" aria-label="Закрыть" style="width:44px;height:44px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button></div>
+      <div style="flex:1;overflow:auto;padding:8px 20px 20px;display:flex;flex-direction:column">
+        <button onClick="{{ toggleMUsl }}" aria-expanded="{{ mUslOpen }}" style="display:flex;justify-content:space-between;align-items:center;min-height:56px;border:0;border-bottom:1px solid var(--color-divider);background:none;font-family:var(--font-heading);font-size:24px;font-weight:600;text-align:left;cursor:pointer;color:var(--color-text)">Услуги<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="transform:{{ mChevRot }}"><path d="m6 9 6 6 6-6"></path></svg></button>
+        <sc-if value="{{ mUslOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;padding:4px 0 8px 12px;border-bottom:1px solid var(--color-divider)">
+            <sc-for list="{{ dirs }}" as="d" hint-placeholder-count="7"><a href="#" onClick="{{ d.go }}" style="display:flex;justify-content:space-between;align-items:center;min-height:44px;font-size:16px;color:var(--color-text);text-decoration:none"><span>{{ d.t }}</span><span style="font-size:12px;color:var(--color-neutral-700);font-variant-numeric:tabular-nums">{{ d.from }}</span></a></sc-for>
+            <a href="#" onClick="{{ goUslugi }}" style="min-height:44px;display:flex;align-items:center;font-size:15px">Все услуги</a>
+          </div>
+        </sc-if>
+        <sc-for list="{{ mlinks }}" as="l" hint-placeholder-count="8"><a href="#" onClick="{{ l.go }}" style="display:flex;align-items:center;min-height:56px;border-bottom:1px solid var(--color-divider);font-family:var(--font-heading);font-size:24px;font-weight:600;color:var(--color-text);text-decoration:none">{{ l.t }}</a></sc-for>
+      </div>
+      <div style="padding:14px 20px 18px;border-top:1px solid var(--color-text);display:flex;flex-direction:column;gap:10px;font-variant-numeric:tabular-nums">
+        <a href="tel:+73430000000" style="font-family:var(--font-heading);font-size:26px;color:var(--color-text);text-decoration:none">+7 343 000-00-00</a>
+        <span style="font-size:13px;color:var(--color-neutral-700)">пн–пт 8:00–19:00, сб 9:00–15:00</span>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><a class="btn btn-secondary" href="#" style="min-height:48px">WhatsApp</a><a class="btn btn-secondary" href="#" style="min-height:48px">Telegram</a></div>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ showBar }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;left:0;right:0;bottom:0;z-index:30;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 12px 14px;background:var(--color-bg);border-top:1px solid var(--color-divider)">
+      <a class="btn btn-secondary" href="tel:+73430000000" style="min-height:48px;font-size:16px">Позвонить</a>
+      <button class="btn btn-primary" onClick="{{ goCalc }}" style="min-height:48px;font-size:16px;color:var(--color-accent-800)">Рассчитать</button>
+    </div>
+  </sc-if>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;current&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;home&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;noBar&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  state = { panel: false, menu: false, mUsl: false };
+  componentDidMount() {
+    const S = window.SITE;
+    if (!S) { this._p = setInterval(() => { if (window.SITE) { clearInterval(this._p); this.componentDidMount(); } }, 50); return; }
+    this._off = S.useMobile(this); this.forceUpdate();
+    this._esc = e => { if (e.key === 'Escape') this.setState({ panel: false, menu: false }); };
+    window.addEventListener('keydown', this._esc);
+  }
+  componentWillUnmount() { clearInterval(this._p); this._off && this._off(); window.removeEventListener('keydown', this._esc); }
+  renderVals() {
+    const S = window.SITE || { DIRECTIONS: [], nav() {} };
+    const cur = this.props.current ?? 'home';
+    const go = r => e => { this.setState({ panel: false, menu: false }); S.nav(r, e); };
+    const mob = !!this._mob || window.innerWidth < 1080;
+    if (!this._rs) { this._rs = () => { const c = window.innerWidth < 1080; if (c !== this._c) { this._c = c; this.forceUpdate(); } }; this._c = window.innerWidth < 1080; window.addEventListener('resize', this._rs); }
+    const items = [['ceny', 'Цены'], ['obrazcy', 'Образцы'], ['obekty', 'Объекты'], ['o-kompanii', 'О компании'], ['kontakty', 'Контакты']];
+    return {
+      isDesk: !mob, isMob: mob,
+      links: items.map(([r, t]) => ({ t, go: go(r), cur: r === cur ? 'page' : undefined })),
+      mlinks: [['chastnym', 'Частным'], ['proektirovshchikam', 'Проектировщикам'], ...items, ['voprosy', 'Вопросы']].map(([r, t]) => ({ t, go: go(r) })),
+      dirs: S.DIRECTIONS.map(d => ({ t: d.t, from: d.from, go: go(d.id === 'geologiya' ? 'geologiya' : 'uslugi'), list: d.services.slice(0, 3).map(([t, r]) => ({ t, go: go(r) })) })),
+      panelOpen: this.state.panel, togglePanel: () => this.setState({ panel: !this.state.panel }),
+      chevRot: this.state.panel ? 'rotate(180deg)' : 'none',
+      uslColor: this.state.panel || ['uslugi', 'geologiya', 'topo-gaz'].includes(cur) ? 'var(--color-accent-800)' : 'var(--color-text)',
+      menuOpen: this.state.menu, openMenu: () => this.setState({ menu: true }), closeMenu: () => this.setState({ menu: false }),
+      mUslOpen: this.state.mUsl, toggleMUsl: () => this.setState({ mUsl: !this.state.mUsl }), mChevRot: this.state.mUsl ? 'rotate(180deg)' : 'none',
+      showBar: !!this._mob && !(this.props.noBar ?? false),
+      goHome: go('home'), goCalc: go('raschet'), goUslugi: go('uslugi'),
+    };
+  }
+}
+</script>
+</body>
+</html>

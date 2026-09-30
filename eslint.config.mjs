@@ -20,7 +20,7 @@ const restricted = [
 ];
 
 const config = [
-  { ignores: ['.next/**', 'out/**', 'build/**', 'storybook-static/**', 'test-results/**', 'playwright-report/**', 'next-env.d.ts'] },
+  { ignores: ['.next/**', 'out/**', 'build/**', 'storybook-static/**', 'test-results/**', 'playwright-report/**', 'next-env.d.ts', 'design/**'] },
   ...nextVitals,
   ...nextTs,
   {

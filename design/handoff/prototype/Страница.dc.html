@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/classical-4c742f67-1d29-4a03-bc1d-ef81b25fee22/styles.css">
+<script src="_ds/classical-4c742f67-1d29-4a03-bc1d-ef81b25fee22/_ds_bundle.js"></script>
+<script src="site-data.js"></script>
+<script src="pages-data.js"></script>
+<style>body{margin:0;background:var(--color-bg)}a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}button{font:inherit;color:inherit}</style>
+</helmet>
+<dc-import name="SiteHeader" current="{{ page }}" hint-size="100%,72px"></dc-import>
+<main style="padding:clamp(20px,3vw,32px) clamp(20px,4.4vw,56px) clamp(44px,6vw,80px);display:flex;flex-direction:column;gap:clamp(40px,5.5vw,72px);max-width:{{ maxW }}">
+  <sc-for list="{{ blocks }}" as="b" hint-placeholder-count="4">
+    <section id="{{ b.id }}" style="display:flex;flex-direction:column;gap:18px">
+
+      <sc-if value="{{ b.hasHead }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px 16px;flex-wrap:wrap">
+          <div style="display:flex;flex-direction:column;gap:4px;max-width:780px"><h2 style="margin:0;font-size:clamp(26px,3vw,36px);font-weight:400">{{ b.title }}</h2><sc-if value="{{ b.hasSub }}" hint-placeholder-val="{{ false }}"><span style="font-size:15px;color:var(--color-neutral-800)">{{ b.sub }}</span></sc-if></div>
+          <sc-if value="{{ b.hasLink }}" hint-placeholder-val="{{ false }}"><a href="#" onClick="{{ b.link.go }}" style="font-size:14px">{{ b.link.t }} →</a></sc-if>
+        </div>
+      </sc-if>
+
+      <!-- HERO -->
+      <sc-if value="{{ b.isHero }}" hint-placeholder-val="{{ true }}">
+        <sc-if value="{{ b.hasCrumbs }}" hint-placeholder-val="{{ true }}"><nav aria-label="Хлебные крошки" style="font-size:13px;color:var(--color-neutral-700);display:flex;gap:8px;flex-wrap:wrap"><sc-for list="{{ b.crumbs }}" as="c" hint-placeholder-count="2"><span style="display:flex;gap:8px"><sc-if value="{{ c.isLink }}" hint-placeholder-val="{{ true }}"><a href="#" onClick="{{ c.go }}" style="color:var(--color-neutral-700)">{{ c.t }}</a><span>/</span></sc-if><sc-if value="{{ c.isLast }}" hint-placeholder-val="{{ false }}"><span>{{ c.t }}</span></sc-if></span></sc-for></nav></sc-if>
+        <div style="display:grid;grid-template-columns:{{ b.heroCols }};gap:24px clamp(32px,5vw,64px);align-items:start">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <sc-if value="{{ b.check }}" hint-placeholder-val="{{ false }}"><span style="width:48px;height:48px;border-radius:50%;border:1px solid var(--color-accent);display:grid;place-items:center;color:var(--color-accent-700)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span></sc-if>
+            <sc-if value="{{ b.hasKicker }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-accent-800)">{{ b.kicker }}</span></sc-if>
+            <h1 style="font-size:clamp(34px,4.4vw,54px);font-weight:400;margin:0;line-height:1.05;text-wrap:pretty">{{ b.h1 }}</h1>
+            <sc-if value="{{ b.hasLead }}" hint-placeholder-val="{{ true }}"><p style="margin:0;font-size:clamp(15px,1.4vw,17px);color:var(--color-neutral-800);max-width:680px">{{ b.lead }}</p></sc-if>
+            <sc-if value="{{ b.hasFacts }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-wrap:wrap;gap:12px 32px;border-top:1px solid var(--color-text);padding-top:12px;margin-top:4px;font-variant-numeric:tabular-nums"><sc-for list="{{ b.facts }}" as="f" hint-placeholder-count="3"><div style="display:flex;flex-direction:column"><span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-neutral-700)">{{ f.k }}</span><span style="font-family:var(--font-heading);font-size:24px">{{ f.v }}</span></div></sc-for></div></sc-if>
+            <sc-if value="{{ b.hasActions }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:6px"><sc-for list="{{ b.actions }}" as="a" hint-placeholder-count="2"><button class="{{ a.cls }}" onClick="{{ a.go }}" style="min-height:48px;font-size:16px;color:{{ a.c }}">{{ a.t }}</button></sc-for></div></sc-if>
+          </div>
+          <sc-if value="{{ b.hasForm }}" hint-placeholder-val="{{ false }}"><dc-import name="CallbackForm" kind="{{ b.formKind }}" hint-size="100%,420px"></dc-import></sc-if>
+        </div>
+      </sc-if>
+
+      <!-- TIMELINE -->
+      <sc-if value="{{ b.isTimeline }}" hint-placeholder-val="{{ false }}">
+        <ol style="list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:0 20px">
+          <sc-for list="{{ b.items }}" as="t" hint-placeholder-count="5">
+            <li style="display:flex;flex-direction:column;gap:6px;padding:12px 0 18px;border-top:2px solid var(--color-accent)">
+              <span style="display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--color-accent-800);font-variant-numeric:tabular-nums"><span>{{ t.w }}</span><sc-if value="{{ t.hasTag }}" hint-placeholder-val="{{ false }}"><span class="tag {{ t.tagCls }}" style="font-size:10px;padding:1px 7px">{{ t.tag }}</span></sc-if></span>
+              <sc-if value="{{ t.hasPh }}" hint-placeholder-val="{{ false }}"><div class="plate" style="aspect-ratio:4/3;display:grid;place-items:center;background:repeating-linear-gradient(45deg,var(--color-neutral-200) 0 10px,var(--color-bg) 10px 20px)"><span style="font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--color-neutral-700);background:var(--color-bg);padding:2px 6px">Фото этапа</span></div></sc-if>
+              <span style="font-family:var(--font-heading);font-size:20px;font-weight:600">{{ t.t }}</span>
+              <span style="font-size:14px;color:var(--color-neutral-800)">{{ t.d }}</span>
+              <sc-if value="{{ t.hasYou }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;border-left:2px solid var(--color-accent);padding-left:8px"><span style="color:var(--color-neutral-700)">От вас: </span>{{ t.you }}</span></sc-if>
+              <sc-if value="{{ t.hasP }}" hint-placeholder-val="{{ false }}"><span style="font-size:14px;font-variant-numeric:tabular-nums;margin-top:auto;border-top:1px solid var(--color-divider);padding-top:6px;display:flex;justify-content:space-between"><span>{{ t.p }}</span><sc-if value="{{ t.hasGo }}" hint-placeholder-val="{{ false }}"><a href="#" onClick="{{ t.go }}" style="font-size:13px">Подробнее</a></sc-if></span></sc-if>
+            </li>
+          </sc-for>
+        </ol>
+      </sc-if>
+
+      <!-- COMPARE -->
+      <sc-if value="{{ b.isCompare }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:20px 48px">
+          <p style="margin:0;font-size:16px;text-align:justify;hyphens:auto">{{ b.text }}</p>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--color-text);font-variant-numeric:tabular-nums"><sc-for list="{{ b.items }}" as="s" hint-placeholder-count="2"><div style="display:flex;flex-direction:column;gap:4px;padding:14px 14px 14px 0;border-right:1px solid var(--color-divider)"><span style="font-family:var(--font-heading);font-size:clamp(28px,3.4vw,42px);line-height:1;color:{{ s.c }}">{{ s.v }}</span><span style="font-size:13px;color:var(--color-neutral-800)">{{ s.k }}</span></div></sc-for></div>
+            <span style="font-size:13px;color:var(--color-neutral-700)">{{ b.note }}</span>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- CARDS -->
+      <sc-if value="{{ b.isCards }}" hint-placeholder-val="{{ false }}">
+        <sc-if value="{{ b.hasFilter }}" hint-placeholder-val="{{ false }}"><div role="radiogroup" style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ b.filters }}" as="f" hint-placeholder-count="5"><button role="radio" aria-checked="{{ f.on }}" onClick="{{ f.go }}" style="min-height:44px;padding:0 14px;border:1px solid {{ f.bc }};border-radius:var(--radius-md);background:{{ f.bg }};color:{{ f.c }};font-size:14px;cursor:pointer">{{ f.t }}</button></sc-for></div></sc-if>
+        <div style="display:grid;grid-template-columns:{{ b.cols }};gap:16px">
+          <sc-for list="{{ b.items }}" as="c" hint-placeholder-count="3">
+            <button onClick="{{ c.go }}" class="card" style="padding:{{ b.pad }};gap:8px;text-align:left;background:transparent;cursor:{{ c.cursor }};font:inherit;color:var(--color-text)" style-hover="border-color:var(--color-accent)">
+              <sc-if value="{{ c.hasPh }}" hint-placeholder-val="{{ false }}"><div class="plate" style="aspect-ratio:{{ b.ratio }};display:grid;place-items:center;margin-bottom:4px;background:repeating-linear-gradient(45deg,var(--color-neutral-200) 0 10px,var(--color-bg) 10px 20px)"><span style="font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--color-neutral-700);background:var(--color-bg);padding:2px 6px">Заглушка · {{ c.ph }}</span></div></sc-if>
+              <sc-if value="{{ c.hasKicker }}" hint-placeholder-val="{{ false }}"><span class="card-kicker" style="color:var(--color-accent-800)">{{ c.kicker }}</span></sc-if>
+              <span class="card-title" style="font-size:20px">{{ c.t }}</span>
+              <sc-if value="{{ c.hasD }}" hint-placeholder-val="{{ false }}"><span style="font-size:14px;color:var(--color-neutral-800);flex:1">{{ c.d }}</span></sc-if>
+              <sc-if value="{{ c.hasFacts }}" hint-placeholder-val="{{ false }}"><span style="display:flex;flex-wrap:wrap;gap:4px"><sc-for list="{{ c.facts }}" as="f" hint-placeholder-count="2"><span class="tag tag-neutral" style="font-variant-numeric:tabular-nums">{{ f }}</span></sc-for></span></sc-if>
+              <sc-if value="{{ c.hasMeta }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;color:var(--color-neutral-700);font-variant-numeric:tabular-nums;border-top:1px solid var(--color-divider);padding-top:8px">{{ c.meta }}</span></sc-if>
+              <sc-if value="{{ c.hasFig }}" hint-placeholder-val="{{ false }}"><span style="font-family:var(--font-heading);font-size:22px;font-variant-numeric:tabular-nums;border-top:1px solid var(--color-divider);padding-top:8px">{{ c.fig }}</span></sc-if>
+            </button>
+          </sc-for>
+        </div>
+        <sc-if value="{{ b.empty }}" hint-placeholder-val="{{ false }}"><p style="margin:0;color:var(--color-neutral-800)">В этой категории пока нет материалов.</p></sc-if>
+      </sc-if>
+
+      <!-- ANNOTATED -->
+      <sc-if value="{{ b.isAnnotated }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:24px 48px;align-items:start">
+          <div class="plate" style="position:relative;aspect-ratio:3/4;display:grid;place-items:center;background:repeating-linear-gradient(45deg,var(--color-neutral-200) 0 10px,var(--color-bg) 10px 20px)"><span style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--color-neutral-700);background:var(--color-bg);padding:3px 8px">Заглушка · {{ b.ph }}</span><sc-for list="{{ b.items }}" as="a" hint-placeholder-count="4"><span style="position:absolute;left:{{ a.x }};top:{{ a.y }};width:26px;height:26px;border-radius:50%;border:1.5px solid var(--color-accent);background:var(--color-bg);display:grid;place-items:center;font-family:var(--font-heading);font-size:14px;color:var(--color-accent-800)">{{ a.no }}</span></sc-for></div>
+          <ol style="list-style:none;margin:0;padding:0;border-top:1px solid var(--color-text)"><sc-for list="{{ b.items }}" as="a" hint-placeholder-count="4"><li style="display:grid;grid-template-columns:34px 1fr;gap:10px;padding:14px 0;border-bottom:1px solid var(--color-divider)"><span style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--color-accent);display:grid;place-items:center;font-family:var(--font-heading);font-size:14px;color:var(--color-accent-800)">{{ a.no }}</span><span style="display:flex;flex-direction:column;gap:2px"><span style="font-family:var(--font-heading);font-size:19px;font-weight:600">{{ a.t }}</span><span style="font-size:14px;color:var(--color-neutral-800)">{{ a.d }}</span></span></li></sc-for></ol>
+        </div>
+      </sc-if>
+
+      <!-- FAQ -->
+      <sc-if value="{{ b.isFaq }}" hint-placeholder-val="{{ false }}">
+        <sc-if value="{{ b.hasSearch }}" hint-placeholder-val="{{ false }}"><div style="display:flex;align-items:center;gap:10px;border:1px solid var(--color-divider);border-radius:var(--radius-md);padding:0 14px;min-height:52px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-neutral-700)"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><input type="search" value="{{ b.q }}" onChange="{{ b.setQ }}" placeholder="Поиск по вопросам" aria-label="Поиск по вопросам" style="flex:1;border:0;background:transparent;font:inherit;font-size:16px;outline:none;color:var(--color-text);min-width:0"></div></sc-if>
+        <sc-if value="{{ b.hasGroups }}" hint-placeholder-val="{{ false }}"><div role="radiogroup" style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ b.groups }}" as="f" hint-placeholder-count="5"><button role="radio" aria-checked="{{ f.on }}" onClick="{{ f.go }}" style="min-height:40px;padding:0 12px;border:1px solid {{ f.bc }};border-radius:var(--radius-md);background:{{ f.bg }};color:{{ f.c }};font-size:14px;cursor:pointer">{{ f.t }}</button></sc-for></div></sc-if>
+        <div style="display:flex;flex-direction:column;border-top:1px solid var(--color-text)">
+          <sc-for list="{{ b.items }}" as="f" hint-placeholder-count="4"><div style="border-bottom:1px solid var(--color-divider)"><button onClick="{{ f.toggle }}" aria-expanded="{{ f.open }}" style="width:100%;display:grid;grid-template-columns:minmax(0,1fr) 20px;gap:12px;align-items:center;min-height:56px;padding:12px 0;border:0;background:none;text-align:left;cursor:pointer;font-family:var(--font-heading);font-size:clamp(18px,1.6vw,20px);font-weight:600">{{ f.q }}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent);transform:{{ f.rot }}"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></button><sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}"><p style="margin:0 0 14px;font-size:15px;color:var(--color-neutral-800);max-width:720px">{{ f.a }}</p></sc-if></div></sc-for>
+        </div>
+        <sc-if value="{{ b.empty }}" hint-placeholder-val="{{ false }}"><p style="margin:0;color:var(--color-neutral-800)">Ничего не нашлось. Попробуйте другое слово или задайте вопрос инженеру.</p></sc-if>
+      </sc-if>
+
+      <!-- ROWS -->
+      <sc-if value="{{ b.isRows }}" hint-placeholder-val="{{ false }}">
+        <ol style="list-style:none;margin:0;padding:0;border-top:1px solid var(--color-text)">
+          <sc-for list="{{ b.items }}" as="r" hint-placeholder-count="3"><li style="display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:12px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--color-divider)"><span style="font-family:var(--font-heading);font-size:18px;color:var(--color-accent-700);font-variant-numeric:tabular-nums">{{ r.no }}</span><span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:16px">{{ r.t }}</span><sc-if value="{{ r.hasD }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;color:var(--color-neutral-700)">{{ r.d }}</span></sc-if></span><span style="font-size:13px;color:var(--color-neutral-700);white-space:nowrap">{{ r.w }}<sc-if value="{{ r.hasL }}" hint-placeholder-val="{{ false }}"><a href="#" onClick="{{ r.go }}">{{ r.l }}</a></sc-if></span></li></sc-for>
+        </ol>
+        <sc-if value="{{ b.hasNote }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;color:var(--color-neutral-700)">{{ b.note }}</span></sc-if>
+      </sc-if>
+
+      <!-- TABLE -->
+      <sc-if value="{{ b.isTable }}" hint-placeholder-val="{{ false }}">
+        <sc-if value="{{ isDesk }}" hint-placeholder-val="{{ true }}">
+          <table class="table" style="font-size:15px;font-variant-numeric:tabular-nums">
+            <thead><tr><sc-for list="{{ b.cols }}" as="c" hint-placeholder-count="3"><th>{{ c }}</th></sc-for></tr></thead>
+            <tbody><sc-for list="{{ b.rows }}" as="r" hint-placeholder-count="4"><tr><sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="3"><td><sc-if value="{{ c.isNorm }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;border:1px solid var(--color-text);border-radius:var(--radius-sm);font-size:12px;line-height:1"><span style="padding:4px 6px;border-right:1px solid var(--color-text)">{{ c.nt }}</span><span style="padding:4px 7px">{{ c.nn }}</span></span></sc-if><sc-if value="{{ c.isText }}" hint-placeholder-val="{{ true }}">{{ c.v }}</sc-if></td></sc-for></tr></sc-for></tbody>
+          </table>
+        </sc-if>
+        <sc-if value="{{ isMob }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;border-top:1px solid var(--color-text)">
+            <sc-for list="{{ b.rows }}" as="r" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;gap:6px;padding:12px 0;border-bottom:1px solid var(--color-divider);font-variant-numeric:tabular-nums"><span style="font-family:var(--font-heading);font-size:19px;font-weight:600">{{ r.head }}</span><sc-for list="{{ r.pairs }}" as="c" hint-placeholder-count="2"><span style="display:flex;justify-content:space-between;gap:12px;font-size:14px"><span style="color:var(--color-neutral-700)">{{ c.k }}</span><sc-if value="{{ c.isNorm }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;border:1px solid var(--color-text);border-radius:var(--radius-sm);font-size:11px;line-height:1"><span style="padding:3px 5px;border-right:1px solid var(--color-text)">{{ c.nt }}</span><span style="padding:3px 6px">{{ c.nn }}</span></span></sc-if><sc-if value="{{ c.isText }}" hint-placeholder-val="{{ true }}"><span style="text-align:right">{{ c.v }}</span></sc-if></span></sc-for></div></sc-for>
+          </div>
+        </sc-if>
+      </sc-if>
+
+      <!-- DOCS -->
+      <sc-if value="{{ b.isDocs }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:16px">
+          <sc-for list="{{ b.items }}" as="d" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;gap:8px"><div class="plate" style="aspect-ratio:3/4;display:grid;place-items:center;background:repeating-linear-gradient(45deg,var(--color-neutral-200) 0 10px,var(--color-bg) 10px 20px)"><span style="font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--color-neutral-700);background:var(--color-bg);padding:2px 6px">Превью документа</span></div><span style="font-size:15px">{{ d.t }}</span><button class="btn btn-secondary" onClick="{{ d.dl }}" style="min-height:44px;justify-content:space-between"><span>Скачать</span><span style="font-size:12px;color:var(--color-neutral-700);font-family:var(--font-body);font-weight:400">{{ d.m }}</span></button></div></sc-for>
+        </div>
+        <sc-if value="{{ b.hasAll }}" hint-placeholder-val="{{ false }}"><button class="btn btn-primary" onClick="{{ b.dlAll }}" style="min-height:48px;align-self:flex-start;color:var(--color-accent-800)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path><path d="M12 15V3"></path></svg>{{ b.all }}</button></sc-if>
+      </sc-if>
+
+      <!-- NORMS -->
+      <sc-if value="{{ b.isNorms }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;border-top:1px solid var(--color-text)"><sc-for list="{{ b.items }}" as="n" hint-placeholder-count="5"><div style="display:grid;grid-template-columns:minmax(150px,auto) 1fr;gap:6px 20px;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--color-divider)"><span style="justify-self:start;display:inline-flex;border:1px solid var(--color-text);border-radius:var(--radius-sm);font-size:12px;line-height:1;font-variant-numeric:tabular-nums"><span style="padding:4px 6px;border-right:1px solid var(--color-text)">{{ n.nt }}</span><span style="padding:4px 7px">{{ n.nn }}</span></span><span style="font-size:14px">{{ n.d }}</span></div></sc-for></div>
+      </sc-if>
+
+      <!-- PERSON -->
+      <sc-if value="{{ b.isPerson }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:20px 32px;align-items:center;border-top:1px solid var(--color-text);padding-top:16px;max-width:640px">
+          <div class="plate" style="aspect-ratio:4/5;display:grid;place-items:center;background:repeating-linear-gradient(45deg,var(--color-neutral-200) 0 10px,var(--color-bg) 10px 20px)"><span style="font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--color-neutral-700);background:var(--color-bg);padding:2px 6px">Фото</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px;font-variant-numeric:tabular-nums"><span style="font-family:var(--font-heading);font-size:clamp(24px,2.4vw,30px);font-weight:600">{{ b.n }}</span><span style="font-size:15px">{{ b.r }}</span><span style="font-size:13px;color:var(--color-neutral-700)">{{ b.x }}</span><a href="tel:+73430000001" style="font-family:var(--font-heading);font-size:22px;margin-top:8px;color:var(--color-text)">{{ b.phone }}</a><a href="#" style="font-size:14px;overflow-wrap:anywhere">{{ b.email }}</a></div>
+        </div>
+      </sc-if>
+
+      <!-- STATS -->
+      <sc-if value="{{ b.isStats }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:24px 48px;align-items:end">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:16px 0;border-top:1px solid var(--color-text);padding-top:14px;font-variant-numeric:tabular-nums"><sc-for list="{{ b.items }}" as="s" hint-placeholder-count="3"><div style="display:flex;flex-direction:column;padding-right:12px"><span style="font-family:var(--font-heading);font-size:clamp(28px,3vw,40px);line-height:1">{{ s.v }}</span><span style="font-size:12px;color:var(--color-neutral-700)">{{ s.k }}</span></div></sc-for></div>
+          <sc-if value="{{ b.hasYears }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-neutral-700)">Метры бурения по годам</span><div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;align-items:end;height:96px;border-bottom:1px solid var(--color-text)"><sc-for list="{{ b.years }}" as="y" hint-placeholder-count="6"><div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%"><span style="font-size:10px;font-variant-numeric:tabular-nums">{{ y.v }}</span><span style="width:100%;height:{{ y.h }};border:1px solid var(--color-accent);border-bottom:0;background:color-mix(in srgb,var(--color-accent) 14%,transparent)"></span></div></sc-for></div><div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;font-size:11px;color:var(--color-neutral-700);text-align:center;font-variant-numeric:tabular-nums"><sc-for list="{{ b.years }}" as="y" hint-placeholder-count="6"><span>{{ y.y }}</span></sc-for></div></div></sc-if>
+        </div>
+      </sc-if>
+
+      <!-- MAP -->
+      <sc-if value="{{ b.isMap }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+          <sc-for list="{{ b.filters }}" as="f" hint-placeholder-count="5"><button onClick="{{ f.go }}" aria-pressed="{{ f.on }}" style="min-height:44px;padding:0 14px;border:1px solid {{ f.bc }};border-radius:var(--radius-md);background:{{ f.bg }};color:{{ f.c }};font-size:14px;cursor:pointer">{{ f.t }}</button></sc-for>
+          <sc-if value="{{ isMob }}" hint-placeholder-val="{{ false }}"><div class="seg" role="radiogroup" style="display:grid;grid-template-columns:1fr 1fr;width:100%"><label class="seg-opt" style="justify-content:center;min-height:44px"><input type="radio" name="mapmode" checked="{{ b.listOn }}" onChange="{{ b.toList }}">Список</label><label class="seg-opt" style="justify-content:center;min-height:44px"><input type="radio" name="mapmode" checked="{{ b.mapOn }}" onChange="{{ b.toMap }}">Карта</label></div></sc-if>
+        </div>
+        <sc-if value="{{ b.showMap }}" hint-placeholder-val="{{ true }}">
+          <div style="position:relative;height:clamp(300px,40vw,460px);border:1px solid var(--color-divider);border-radius:var(--radius-md);overflow:hidden;background-image:linear-gradient(var(--color-divider) 1px,transparent 1px),linear-gradient(90deg,var(--color-divider) 1px,transparent 1px);background-size:44px 44px">
+            <span style="position:absolute;left:12px;top:10px;font-size:11px;color:var(--color-neutral-700);background:var(--color-bg);padding:2px 6px">Карта — заглушка</span>
+            <sc-for list="{{ b.pins }}" as="p" hint-placeholder-count="6"><button onClick="{{ p.go }}" aria-label="{{ p.t }}" style="position:absolute;left:{{ p.x }};top:{{ p.y }};transform:translate(-50%,-50%);width:{{ p.s }};height:{{ p.s }};border-radius:50%;border:2px solid var(--color-accent);background:{{ p.bg }};cursor:pointer;padding:0"></button></sc-for>
+            <sc-if value="{{ b.hasSel }}" hint-placeholder-val="{{ false }}"><div class="card elev-md" style="position:absolute;left:12px;right:12px;bottom:12px;max-width:360px;background:var(--color-bg);padding:14px;gap:4px"><span class="card-kicker" style="color:var(--color-accent-800)">{{ b.sel.kicker }}</span><span class="card-title" style="font-size:19px">{{ b.sel.t }}</span><span style="font-family:var(--font-heading);font-size:20px">{{ b.sel.fig }}</span><a href="#" onClick="{{ b.sel.go }}" style="font-size:14px">Открыть кейс →</a></div></sc-if>
+          </div>
+        </sc-if>
+        <sc-if value="{{ b.showList }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:16px">
+            <sc-for list="{{ b.items }}" as="c" hint-placeholder-count="3"><a href="#" onClick="{{ c.go }}" class="card" style="padding:14px;gap:8px;text-decoration:none;color:var(--color-text)" style-hover="border-color:var(--color-accent)"><div class="plate" style="aspect-ratio:3/2;display:grid;place-items:center;background:repeating-linear-gradient(45deg,var(--color-neutral-200) 0 10px,var(--color-bg) 10px 20px)"><span style="font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--color-neutral-700);background:var(--color-bg);padding:2px 6px">Заглушка · {{ c.ph }}</span></div><span class="card-kicker" style="color:var(--color-accent-800)">{{ c.kicker }}</span><span class="card-title" style="font-size:20px">{{ c.t }}</span><span style="font-size:13px;color:var(--color-neutral-800)">{{ c.d }}</span><span style="font-family:var(--font-heading);font-size:22px;font-variant-numeric:tabular-nums;border-top:1px solid var(--color-divider);padding-top:8px">{{ c.fig }}</span></a></sc-for>
+          </div>
+        </sc-if>
+      </sc-if>
+
+      <!-- KV -->
+      <sc-if value="{{ b.isKv }}" hint-placeholder-val="{{ false }}">
+        <dl style="margin:0;display:flex;flex-direction:column;border-top:1px solid var(--color-text);font-variant-numeric:tabular-nums">
+          <sc-for list="{{ b.items }}" as="r" hint-placeholder-count="5"><div style="display:grid;grid-template-columns:{{ b.kvCols }};gap:4px 20px;align-items:center;padding:10px 0;border-bottom:1px solid var(--color-divider)"><dt style="font-size:14px;color:var(--color-neutral-700)">{{ r.k }}</dt><dd style="margin:0;font-size:15px">{{ r.v }}</dd><sc-if value="{{ b.copy }}" hint-placeholder-val="{{ false }}"><button class="btn btn-ghost" onClick="{{ r.copy }}" aria-label="Копировать" style="min-height:40px;font-size:13px">{{ r.copyLabel }}</button></sc-if></div></sc-for>
+        </dl>
+        <sc-if value="{{ b.copy }}" hint-placeholder-val="{{ false }}"><button class="btn btn-secondary" onClick="{{ b.copyAll }}" style="min-height:44px;align-self:flex-start">Копировать все реквизиты</button></sc-if>
+      </sc-if>
+
+      <!-- RESULT -->
+      <sc-if value="{{ b.isResult }}" hint-placeholder-val="{{ false }}">
+        <div style="border-top:1px solid var(--color-text);border-bottom:1px solid var(--color-text);padding:clamp(20px,3vw,32px) 0;display:flex;flex-direction:column;gap:8px"><span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-accent-800)">Результат</span><span style="font-family:var(--font-heading);font-size:clamp(30px,4vw,48px);line-height:1.05">{{ b.v }}</span><span style="font-size:15px;color:var(--color-neutral-800);max-width:640px">{{ b.d }}</span></div>
+      </sc-if>
+
+      <!-- LOGOS -->
+      <sc-if value="{{ b.isLogos }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px"><sc-for list="{{ b.logos }}" as="l" hint-placeholder-count="8"><div style="aspect-ratio:2/1;border:1px solid var(--color-divider);border-radius:var(--radius-md);display:grid;place-items:center;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--color-neutral-700)">Логотип {{ l }}</div></sc-for></div>
+      </sc-if>
+
+      <!-- PEOPLE -->
+      <sc-if value="{{ b.isPeople }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:{{ b.cols }};gap:24px 20px">
+          <sc-for list="{{ b.items }}" as="p" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;gap:4px"><div class="plate" style="aspect-ratio:4/5;display:grid;place-items:center;margin-bottom:6px;background:repeating-linear-gradient(45deg,var(--color-neutral-200) 0 10px,var(--color-bg) 10px 20px)"><span style="font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--color-neutral-700);background:var(--color-bg);padding:2px 6px">Фото сотрудника</span></div><span style="font-family:var(--font-heading);font-size:{{ b.nameSize }};font-weight:600">{{ p.n }}</span><span style="font-size:14px">{{ p.r }}</span><span style="font-size:12px;color:var(--color-neutral-700);font-variant-numeric:tabular-nums">{{ p.x }}{{ p.e }}</span></div></sc-for>
+        </div>
+      </sc-if>
+
+      <!-- CHECKS -->
+      <sc-if value="{{ b.isChecks }}" hint-placeholder-val="{{ false }}">
+        <ol style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:clamp(32px,4vw,48px)">
+          <sc-for list="{{ b.items }}" as="c" hint-placeholder-count="5">
+            <li style="display:grid;grid-template-columns:clamp(40px,6vw,72px) minmax(0,1fr);gap:0 16px;border-top:1px solid var(--color-text);padding-top:16px">
+              <span style="font-family:var(--font-heading);font-size:clamp(34px,4.4vw,56px);line-height:.9;color:var(--color-accent-700);font-variant-numeric:tabular-nums">{{ c.no }}</span>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <h3 style="margin:0;font-size:clamp(22px,2.4vw,28px)">{{ c.t }}</h3>
+                <p style="margin:0;font-size:16px;text-align:justify;hyphens:auto"><b style="font-weight:600">Зачем.</b> {{ c.why }}</p>
+                <p style="margin:0;font-size:16px;text-align:justify;hyphens:auto"><b style="font-weight:600">Как проверить.</b> {{ c.how }} <a href="#">{{ c.l }}</a></p>
+                <div style="border-left:2px solid var(--color-accent);padding:4px 0 4px 14px;display:flex;flex-direction:column;gap:2px"><span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-accent-800)">Плохой знак</span><span style="font-size:15px">{{ c.bad }}</span></div>
+              </div>
+            </li>
+          </sc-for>
+        </ol>
+        <div style="border:1px solid var(--color-accent);border-radius:var(--radius-md);padding:clamp(16px,2.4vw,28px);display:flex;flex-direction:column;gap:10px"><h3 style="margin:0">Проверьте нас</h3><sc-for list="{{ b.items }}" as="c" hint-placeholder-count="5"><div style="display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:8px 0;border-bottom:1px solid var(--color-divider);font-variant-numeric:tabular-nums"><span style="font-family:var(--font-heading);color:var(--color-accent-700)">{{ c.no }}</span><span style="display:flex;flex-direction:column"><span style="font-size:13px;color:var(--color-neutral-700)">{{ c.t }}</span><span style="font-size:15px">{{ c.ours }}</span></span></div></sc-for></div>
+      </sc-if>
+
+      <!-- CALLOUT -->
+      <sc-if value="{{ b.isCallout }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:20px 48px;border-top:1px solid var(--color-text);padding-top:20px"><div style="display:flex;flex-direction:column;gap:8px"><h2 style="margin:0;font-size:clamp(26px,3vw,34px);font-weight:400">{{ b.t }}</h2><p style="margin:0;font-size:15px;color:var(--color-neutral-800)">{{ b.d }}</p></div><sc-if value="{{ b.hasForm }}" hint-placeholder-val="{{ false }}"><dc-import name="CallbackForm" kind="callback" hint-size="100%,340px"></dc-import></sc-if></div>
+      </sc-if>
+
+      <!-- ARTICLE -->
+      <sc-if value="{{ b.isArticle }}" hint-placeholder-val="{{ false }}">
+        <nav aria-label="Оглавление" style="display:flex;flex-direction:column;gap:2px;border-top:1px solid var(--color-text);padding-top:10px"><span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-neutral-700);margin-bottom:4px">Содержание</span><sc-for list="{{ b.toc }}" as="t" hint-placeholder-count="3"><a href="#" onClick="{{ t.go }}" style="font-size:15px;padding:4px 0">{{ t.no }}. {{ t.t }}</a></sc-for></nav>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <sc-for list="{{ b.paras }}" as="p" hint-placeholder-count="6">
+            <sc-if value="{{ p.isH }}" hint-placeholder-val="{{ false }}"><h2 id="{{ p.id }}" style="margin:16px 0 0;font-size:clamp(24px,2.6vw,32px);font-weight:400">{{ p.text }}</h2></sc-if>
+            <sc-if value="{{ p.isP }}" hint-placeholder-val="{{ true }}"><p style="margin:0;font-size:17px;line-height:1.65;text-align:justify;hyphens:auto">{{ p.text }}</p></sc-if>
+            <sc-if value="{{ p.isQuote }}" hint-placeholder-val="{{ false }}"><blockquote style="margin:0;padding:16px 20px;border:1px solid var(--color-text);border-radius:var(--radius-sm);display:flex;flex-direction:column;gap:8px"><span style="align-self:flex-start;display:inline-flex;border:1px solid var(--color-text);border-radius:var(--radius-sm);font-size:12px;line-height:1;font-variant-numeric:tabular-nums"><span style="padding:4px 6px;border-right:1px solid var(--color-text)">{{ p.nt }}</span><span style="padding:4px 7px">{{ p.nn }}</span></span><span style="font-size:16px;font-style:italic">{{ p.text }}</span></blockquote></sc-if>
+            <sc-if value="{{ p.isCallout }}" hint-placeholder-val="{{ false }}"><aside style="border-left:2px solid var(--color-accent);padding:6px 0 6px 16px;display:flex;flex-direction:column;gap:4px"><span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-accent-800)">{{ p.label }}</span><span style="font-size:16px">{{ p.text }}</span></aside></sc-if>
+            <sc-if value="{{ p.isTable }}" hint-placeholder-val="{{ false }}"><table class="table" style="font-size:15px;font-variant-numeric:tabular-nums"><thead><tr><sc-for list="{{ p.cols }}" as="c" hint-placeholder-count="3"><th>{{ c }}</th></sc-for></tr></thead><tbody><sc-for list="{{ p.rows }}" as="r" hint-placeholder-count="2"><tr><sc-for list="{{ r }}" as="c" hint-placeholder-count="3"><td>{{ c }}</td></sc-for></tr></sc-for></tbody></table></sc-if>
+          </sc-for>
+        </div>
+        <sc-if value="{{ b.hasAuthor }}" hint-placeholder-val="{{ false }}"><div style="display:grid;grid-template-columns:64px 1fr;gap:14px;align-items:center;border-top:1px solid var(--color-divider);padding-top:16px"><div class="plate" style="aspect-ratio:1;border-width:3px;background:repeating-linear-gradient(45deg,var(--color-neutral-200) 0 6px,var(--color-bg) 6px 12px)"></div><div style="display:flex;flex-direction:column"><span style="font-family:var(--font-heading);font-size:19px;font-weight:600">{{ b.author.n }}</span><span style="font-size:13px;color:var(--color-neutral-700)">{{ b.author.r }}</span></div></div></sc-if>
+        <sc-if value="{{ b.hasRelated }}" hint-placeholder-val="{{ false }}"><a href="#" onClick="{{ b.related.go }}" class="card" style="padding:16px;gap:4px;text-decoration:none;color:var(--color-text)" style-hover="border-color:var(--color-accent)"><span class="card-kicker" style="color:var(--color-accent-800)">Связанная услуга</span><span class="card-title" style="font-size:20px">{{ b.related.t }} →</span></a></sc-if>
+      </sc-if>
+
+      <!-- CONTACTS -->
+      <sc-if value="{{ b.isContacts }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:28px 48px">
+          <div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--color-text);padding-top:14px;font-variant-numeric:tabular-nums">
+            <a href="tel:+73430000000" style="font-family:var(--font-heading);font-size:clamp(28px,3.2vw,40px);color:var(--color-text);text-decoration:none">+7 343 000-00-00</a>
+            <span style="font-size:15px">пн–пт 8:00–19:00, сб 9:00–15:00</span>
+            <a href="#" style="font-size:15px">info@geoplan.example</a>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><a class="btn btn-secondary" href="#" style="min-height:44px">WhatsApp</a><a class="btn btn-secondary" href="#" style="min-height:44px">Telegram</a></div>
+            <dl style="margin:18px 0 0;display:flex;flex-direction:column;border-top:1px solid var(--color-divider)">
+              <div style="padding:10px 0;border-bottom:1px solid var(--color-divider)"><dt style="font-size:12px;color:var(--color-neutral-700);text-transform:uppercase;letter-spacing:.06em">Офис</dt><dd style="margin:2px 0 0;font-size:15px">Екатеринбург, ул. Примерная, 1, офис 101. Вход со двора, 3 минуты от метро «Площадь 1905 года».</dd></div>
+              <div style="padding:10px 0;border-bottom:1px solid var(--color-divider)"><dt style="font-size:12px;color:var(--color-neutral-700);text-transform:uppercase;letter-spacing:.06em">Лаборатория и база</dt><dd style="margin:2px 0 0;font-size:15px">Екатеринбург, ул. Промышленная, 12. Приём проб пн–пт 9:00–17:00.</dd></div>
+            </dl>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="position:relative;height:260px;border:1px solid var(--color-divider);border-radius:var(--radius-md);overflow:hidden;background-image:linear-gradient(var(--color-divider) 1px,transparent 1px),linear-gradient(90deg,var(--color-divider) 1px,transparent 1px);background-size:40px 40px"><span style="position:absolute;left:12px;top:10px;font-size:11px;color:var(--color-neutral-700);background:var(--color-bg);padding:2px 6px">Карта — заглушка</span><span style="position:absolute;left:46%;top:48%;width:18px;height:18px;border-radius:50%;border:2px solid var(--color-accent);background:var(--color-bg)"></span></div>
+            <div class="plate" style="aspect-ratio:16/9;display:grid;place-items:center;background:repeating-linear-gradient(45deg,var(--color-neutral-200) 0 10px,var(--color-bg) 10px 20px)"><span style="font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--color-neutral-700);background:var(--color-bg);padding:2px 6px">Фото входа в офис</span></div>
+          </div>
+          <dc-import name="CallbackForm" kind="callback" hint-size="100%,340px"></dc-import>
+        </div>
+      </sc-if>
+
+      <!-- ERROR -->
+      <sc-if value="{{ b.isError }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:32px 64px;align-items:center;min-height:60vh">
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <span style="font-family:var(--font-heading);font-size:clamp(80px,12vw,160px);line-height:.85;color:var(--color-accent-700);font-variant-numeric:tabular-nums">404</span>
+            <h1 style="margin:0;font-size:clamp(28px,3.4vw,42px);font-weight:400">Скважина не нашла грунт</h1>
+            <p style="margin:0;font-size:16px;color:var(--color-neutral-800)">Страница переехала или её не было. Найдите нужное через поиск или начните с главных разделов.</p>
+            <div style="display:flex;align-items:center;gap:10px;border:1px solid var(--color-divider);border-radius:var(--radius-md);padding:0 14px;min-height:52px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-neutral-700)"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><input type="search" placeholder="Поиск по сайту" aria-label="Поиск по сайту" style="flex:1;border:0;background:transparent;font:inherit;font-size:16px;outline:none;color:var(--color-text);min-width:0"></div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ b.links }}" as="l" hint-placeholder-count="4"><button class="btn btn-secondary" onClick="{{ l.go }}" style="min-height:44px">{{ l.t }}</button></sc-for></div>
+          </div>
+          <svg viewBox="0 0 200 320" style="max-width:220px;justify-self:center" aria-hidden="true"><defs><pattern id="e-d" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" style="stroke:var(--color-text);stroke-width:.7"></line></pattern></defs><rect x="70" y="0" width="60" height="120" style="fill:url(#e-d);stroke:var(--color-text)"></rect><rect x="70" y="120" width="60" height="200" style="fill:none;stroke:var(--color-text);stroke-dasharray:4 4"></rect><text x="100" y="230" text-anchor="middle" style="font-family:var(--font-heading);font-size:28px;fill:var(--color-accent-700)">?</text></svg>
+        </div>
+      </sc-if>
+
+    </section>
+  </sc-for>
+</main>
+<sc-if value="{{ viewerOpen }}" hint-placeholder-val="{{ false }}">
+  <div role="dialog" aria-modal="true" aria-label="Просмотр образца" style="position:fixed;inset:0;z-index:60;background:var(--color-bg);display:flex;flex-direction:column">
+    <div style="display:flex;align-items:center;gap:8px;padding:8px 12px 8px 20px;border-bottom:1px solid var(--color-divider)">
+      <div style="display:flex;flex-direction:column;margin-right:auto;min-width:0"><span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-accent-800)">{{ v.kicker }} · {{ v.pos }}</span><span style="font-family:var(--font-heading);font-size:20px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ v.t }}</span></div>
+      <button class="btn btn-icon" onClick="{{ vOut }}" aria-label="Уменьшить" style="width:44px;height:44px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14"></path></svg></button>
+      <span style="font-size:13px;min-width:44px;text-align:center;font-variant-numeric:tabular-nums">{{ vZoomL }}</span>
+      <button class="btn btn-icon" onClick="{{ vIn }}" aria-label="Увеличить" style="width:44px;height:44px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></button>
+      <button class="btn btn-icon" onClick="{{ vClose }}" aria-label="Закрыть" style="width:44px;height:44px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+    </div>
+    <div style="flex:1;display:grid;grid-template-columns:{{ vCols }};min-height:0">
+      <div style="overflow:auto;background:var(--color-surface);display:grid;place-items:center;padding:24px">
+        <div class="plate" style="width:{{ vW }};aspect-ratio:3/4;position:relative;display:grid;place-items:center;background:repeating-linear-gradient(45deg,var(--color-neutral-200) 0 10px,var(--color-bg) 10px 20px);flex:none"><span style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--color-neutral-700);background:var(--color-bg);padding:3px 8px">Заглушка · {{ v.ph }}</span><sc-for list="{{ vCallouts }}" as="c" hint-placeholder-count="3"><span style="position:absolute;left:{{ c.x }};top:{{ c.y }};width:26px;height:26px;border-radius:50%;border:1.5px solid var(--color-accent);background:var(--color-bg);display:grid;place-items:center;font-family:var(--font-heading);font-size:14px;color:var(--color-accent-800)">{{ c.no }}</span></sc-for></div>
+      </div>
+      <aside style="border-left:1px solid var(--color-divider);border-top:1px solid var(--color-divider);padding:16px 20px;display:flex;flex-direction:column;gap:10px;overflow:auto;max-height:{{ vAsideH }}">
+        <span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-neutral-700)">Как читать</span>
+        <sc-for list="{{ vCallouts }}" as="c" hint-placeholder-count="3"><div style="display:grid;grid-template-columns:30px 1fr;gap:8px"><span style="width:24px;height:24px;border-radius:50%;border:1.5px solid var(--color-accent);display:grid;place-items:center;font-family:var(--font-heading);font-size:13px;color:var(--color-accent-800)">{{ c.no }}</span><span style="display:flex;flex-direction:column"><span style="font-size:15px;font-weight:600">{{ c.t }}</span><span style="font-size:14px;color:var(--color-neutral-800)">{{ c.d }}</span></span></div></sc-for>
+        <span style="font-size:13px;color:var(--color-neutral-700);font-variant-numeric:tabular-nums;border-top:1px solid var(--color-divider);padding-top:8px">{{ v.meta }}</span>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto"><button class="btn btn-secondary" onClick="{{ vPrev }}" style="min-height:44px">← Назад</button><button class="btn btn-secondary" onClick="{{ vNext }}" style="min-height:44px">Далее →</button></div>
+      </aside>
+    </div>
+  </div>
+</sc-if>
+<sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}"><div role="status" style="position:fixed;left:50%;bottom:96px;transform:translateX(-50%);z-index:70;background:var(--color-bg);border:1px solid var(--color-text);border-radius:var(--radius-md);box-shadow:var(--shadow-md);padding:10px 16px;font-size:14px">{{ toast }}</div></sc-if>
+<dc-import name="SiteFooter" cta="{{ showCta }}" hint-size="100%,420px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;page&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;chastnym&quot;,&quot;proektirovshchikam&quot;,&quot;obrazcy&quot;,&quot;obekty&quot;,&quot;keys&quot;,&quot;o-kompanii&quot;,&quot;komanda&quot;,&quot;laboratoriya&quot;,&quot;tehnika&quot;,&quot;dokumenty&quot;,&quot;kak-rabotaem&quot;,&quot;proverka&quot;,&quot;voprosy&quot;,&quot;stati&quot;,&quot;statya&quot;,&quot;kontakty&quot;,&quot;404&quot;,&quot;spasibo&quot;,&quot;privacy&quot;],&quot;default&quot;:&quot;chastnym&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { open: {}, filter: {}, q: '', group: 'Все', mapMode: 'list', sel: null, viewer: null, zoom: 1, copied: null, toast: null };
+  componentDidMount() {
+    if (!window.SITE || !window.PAGES) { this._p = setInterval(() => { if (window.SITE && window.PAGES) { clearInterval(this._p); this.componentDidMount(); } }, 50); return; }
+    this._off = window.SITE.useMobile(this); this.forceUpdate();
+    this._key = e => {
+      if (!this.state.viewer) return;
+      if (e.key === 'Escape') this.setState({ viewer: null });
+      if (e.key === 'ArrowRight') this.vStep(1);
+      if (e.key === 'ArrowLeft') this.vStep(-1);
+    };
+    window.addEventListener('keydown', this._key);
+  }
+  componentWillUnmount() { clearInterval(this._p); this._off && this._off(); window.removeEventListener('keydown', this._key); }
+  toast(t) { clearTimeout(this._t); this.setState({ toast: t }); this._t = setTimeout(() => this.setState({ toast: null }), 2400); }
+  scrollTo(id) { const el = document.getElementById(id); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' }); }
+  vStep(d) { const v = this.state.viewer; if (!v) return; const n = v.items.length; this.setState({ viewer: { ...v, idx: (v.idx + d + n) % n }, zoom: 1 }); }
+  chips(list, cur, set) {
+    return list.map(t => { const on = t === cur; return { t, on, go: () => set(t), bc: on ? 'var(--color-accent)' : 'var(--color-divider)', bg: on ? 'var(--color-accent-100)' : 'transparent', c: on ? 'var(--color-accent-800)' : 'var(--color-text)' }; });
+  }
+  norm(v) { const m = String(v).match(/^(СП|ГОСТ)\s+(.+)$/); return m ? { isNorm: true, isText: false, nt: m[1], nn: m[2], v } : { isNorm: false, isText: true, v }; }
+
+  block(b, i, go, mob) {
+    const s = this.state;
+    const o = { id: b.id || 'b' + i, title: b.title, hasHead: !!b.title && !['callout'].includes(b.type), sub: b.sub, hasSub: !!b.sub, hasLink: !!b.link, link: b.link ? { t: b.link.t, go: go(b.link.r) } : null, note: b.note, hasNote: !!b.note };
+    ['hero', 'timeline', 'compare', 'cards', 'annotated', 'faq', 'rows', 'table', 'docs', 'norms', 'person', 'stats', 'map', 'kv', 'result', 'logos', 'people', 'checks', 'callout', 'article', 'contacts', 'error'].forEach(t => { o['is' + t[0].toUpperCase() + t.slice(1)] = b.type === t; });
+    const T = b.type;
+    if (T === 'hero') {
+      const cr = b.crumbs || [];
+      Object.assign(o, { hasCrumbs: cr.length > 0, crumbs: cr.map((c, k) => Array.isArray(c) ? { t: c[0], go: go(c[1]), isLink: true, isLast: false } : { t: c, isLink: false, isLast: true }),
+        kicker: b.kicker, hasKicker: !!b.kicker, h1: b.h1, lead: b.lead, hasLead: !!b.lead, facts: b.facts || [], hasFacts: !!b.facts, check: !!b.check,
+        actions: (b.actions || []).map(a => ({ t: a.t, go: a.r === 'tel' ? () => this.toast('Звонок: +7 343 000-00-00') : go(a.r), cls: a.primary ? 'btn btn-primary' : 'btn btn-secondary', c: a.primary ? 'var(--color-accent-800)' : 'var(--color-text)' })),
+        hasActions: !!(b.actions && b.actions.length), hasForm: !!b.form, formKind: b.form, heroCols: b.form ? 'repeat(auto-fit,minmax(min(100%,380px),1fr))' : 'minmax(0,1fr)' });
+    }
+    if (T === 'timeline') o.items = b.items.map(t => ({ ...t, hasTag: !!t.tag, tagCls: t.tag === 'обязательно' ? 'tag-accent' : 'tag-neutral', hasP: !!t.p, hasGo: !!t.r, go: t.r ? go(t.r) : null, hasYou: !!t.you, hasPh: !!b.photos }));
+    if (T === 'compare') Object.assign(o, { text: b.text, note: b.note, items: b.items.map((x, k) => ({ ...x, c: k === 0 ? 'var(--color-text)' : 'var(--color-accent-700)' })) });
+    if (T === 'cards') {
+      const f = s.filter[i] || (b.filter ? b.filter[0] : null);
+      const items = b.items.filter(c => !f || f === b.filter[0] || c.tag === f);
+      Object.assign(o, { hasFilter: !!b.filter, filters: b.filter ? this.chips(b.filter, f, t => this.setState({ filter: { ...s.filter, [i]: t } })) : [],
+        cols: `repeat(auto-fill,minmax(min(100%,${b.min || 260}px),1fr))`, pad: '16px', ratio: b.viewer ? '3/4' : '4/3', empty: items.length === 0,
+        items: items.map((c, k) => ({ ...c, hasPh: !!c.ph, hasKicker: !!c.kicker, hasD: !!c.d, hasMeta: !!c.meta, hasFig: !!c.fig, facts: c.facts || [], hasFacts: !!c.facts,
+          cursor: b.viewer || c.r ? 'pointer' : 'default',
+          go: b.viewer ? () => this.setState({ viewer: { items, idx: k, callouts: b.callouts || [] }, zoom: 1 }) : c.r ? go(c.r) : () => {} })) });
+    }
+    if (T === 'annotated') { const pos = [['58%', '22%'], ['30%', '44%'], ['64%', '60%'], ['40%', '82%']]; Object.assign(o, { ph: b.ph, items: b.items.map((a, k) => ({ ...a, no: k + 1, x: pos[k % 4][0], y: pos[k % 4][1] })) }); }
+    if (T === 'faq') {
+      const g = b.groups ? s.group : null, q = s.q.trim().toLowerCase();
+      const list = b.items.filter(f => (!g || g === 'Все' || f.g === g) && (!q || (f.q + ' ' + f.a).toLowerCase().includes(q)));
+      const op = s.open[i] ?? 0;
+      Object.assign(o, { hasSearch: !!b.search, q: s.q, setQ: e => this.setState({ q: e.target.value }), hasGroups: !!b.groups, groups: b.groups ? this.chips(b.groups, g, t => this.setState({ group: t })) : [], empty: list.length === 0,
+        items: list.map((f, k) => ({ q: f.q, a: f.a, open: op === k, rot: op === k ? 'rotate(45deg)' : 'none', toggle: () => this.setState({ open: { ...s.open, [i]: op === k ? -1 : k } }) })) });
+    }
+    if (T === 'rows') o.items = b.items.map((r, k) => ({ no: String(k + 1), t: r.t, d: r.d, hasD: !!r.d, w: r.w || '', l: r.l, hasL: !!r.l, go: e => { e && e.preventDefault(); this.toast('Внешняя ссылка на реестр'); } }));
+    if (T === 'table') Object.assign(o, { cols: b.cols, rows: b.rows.map(r => ({ cells: r.map(c => this.norm(c)), head: r[0], pairs: r.slice(1).map((c, k) => ({ k: b.cols[k + 1], ...this.norm(c) })) })) });
+    if (T === 'docs') Object.assign(o, { items: b.items.map(d => ({ ...d, dl: () => this.toast('Скачивается: ' + d.t) })), hasAll: !!b.all, all: b.all, dlAll: () => this.toast('Архив скачивается') });
+    if (T === 'norms') o.items = b.items.map(([nt, nn, d]) => ({ nt, nn, d }));
+    if (T === 'person') Object.assign(o, { n: b.n, r: b.r, x: b.x, phone: b.phone, email: b.email });
+    if (T === 'stats') { const mx = b.years ? Math.max(...b.years.map(y => y[1])) : 1; Object.assign(o, { items: b.items, hasYears: !!b.years, years: (b.years || []).map(([y, v]) => ({ y, v: (v / 1000).toFixed(1).replace('.', ',') + 'k', h: Math.round(v / mx * 66) + 'px' })) }); }
+    if (T === 'map') {
+      const f = s.filter[i] || b.filter[0];
+      const items = b.items.filter(c => f === b.filter[0] || c.tag === f);
+      const sel = s.sel != null ? b.items[s.sel] : null;
+      Object.assign(o, { filters: this.chips(b.filter, f, t => this.setState({ filter: { ...s.filter, [i]: t }, sel: null })),
+        listOn: s.mapMode === 'list', mapOn: s.mapMode === 'map', toList: () => this.setState({ mapMode: 'list' }), toMap: () => this.setState({ mapMode: 'map' }),
+        showMap: !mob || s.mapMode === 'map', showList: !mob || s.mapMode === 'list',
+        items: items.map(c => ({ ...c, go: go(c.r) })),
+        pins: items.map(c => { const k = b.items.indexOf(c), on = s.sel === k; return { t: c.t, x: c.x + '%', y: c.y + '%', s: on ? '26px' : '18px', bg: on ? 'var(--color-accent)' : 'var(--color-bg)', go: () => this.setState({ sel: on ? null : k }) }; }),
+        hasSel: !!sel && items.includes(sel), sel: sel ? { ...sel, go: go(sel.r) } : null });
+    }
+    if (T === 'kv') Object.assign(o, { copy: !!b.copy, kvCols: b.copy ? (mob ? '1fr auto' : 'minmax(160px,34%) 1fr auto') : (mob ? '1fr' : 'minmax(160px,34%) 1fr'),
+      items: b.items.map(([k, v], n) => ({ k, v, copyLabel: s.copied === i + ':' + n ? 'Скопировано' : 'Копировать', copy: () => { try { navigator.clipboard.writeText(v); } catch (e) {} this.setState({ copied: i + ':' + n }); } })),
+      copyAll: () => { try { navigator.clipboard.writeText(b.items.map(r => r.join(': ')).join('\n')); } catch (e) {} this.toast('Реквизиты скопированы'); } });
+    if (T === 'result') Object.assign(o, { v: b.v, d: b.d });
+    if (T === 'logos') o.logos = Array.from({ length: b.n }, (_, k) => k + 1);
+    if (T === 'people') Object.assign(o, { cols: `repeat(auto-fill,minmax(min(100%,${b.lead ? 280 : 190}px),1fr))`, nameSize: b.lead ? '24px' : '19px', items: b.items.map(p => ({ ...p, e: p.e ? ' · ' + p.e : '' })) });
+    if (T === 'checks') o.items = b.items.map((c, k) => ({ ...c, no: String(k + 1) }));
+    if (T === 'callout') Object.assign(o, { t: b.t, d: b.d, hasForm: !!b.form });
+    if (T === 'article') {
+      let h = 0;
+      Object.assign(o, { toc: b.toc.map((t, k) => ({ no: k + 1, t, go: e => { e.preventDefault(); this.scrollTo('art-' + k); } })),
+        paras: b.paras.map(p => { const [k] = p; const x = { isH: k === 'h', isP: k === 'p', isQuote: k === 'quote', isCallout: k === 'callout', isTable: k === 'table' };
+          if (k === 'h') return { ...x, text: p[1], id: 'art-' + (h++) };
+          if (k === 'p') return { ...x, text: p[1] };
+          if (k === 'quote') { const n = this.norm(p[1]); return { ...x, nt: n.nt, nn: n.nn, text: p[2] }; }
+          if (k === 'callout') return { ...x, label: p[1], text: p[2] };
+          return { ...x, cols: p[1], rows: p[2] }; }),
+        hasAuthor: !!b.author, author: b.author, hasRelated: !!b.related, related: b.related ? { t: b.related.t, go: go(b.related.r) } : null });
+    }
+    if (T === 'error') o.links = [['На главную', 'home'], ['Услуги', 'uslugi'], ['Цены', 'ceny'], ['Контакты', 'kontakty']].map(([t, r]) => ({ t, go: go(r) }));
+    return o;
+  }
+
+  renderVals() {
+    const S = window.SITE || { nav() {} }, PAGES = window.PAGES || {};
+    const page = new URLSearchParams(location.search).get('p') || this.props.page || 'chastnym';
+    const cfg = PAGES[page] || PAGES['404'] || { blocks: [] };
+    const go = r => e => S.nav(r, e);
+    const mob = !!this._mob;
+    const v = this.state.viewer, vi = v ? v.items[v.idx] : null;
+    const cpos = [['62%', '20%'], ['28%', '48%'], ['70%', '70%']];
+    return {
+      page, isDesk: !mob, isMob: mob, maxW: cfg.narrow ? '880px' : 'none', showCta: !cfg.noCta,
+      blocks: cfg.blocks.map((b, i) => this.block(b, i, go, mob)),
+      viewerOpen: !!v, v: vi ? { ...vi, pos: `${v.idx + 1} из ${v.items.length}` } : {},
+      vCallouts: v ? v.callouts.map((c, k) => ({ ...c, no: k + 1, x: cpos[k % 3][0], y: cpos[k % 3][1] })) : [],
+      vZoomL: Math.round(this.state.zoom * 100) + '%', vW: `min(${Math.round(this.state.zoom * (mob ? 92 : 46))}vw, ${Math.round(this.state.zoom * 620)}px)`,
+      vIn: () => this.setState({ zoom: Math.min(3, this.state.zoom + 0.5) }), vOut: () => this.setState({ zoom: Math.max(1, this.state.zoom - 0.5) }),
+      vClose: () => this.setState({ viewer: null }), vPrev: () => this.vStep(-1), vNext: () => this.vStep(1),
+      vCols: mob ? 'minmax(0,1fr)' : 'minmax(0,1fr) 340px', vAsideH: mob ? '38vh' : 'none',
+      hasToast: !!this.state.toast, toast: this.state.toast,
+    };
+  }
+}
+</script>
+</body>
+</html>

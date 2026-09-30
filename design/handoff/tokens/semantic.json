@@ -1,0 +1,212 @@
+{
+  "color": {
+    "$type": "color",
+    "bg": {
+      "default": {
+        "$value": "{color.paper}"
+      },
+      "surface": {
+        "$value": "{color.surface}"
+      },
+      "tint": {
+        "$value": "{color.accent.100}",
+        "$description": "Выбранный вариант, активный чип"
+      },
+      "overlay": {
+        "$value": "{color.paper}"
+      }
+    },
+    "text": {
+      "default": {
+        "$value": "{color.ink}"
+      },
+      "secondary": {
+        "$value": "{color.neutral.800}"
+      },
+      "muted": {
+        "$value": "{color.neutral.700}",
+        "$description": "Подписи; 6:1 к фону"
+      },
+      "accent": {
+        "$value": "{color.accent.700}",
+        "$description": "Текст-акцент мелким кеглем"
+      },
+      "accent-strong": {
+        "$value": "{color.accent.800}",
+        "$description": "Текст основной кнопки, кикеры"
+      }
+    },
+    "border": {
+      "default": {
+        "$value": "{color.ink-alpha-16}"
+      },
+      "strong": {
+        "$value": "{color.ink}",
+        "$description": "Линия над секцией, штамп норматива"
+      },
+      "accent": {
+        "$value": "{color.gold}"
+      },
+      "input": {
+        "$value": "{color.ink-alpha-16}"
+      },
+      "input-hover": {
+        "$value": "{color.neutral.600}"
+      }
+    },
+    "accent": {
+      "default": {
+        "$value": "{color.gold}"
+      },
+      "hover": {
+        "$value": "{color.accent.600}"
+      },
+      "hover-tint": {
+        "$value": "rgba(182,130,53,0.12)"
+      },
+      "active-tint": {
+        "$value": "rgba(182,130,53,0.22)"
+      }
+    },
+    "status": {
+      "error": {
+        "$value": "{color.accent.800}",
+        "$description": "Моно-схема: ошибка = акцентная рамка + текст accent-800 + иконка"
+      },
+      "error-border": {
+        "$value": "{color.gold}"
+      },
+      "success": {
+        "$value": "{color.accent.700}"
+      },
+      "info": {
+        "$value": "{color.neutral.800}"
+      }
+    },
+    "focus": {
+      "ring": {
+        "$value": "{color.gold}"
+      }
+    }
+  },
+  "focus": {
+    "$type": "dimension",
+    "width": {
+      "$value": "2px"
+    },
+    "offset": {
+      "$value": "2px"
+    }
+  },
+  "opacity": {
+    "$type": "number",
+    "disabled": {
+      "$value": 0.45
+    },
+    "dimmed": {
+      "$value": 0.5
+    }
+  },
+  "layout": {
+    "$type": "dimension",
+    "gutter-mobile": {
+      "$value": "{space.20}"
+    },
+    "gutter-desktop": {
+      "$value": "{space.56}"
+    },
+    "section-gap-mobile": {
+      "$value": "44px"
+    },
+    "section-gap-desktop": {
+      "$value": "{space.72}"
+    },
+    "measure": {
+      "$value": "780px"
+    },
+    "narrow": {
+      "$value": "880px"
+    }
+  },
+  "typography": {
+    "$type": "typography",
+    "display": {
+      "$value": {
+        "fontFamily": "{font.family.heading}",
+        "fontWeight": "{font.weight.regular}",
+        "fontSize": "{font.size.54}",
+        "lineHeight": "{font.lineHeight.tight}",
+        "letterSpacing": "{font.tracking.display}"
+      },
+      "$description": "H1; на мобильном 34px"
+    },
+    "h2": {
+      "$value": {
+        "fontFamily": "{font.family.heading}",
+        "fontWeight": "{font.weight.regular}",
+        "fontSize": "{font.size.40}",
+        "lineHeight": "{font.lineHeight.heading}"
+      },
+      "$description": "На мобильном 28px"
+    },
+    "h3": {
+      "$value": {
+        "fontFamily": "{font.family.heading}",
+        "fontWeight": "{font.weight.semibold}",
+        "fontSize": "{font.size.24}",
+        "lineHeight": "{font.lineHeight.heading}"
+      }
+    },
+    "title-card": {
+      "$value": {
+        "fontFamily": "{font.family.heading}",
+        "fontWeight": "{font.weight.semibold}",
+        "fontSize": "{font.size.20}",
+        "lineHeight": "1.2"
+      }
+    },
+    "lead": {
+      "$value": {
+        "fontFamily": "{font.family.body}",
+        "fontWeight": "{font.weight.regular}",
+        "fontSize": "{font.size.17}",
+        "lineHeight": "{font.lineHeight.body}"
+      }
+    },
+    "body": {
+      "$value": {
+        "fontFamily": "{font.family.body}",
+        "fontWeight": "{font.weight.regular}",
+        "fontSize": "{font.size.15}",
+        "lineHeight": "{font.lineHeight.body}"
+      }
+    },
+    "small": {
+      "$value": {
+        "fontFamily": "{font.family.body}",
+        "fontWeight": "{font.weight.regular}",
+        "fontSize": "{font.size.13}",
+        "lineHeight": "1.45"
+      }
+    },
+    "kicker": {
+      "$value": {
+        "fontFamily": "{font.family.body}",
+        "fontWeight": "{font.weight.regular}",
+        "fontSize": "{font.size.12}",
+        "lineHeight": "1.3",
+        "letterSpacing": "{font.tracking.kicker}"
+      },
+      "$description": "UPPERCASE"
+    },
+    "figure": {
+      "$value": {
+        "fontFamily": "{font.family.heading}",
+        "fontWeight": "{font.weight.regular}",
+        "fontSize": "{font.size.40}",
+        "lineHeight": "1"
+      },
+      "$description": "Цифры-факты, font-variant-numeric: tabular-nums"
+    }
+  }
+}

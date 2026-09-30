@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/classical-4c742f67-1d29-4a03-bc1d-ef81b25fee22/styles.css">
+<script src="_ds/classical-4c742f67-1d29-4a03-bc1d-ef81b25fee22/_ds_bundle.js"></script>
+<script src="site-data.js"></script>
+<style>body{margin:0;background:var(--color-bg)}a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}button{font:inherit;color:inherit}</style>
+</helmet>
+<dc-import name="SiteHeader" current="ceny" hint-size="100%,72px"></dc-import>
+<main style="padding:clamp(20px,3vw,32px) clamp(20px,4.4vw,56px) clamp(44px,6vw,80px);display:flex;flex-direction:column;gap:clamp(40px,5.5vw,72px)">
+
+  <section data-screen-label="Первый экран" style="display:flex;flex-direction:column;gap:16px">
+    <nav aria-label="Хлебные крошки" style="font-size:13px;color:var(--color-neutral-700);display:flex;gap:8px"><a href="#" onClick="{{ goHome }}" style="color:var(--color-neutral-700)">Главная</a><span>/</span><span>Цены</span></nav>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:20px clamp(32px,5vw,64px);align-items:end">
+      <div style="display:flex;flex-direction:column;gap:10px"><h1 style="font-size:clamp(34px,4.4vw,54px);font-weight:400;margin:0;line-height:1.05">Цены</h1><p style="margin:0;font-size:clamp(15px,1.4vw,17px);color:var(--color-neutral-800)">Цены под ключ, без доплат за выезд в пределах 50 км от Екатеринбурга. Цифры считаются по той же модели, что и калькулятор.</p></div>
+      <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--color-text);padding-top:12px"><span style="font-size:14px;color:var(--color-neutral-800)">Точная цена для вашего участка — за две минуты, без контактов</span><button class="btn btn-primary" onClick="{{ goCalc }}" style="min-height:48px;font-size:16px;color:var(--color-accent-800);align-self:flex-start">Рассчитать стоимость</button></div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;border-top:1px solid var(--color-divider);padding-top:14px"><sc-for list="{{ toc }}" as="t" hint-placeholder-count="6"><button onClick="{{ t.go }}" class="tag tag-neutral" style="font-size:13px;padding:0 12px;min-height:36px;border:0;cursor:pointer">{{ t.t }}</button></sc-for></div>
+  </section>
+
+  <section id="p-geo" style="display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;flex-direction:column;gap:4px"><h2 style="margin:0;font-size:clamp(26px,3vw,36px);font-weight:400">Геология под частный дом</h2><span style="font-size:14px;color:var(--color-neutral-800)">Пятно застройки × этажность. Скважины, лаборатория, выезд и отчёт.</span></div>
+    <sc-if value="{{ isDesk }}" hint-placeholder-val="{{ true }}">
+      <table class="table" style="font-size:15px;font-variant-numeric:tabular-nums">
+        <thead><tr><th>Пятно застройки</th><sc-for list="{{ mx.cols }}" as="c" hint-placeholder-count="4"><th style="text-align:right">{{ c }}</th></sc-for></tr></thead>
+        <tbody><sc-for list="{{ mx.rows }}" as="r" hint-placeholder-count="5"><tr><td>{{ r.t }}</td><sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="4"><td style="text-align:right">{{ c }}</td></sc-for></tr></sc-for></tbody>
+      </table>
+    </sc-if>
+    <sc-if value="{{ isMob }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:12px;color:var(--color-neutral-700)">Этажность</span><div class="seg" role="radiogroup" style="display:grid;grid-template-columns:repeat(4,1fr)"><sc-for list="{{ mx.tabs }}" as="t" hint-placeholder-count="4"><label class="seg-opt" style="justify-content:center;min-height:44px;font-size:14px;padding:0 4px"><input type="radio" name="pfl" checked="{{ t.on }}" onChange="{{ t.go }}">{{ t.t }}</label></sc-for></div></div>
+      <div style="display:flex;flex-direction:column;border-top:1px solid var(--color-text)"><sc-for list="{{ mx.list }}" as="r" hint-placeholder-count="5"><div style="display:flex;justify-content:space-between;min-height:48px;align-items:center;border-bottom:1px solid var(--color-divider);font-size:15px;font-variant-numeric:tabular-nums"><span>{{ r.t }}</span><span>{{ r.v }}</span></div></sc-for></div>
+    </sc-if>
+  </section>
+
+  <section id="p-topo" style="display:flex;flex-direction:column;gap:14px">
+    <h2 style="margin:0;font-size:clamp(26px,3vw,36px);font-weight:400">Топография и геодезия</h2>
+    <sc-if value="{{ isDesk }}" hint-placeholder-val="{{ true }}">
+      <table class="table" style="font-size:15px;font-variant-numeric:tabular-nums">
+        <thead><tr><th>Вид работ</th><th style="width:160px">Масштаб</th><th style="width:170px;text-align:right">Цена</th><th style="width:140px;text-align:right">Срок</th></tr></thead>
+        <tbody><sc-for list="{{ topo }}" as="t" hint-placeholder-count="5"><tr><td>{{ t.t }}</td><td>{{ t.m }}</td><td style="text-align:right">{{ t.p }}</td><td style="text-align:right">{{ t.d }}</td></tr></sc-for></tbody>
+      </table>
+    </sc-if>
+    <sc-if value="{{ isMob }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;border-top:1px solid var(--color-text)"><sc-for list="{{ topo }}" as="t" hint-placeholder-count="5"><div style="display:grid;grid-template-columns:1fr auto;gap:2px 12px;padding:12px 0;border-bottom:1px solid var(--color-divider);font-variant-numeric:tabular-nums"><span style="font-size:15px">{{ t.t }}</span><span style="font-size:15px;text-align:right">{{ t.p }}</span><span style="font-size:12px;color:var(--color-neutral-700)">{{ t.m }}</span><span style="font-size:12px;color:var(--color-neutral-700);text-align:right">{{ t.d }}</span></div></sc-for></div>
+    </sc-if>
+  </section>
+
+  <section id="p-other" style="display:flex;flex-direction:column;gap:14px">
+    <h2 style="margin:0;font-size:clamp(26px,3vw,36px);font-weight:400">Другие направления</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:0 32px;border-top:1px solid var(--color-text)">
+      <sc-for list="{{ other }}" as="o" hint-placeholder-count="5"><div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--color-divider);font-variant-numeric:tabular-nums"><span style="font-size:15px">{{ o.t }}</span><span style="font-size:15px;white-space:nowrap">{{ o.from }}</span></div></sc-for>
+    </div>
+  </section>
+
+  <section id="p-comm" style="display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;flex-direction:column;gap:4px"><h2 style="margin:0;font-size:clamp(26px,3vw,36px);font-weight:400">Коммерческие объекты</h2><span style="font-size:14px;color:var(--color-neutral-800)">Комплексные изыскания под экспертизу: геология, геодезия, экология. Точную смету считаем по ТЗ.</span></div>
+    <sc-if value="{{ isDesk }}" hint-placeholder-val="{{ true }}">
+      <table class="table" style="font-size:15px;font-variant-numeric:tabular-nums">
+        <thead><tr><th>Объект</th><th style="width:300px">Типовой объём</th><th style="width:200px;text-align:right">Цена от</th></tr></thead>
+        <tbody><sc-for list="{{ comm }}" as="c" hint-placeholder-count="5"><tr><td>{{ c.t }}</td><td>{{ c.v }}</td><td style="text-align:right">{{ c.p }}</td></tr></sc-for></tbody>
+      </table>
+    </sc-if>
+    <sc-if value="{{ isMob }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;border-top:1px solid var(--color-text)"><sc-for list="{{ comm }}" as="c" hint-placeholder-count="5"><div style="display:grid;grid-template-columns:1fr auto;gap:2px 12px;padding:12px 0;border-bottom:1px solid var(--color-divider);font-variant-numeric:tabular-nums"><span style="font-size:15px">{{ c.t }}</span><span style="font-size:15px;text-align:right">{{ c.p }}</span><span style="font-size:12px;color:var(--color-neutral-700);grid-column:1 / -1">{{ c.v }}</span></div></sc-for></div>
+    </sc-if>
+    <button class="btn btn-secondary" onClick="{{ goTz }}" style="min-height:44px;align-self:flex-start">Отправить ТЗ на расчёт</button>
+  </section>
+
+  <section id="p-incl" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:24px 48px">
+    <div style="display:flex;flex-direction:column;gap:10px"><h3 style="margin:0">Входит в цену</h3><ul style="list-style:none;margin:0;padding:0;border-top:1px solid var(--color-text)"><sc-for list="{{ incl }}" as="i" hint-placeholder-count="5"><li style="display:grid;grid-template-columns:22px 1fr;gap:8px;padding:10px 0;border-bottom:1px solid var(--color-divider);font-size:15px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent);margin-top:3px"><path d="M20 6 9 17l-5-5"></path></svg>{{ i }}</li></sc-for></ul></div>
+    <div style="display:flex;flex-direction:column;gap:10px"><h3 style="margin:0">Оплачивается отдельно</h3><ul style="list-style:none;margin:0;padding:0;border-top:1px solid var(--color-text)"><sc-for list="{{ excl }}" as="i" hint-placeholder-count="4"><li style="display:grid;grid-template-columns:22px 1fr;gap:8px;padding:10px 0;border-bottom:1px solid var(--color-divider);font-size:15px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="color:var(--color-neutral-600);margin-top:3px"><path d="M5 12h14"></path></svg>{{ i }}</li></sc-for></ul></div>
+  </section>
+
+  <section id="p-disc" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:24px 48px">
+    <div style="display:flex;flex-direction:column;gap:10px"><h3 style="margin:0">Скидки</h3>
+      <div style="display:flex;flex-direction:column;border-top:1px solid var(--color-text)"><div style="display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--color-divider)"><span style="font-size:15px">Пакет «геология + топосъёмка»</span><span class="tag tag-accent">−10%</span></div><div style="display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--color-divider)"><span style="font-size:15px">Три и более вида изысканий на объекте</span><span class="tag tag-accent">−15%</span></div><div style="display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--color-divider)"><span style="font-size:15px">Соседи по улице или СНТ, от 3 участков</span><span class="tag tag-accent">−10%</span></div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px"><h3 style="margin:0">Оплата</h3><p style="margin:0;font-size:15px;color:var(--color-neutral-800)">Физлица: 50% после выезда, 50% при получении отчёта. Юрлица: по этапам договора, безналичный расчёт с НДС.</p><a href="#" onClick="{{ goKak }}" style="font-size:14px">Подробнее в разделе «Как мы работаем» →</a>
+      <button class="btn btn-secondary" onClick="{{ dl }}" style="min-height:44px;align-self:flex-start;margin-top:8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path><path d="M12 15V3"></path></svg>Скачать прайс, PDF</button>
+      <sc-if value="{{ dlDone }}" hint-placeholder-val="{{ false }}"><span role="status" style="font-size:13px;color:var(--color-accent-800)">Прайс-лист скачивается (демо)</span></sc-if>
+    </div>
+  </section>
+
+  <section id="p-faq" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px 48px">
+    <h2 style="margin:0;font-size:clamp(26px,3vw,36px);font-weight:400">Вопросы о ценах</h2>
+    <div style="display:flex;flex-direction:column;border-top:1px solid var(--color-text)">
+      <sc-for list="{{ faq }}" as="f" hint-placeholder-count="4"><div style="border-bottom:1px solid var(--color-divider)"><button onClick="{{ f.toggle }}" aria-expanded="{{ f.open }}" style="width:100%;display:grid;grid-template-columns:minmax(0,1fr) 20px;gap:12px;align-items:center;min-height:56px;padding:12px 0;border:0;background:none;text-align:left;cursor:pointer;font-family:var(--font-heading);font-size:clamp(18px,1.6vw,20px);font-weight:600">{{ f.q }}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent);transform:{{ f.rot }}"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></button><sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}"><p style="margin:0 0 14px;font-size:15px;color:var(--color-neutral-800)">{{ f.a }}</p></sc-if></div></sc-for>
+    </div>
+  </section>
+</main>
+<dc-import name="SiteFooter" hint-size="100%,420px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { open: 0, fl: 1, dl: false };
+  componentDidMount() {
+    if (!window.SITE) { this._p = setInterval(() => { if (window.SITE) { clearInterval(this._p); this.componentDidMount(); } }, 50); return; }
+    this._off = window.SITE.useMobile(this); this.forceUpdate();
+  }
+  componentWillUnmount() { clearInterval(this._p); this._off && this._off(); }
+  scrollTo(id) { const el = document.getElementById(id); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' }); }
+  renderVals() {
+    const S = window.SITE || { DIRECTIONS: [], nav() {} };
+    const go = r => e => S.nav(r, e);
+    const rub = n => n.toLocaleString('ru-RU') + ' ₽';
+    const areas = [['до 100 м²', 100], ['100–150 м²', 150], ['150–200 м²', 200], ['200–300 м²', 300], ['300–500 м²', 500]];
+    const price = (a, f) => Math.round((24000 + (a <= 100 ? 3 : a <= 200 ? 4 : a <= 300 ? 5 : 6) * (6 + f * 2) * 2600 * 0.55) / 500) * 500;
+    const fls = [1, 2, 3, 4], fl = this.state.fl, flT = f => f === 1 ? '1 этаж' : f === 4 ? 'с подвалом' : f + ' этажа';
+    const faq = [
+      ['Почему у других дешевле?', 'Часто в низкую цену не входят лаборатория или выезд, либо работу передают субподрядчику. Сравнивайте состав работ и проверяйте СРО.'],
+      ['Может ли цена вырасти после договора?', 'Нет. Цена в договоре фиксированная. Если на участке понадобятся дополнительные скважины, согласуем это письменно до начала работ.'],
+      ['Есть ли предоплата?', 'Для частных клиентов — нет. Оплата после выезда бригады.'],
+      ['Работаете с НДС?', 'Да, для юридических лиц цены указываются с НДС 20%.'],
+    ];
+    return {
+      isDesk: !this._mob, isMob: !!this._mob,
+      toc: [['p-geo', 'Геология'], ['p-topo', 'Топография'], ['p-other', 'Другие'], ['p-comm', 'Коммерческие'], ['p-incl', 'Что входит'], ['p-faq', 'Вопросы']].map(([id, t]) => ({ t, go: () => this.scrollTo(id) })),
+      mx: {
+        cols: fls.map(flT),
+        rows: areas.map(([t, a]) => ({ t, cells: fls.map(f => rub(price(a, f))) })),
+        tabs: fls.map(f => ({ t: f === 4 ? 'подвал' : String(f), on: fl === f, go: () => this.setState({ fl: f }) })),
+        list: areas.map(([t, a]) => ({ t, v: rub(price(a, fl)) })),
+      },
+      topo: [
+        { t: 'Топосъёмка для газа и воды', m: '1:500', p: 'от 12 000 ₽', d: '3–5 дней' },
+        { t: 'Топосъёмка для проекта дома', m: '1:500', p: 'от 14 000 ₽', d: '4–6 дней' },
+        { t: 'Топосъёмка крупного участка', m: '1:1000', p: 'от 9 000 ₽/га', d: 'от 7 дней' },
+        { t: 'Вынос осей здания', m: '—', p: 'от 8 000 ₽', d: '1 день' },
+        { t: 'Исполнительная съёмка фундамента', m: '1:200', p: 'от 7 000 ₽', d: '2 дня' },
+      ],
+      other: S.DIRECTIONS.filter(d => !['geologiya', 'geodeziya'].includes(d.id)).map(d => ({ t: d.t, from: d.from })),
+      comm: [
+        { t: 'Склад, ангар до 2 000 м²', v: '6–8 скважин по 12–15 м', p: 'от 190 000 ₽' },
+        { t: 'МКД до 9 этажей', v: '8–12 скважин по 20–25 м, зондирование', p: 'от 420 000 ₽' },
+        { t: 'МКД 10–25 этажей', v: '12–20 скважин по 30–40 м', p: 'от 780 000 ₽' },
+        { t: 'Газопровод, водовод', v: 'Скважины через 100–300 м по трассе', p: 'от 1 800 ₽/км' },
+        { t: 'Промышленная площадка', v: 'По программе работ', p: 'по ТЗ' },
+      ],
+      incl: ['Выезд до 50 км от Екатеринбурга', 'Буровая установка и бригада', 'Лабораторные испытания', 'Отчёт в бумаге и PDF', 'Снятие замечаний экспертизы'],
+      excl: ['Выезд дальше 50 км — 40 ₽/км', 'Расчистка подъезда для буровой', 'Срочность быстрее 5 дней — +30%', 'Дополнительные экземпляры отчёта'],
+      faq: faq.map(([q, a], i) => ({ q, a, open: this.state.open === i, rot: this.state.open === i ? 'rotate(45deg)' : 'none', toggle: () => this.setState({ open: this.state.open === i ? -1 : i }) })),
+      dl: () => { this.setState({ dl: true }); setTimeout(() => this.setState({ dl: false }), 2500); }, dlDone: this.state.dl,
+      goHome: go('home'), goCalc: go('raschet'), goTz: go('proektirovshchikam'), goKak: go('kak-rabotaem'),
+    };
+  }
+}
+</script>
+</body>
+</html>

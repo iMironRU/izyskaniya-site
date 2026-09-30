@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/classical-4c742f67-1d29-4a03-bc1d-ef81b25fee22/styles.css">
+<script src="_ds/classical-4c742f67-1d29-4a03-bc1d-ef81b25fee22/_ds_bundle.js"></script>
+<script src="site-data.js"></script>
+</helmet>
+<form onSubmit="{{ submit }}" noValidate="{{ true }}" style="display:flex;flex-direction:column;gap:14px;border:1px solid var(--color-divider);border-radius:var(--radius-md);padding:clamp(16px,2vw,24px)">
+  <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+    <div style="display:flex;flex-direction:column;gap:4px"><span style="font-family:var(--font-heading);font-size:22px;font-weight:600">{{ title }}</span><span style="font-size:13px;color:var(--color-neutral-700)">{{ sub }}</span></div>
+    <div class="field"><label>Телефон</label><input class="input" type="tel" inputmode="tel" value="{{ phone }}" onChange="{{ setPhone }}" placeholder="+7 (___) ___-__-__" aria-invalid="{{ phoneBad }}" style="min-height:48px;font-size:17px;font-variant-numeric:tabular-nums;border-color:{{ phoneBorder }}"><sc-if value="{{ phoneBad }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--color-accent-800);margin-top:4px">Проверьте номер: после +7 нужно 10 цифр.</div></sc-if></div>
+    <div class="field"><label>Имя</label><input class="input" value="{{ name }}" onChange="{{ setName }}" placeholder="Как к вам обращаться" style="min-height:48px;font-size:17px"></div>
+    <sc-if value="{{ isTz }}" hint-placeholder-val="{{ false }}">
+      <div class="field"><label>Техническое задание</label>
+        <label style="display:flex;align-items:center;gap:12px;min-height:56px;padding:10px 14px;border:1px dashed {{ fileBorder }};border-radius:var(--radius-md);cursor:pointer" style-hover="border-color:var(--color-accent)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent);flex:none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m17 8-5-5-5 5"></path><path d="M12 3v12"></path></svg>
+          <span style="display:flex;flex-direction:column;min-width:0"><span style="font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ fileLabel }}</span><span style="font-size:12px;color:var(--color-neutral-700)">PDF, DOCX, DWG или ZIP до 25 МБ</span></span>
+          <input type="file" onChange="{{ setFile }}" accept=".pdf,.doc,.docx,.dwg,.zip" style="position:absolute;opacity:0;width:1px;height:1px">
+        </label>
+        <sc-if value="{{ fileErr }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--color-accent-800);margin-top:4px">Файл больше 25 МБ. Пришлите ссылку в комментарии.</div></sc-if>
+      </div>
+      <div class="field"><label>Комментарий</label><textarea class="input" value="{{ comment }}" onChange="{{ setComment }}" placeholder="Объект, адрес, сроки" style="min-height:80px;font-size:15px"></textarea></div>
+    </sc-if>
+    <sc-if value="{{ isErr }}" hint-placeholder-val="{{ false }}"><div role="alert" style="font-size:14px;border-left:2px solid var(--color-accent);padding:6px 12px">Не удалось отправить. Попробуйте ещё раз или позвоните +7 343 000-00-00.</div></sc-if>
+    <button class="btn btn-primary" type="submit" disabled="{{ sending }}" style="min-height:48px;font-size:16px;color:var(--color-accent-800)">{{ btnLabel }}</button>
+    <span style="font-size:12px;color:var(--color-neutral-700)">Нажимая кнопку, вы соглашаетесь с политикой обработки данных.</span>
+  </sc-if>
+  <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="display:flex;flex-direction:column;gap:10px">
+      <span style="width:40px;height:40px;border-radius:50%;border:1px solid var(--color-accent);display:grid;place-items:center;color:var(--color-accent-700)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+      <span style="font-family:var(--font-heading);font-size:22px;font-weight:600">Заявка принята</span>
+      <span style="font-size:14px;color:var(--color-neutral-800)">{{ sentText }}</span>
+      <button class="btn btn-ghost" type="button" onClick="{{ goThanks }}" style="align-self:flex-start;padding-left:0">Что будет дальше →</button>
+    </div>
+  </sc-if>
+</form>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;kind&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;callback&quot;,&quot;tz&quot;],&quot;default&quot;:&quot;callback&quot;,&quot;tsType&quot;:&quot;'callback'|'tz'&quot;},&quot;title&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;outcome&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;success&quot;,&quot;error&quot;],&quot;default&quot;:&quot;success&quot;,&quot;tsType&quot;:&quot;'success'|'error'&quot;}}">
+class Component extends DCLogic {
+  state = { phone: '', name: '', comment: '', file: null, fileErr: false, bad: false, st: 'idle' };
+  fmt(raw) {
+    let d = raw.replace(/\D/g, ''); if (d[0] === '7' || d[0] === '8') d = d.slice(1); d = d.slice(0, 10);
+    if (!d) return ''; let s = '+7 (' + d.slice(0, 3);
+    if (d.length > 3) s += ') ' + d.slice(3, 6); if (d.length > 6) s += '-' + d.slice(6, 8); if (d.length > 8) s += '-' + d.slice(8, 10); return s;
+  }
+  submit = e => {
+    e.preventDefault();
+    if (this.state.phone.replace(/\D/g, '').length !== 11) { this.setState({ bad: true }); return; }
+    this.setState({ st: 'sending' });
+    setTimeout(() => this.setState({ st: (this.props.outcome ?? 'success') === 'error' ? 'error' : 'sent' }), 900);
+  };
+  renderVals() {
+    const s = this.state, tz = (this.props.kind ?? 'callback') === 'tz';
+    return {
+      isTz: tz, title: this.props.title ?? (tz ? 'Отправить ТЗ на расчёт' : 'Перезвоните мне'),
+      sub: tz ? 'Смета и сроки — в течение рабочего дня' : 'Инженер перезвонит в течение часа в рабочее время',
+      phone: s.phone, setPhone: e => this.setState({ phone: this.fmt(e.target.value), bad: false }),
+      phoneBad: s.bad, phoneBorder: s.bad ? 'var(--color-accent)' : 'var(--color-divider)',
+      name: s.name, setName: e => this.setState({ name: e.target.value }),
+      comment: s.comment, setComment: e => this.setState({ comment: e.target.value }),
+      setFile: e => { const f = e.target.files && e.target.files[0]; if (!f) return; this.setState({ file: f.name + ' · ' + (f.size / 1048576).toFixed(1).replace('.', ',') + ' МБ', fileErr: f.size > 25 * 1048576 }); },
+      fileLabel: s.file || 'Прикрепить файл', fileErr: s.fileErr, fileBorder: s.fileErr ? 'var(--color-accent)' : 'var(--color-neutral-500)',
+      submit: this.submit, sending: s.st === 'sending', isErr: s.st === 'error',
+      btnLabel: s.st === 'sending' ? 'Отправляем…' : s.st === 'error' ? 'Отправить ещё раз' : tz ? 'Отправить ТЗ' : 'Перезвоните мне',
+      sent: s.st === 'sent', notSent: s.st !== 'sent',
+      sentText: `Номер заявки 4127. Позвоним на ${s.phone} в рабочее время.`,
+      goThanks: e => window.SITE && window.SITE.nav('spasibo', e),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/classical-4c742f67-1d29-4a03-bc1d-ef81b25fee22/styles.css">
+<script src="_ds/classical-4c742f67-1d29-4a03-bc1d-ef81b25fee22/_ds_bundle.js"></script>
+<style>
+body{margin:0;background:var(--color-neutral-300)}
+a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
+button{font:inherit;color:inherit}
+input::placeholder{color:var(--color-neutral-600)}
+</style>
+</helmet>
+
+<section data-screen-label="Прототип" style="padding:48px 64px 80px;display:flex;flex-direction:column;gap:28px">
+  <header style="display:flex;flex-direction:column;gap:6px;max-width:1100px">
+    <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-accent-800)">Прототип · сценарий «частный дом» · направление 1a «Отчёт»</div>
+    <h1 style="font-size:44px;font-weight:400;margin:0">Главная → калькулятор → результат → заявка</h1>
+    <p style="margin:0;font-size:14px;color:var(--color-neutral-800)">Desktop и mobile работают от одного состояния: действие в любом кадре повторяется в другом. Исход отправки заявки (успех, ошибка, нет сети) переключается в Tweaks.</p>
+    <div style="display:flex;gap:8px;margin-top:6px"><button class="btn btn-secondary" onClick="{{ reset }}">Сбросить прототип</button><button class="btn btn-ghost" onClick="{{ goResultDemo }}">Сразу к результату (демо-ответы)</button></div>
+  </header>
+
+  <div style="display:flex;gap:48px;align-items:flex-start;flex-wrap:wrap">
+
+  <!-- ══════════ DESKTOP ══════════ -->
+  <sc-if value="{{ showD }}" hint-placeholder-val="{{ true }}">
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div style="font-size:12px;color:var(--color-neutral-800);font-variant-numeric:tabular-nums">Desktop · 1280</div>
+    <div data-screen-label="Desktop" style="width:1280px;height:820px;background:var(--color-bg);box-shadow:var(--shadow-md);position:relative;overflow:hidden">
+      <div ref="{{ dRef }}" style="position:absolute;inset:0;overflow:auto">
+        <nav class="nav" style="padding:16px 56px;gap:32px;position:sticky;top:0;background:var(--color-bg);z-index:2">
+          <button onClick="{{ goHome }}" style="display:flex;flex-direction:column;margin-right:auto;background:none;border:0;padding:0;cursor:pointer;text-align:left"><span class="nav-brand" style="font-size:22px;letter-spacing:.12em">ГЕОПЛАН</span><span style="font-size:10px;color:var(--color-neutral-700)">логотип — заглушка</span></button>
+          <a href="#" onClick="{{ stub }}">Услуги</a><a href="#" onClick="{{ stub }}">Цены</a><a href="#" onClick="{{ stub }}">Образцы</a><a href="#" onClick="{{ stub }}">Объекты</a><a href="#" onClick="{{ stub }}">О компании</a><a href="#" onClick="{{ stub }}">Контакты</a>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;font-variant-numeric:tabular-nums"><a href="#" onClick="{{ call }}" style="font-size:16px">+7 343 000-00-00</a><span style="font-size:11px;color:var(--color-neutral-700)">пн–пт 8:00–19:00</span></div>
+          <button class="btn btn-primary" onClick="{{ startCalc }}" style="color:var(--color-accent-800)">Рассчитать стоимость</button>
+        </nav>
+
+        <!-- D: HOME -->
+        <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:64px;padding:36px 56px 0">
+            <div style="display:flex;flex-direction:column;gap:18px">
+              <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-accent-800)">Инженерные изыскания · Екатеринбург и область</div>
+              <h1 style="font-size:54px;font-weight:400;margin:0;line-height:1.05">Геология, геодезия и экология для строительства</h1>
+              <p style="margin:0;font-size:17px;max-width:560px;color:var(--color-neutral-800)">Своя буровая техника и аттестованная лаборатория. Отчёты проходят государственную экспертизу.</p>
+              <div style="margin-top:8px;display:flex;flex-direction:column;border-top:1px solid var(--color-text)">
+                <sc-for list="{{ scen }}" as="s" hint-placeholder-count="4">
+                  <button onClick="{{ s.onClick }}" style="display:grid;grid-template-columns:48px 1fr auto 24px;gap:16px;align-items:baseline;padding:13px 8px 13px 0;border:0;border-bottom:1px solid var(--color-divider);background:transparent;text-align:left;cursor:pointer" style-hover="background:color-mix(in srgb,var(--color-accent) 8%,transparent)">
+                    <span style="font-family:var(--font-heading);font-size:18px;color:var(--color-accent-700);font-variant-numeric:tabular-nums">{{ s.no }}</span>
+                    <span style="display:flex;flex-direction:column"><span style="font-family:var(--font-heading);font-size:24px;font-weight:600">{{ s.t }}</span><span style="font-size:13px;color:var(--color-neutral-700)">{{ s.h }}</span></span>
+                    <span style="font-size:14px;font-variant-numeric:tabular-nums">{{ s.p }}</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent)"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+            <figure style="display:flex;flex-direction:column;gap:8px;align-self:start">
+              <div style="display:flex;justify-content:space-between;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--color-neutral-700);border-bottom:1px solid var(--color-text);padding-bottom:6px;font-variant-numeric:tabular-nums"><span>Скважина 1</span><span>абс. отм. 254,30</span></div>
+              <svg width="100%" viewBox="0 -8 440 508" style="display:block;font-family:var(--font-body)">
+                <defs>
+                  <pattern id="p-diag" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" style="stroke:var(--color-text);stroke-width:.7"></line></pattern>
+                  <pattern id="p-dots" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="3.5" cy="3.5" r=".9" style="fill:var(--color-text)"></circle></pattern>
+                  <pattern id="p-hor" width="10" height="6" patternUnits="userSpaceOnUse"><line x1="0" y1="3" x2="10" y2="3" style="stroke:var(--color-text);stroke-width:.7"></line></pattern>
+                  <pattern id="p-soil" width="6" height="6" patternUnits="userSpaceOnUse"><path d="M0 6 L6 0 M0 0 L6 6" style="stroke:var(--color-text);stroke-width:.6"></path></pattern>
+                </defs>
+                <g style="font-size:11px;fill:var(--color-neutral-700);font-variant-numeric:tabular-nums">
+                  <line x1="40" y1="0" x2="40" y2="480" style="stroke:var(--color-text);stroke-width:.8"></line>
+                  <line x1="34" y1="0" x2="40" y2="0" style="stroke:var(--color-text)"></line><text x="28" y="4" text-anchor="end">0</text>
+                  <line x1="34" y1="96" x2="40" y2="96" style="stroke:var(--color-text)"></line><text x="28" y="100" text-anchor="end">2</text>
+                  <line x1="34" y1="192" x2="40" y2="192" style="stroke:var(--color-text)"></line><text x="28" y="196" text-anchor="end">4</text>
+                  <line x1="34" y1="288" x2="40" y2="288" style="stroke:var(--color-text)"></line><text x="28" y="292" text-anchor="end">6</text>
+                  <line x1="34" y1="384" x2="40" y2="384" style="stroke:var(--color-text)"></line><text x="28" y="388" text-anchor="end">8</text>
+                  <line x1="34" y1="480" x2="40" y2="480" style="stroke:var(--color-text)"></line><text x="28" y="484" text-anchor="end">10 м</text>
+                </g>
+                <rect x="60" y="0" width="90" height="14" style="fill:url(#p-soil);stroke:var(--color-text);stroke-width:.8"></rect>
+                <rect x="60" y="14" width="90" height="120" style="fill:url(#p-diag);stroke:var(--color-text);stroke-width:.8"></rect>
+                <rect x="60" y="134" width="90" height="135" style="fill:url(#p-dots);stroke:var(--color-text);stroke-width:.8"></rect>
+                <rect x="60" y="269" width="90" height="211" style="fill:url(#p-hor);stroke:var(--color-text);stroke-width:.8"></rect>
+                <line x1="52" y1="163" x2="170" y2="163" style="stroke:var(--color-accent);stroke-width:1.2;stroke-dasharray:4 3"></line>
+                <text x="178" y="167" style="font-size:12px;fill:var(--color-accent-800)">УГВ 3,4 м</text>
+                <g style="font-size:12.5px;fill:var(--color-text)">
+                  <line x1="150" y1="7" x2="250" y2="7" style="stroke:var(--color-divider)"></line><text x="258" y="11">Почвенный слой</text>
+                  <line x1="150" y1="74" x2="250" y2="74" style="stroke:var(--color-divider)"></line><text x="258" y="70">Суглинок</text><text x="258" y="86" style="fill:var(--color-neutral-700);font-size:11px">тугопластичный · до 2,8 м</text>
+                  <line x1="150" y1="210" x2="250" y2="210" style="stroke:var(--color-divider)"></line><text x="258" y="206">Песок</text><text x="258" y="222" style="fill:var(--color-neutral-700);font-size:11px">средней крупности · до 5,6 м</text>
+                  <line x1="150" y1="375" x2="250" y2="375" style="stroke:var(--color-divider)"></line><text x="258" y="371">Глина</text><text x="258" y="387" style="fill:var(--color-neutral-700);font-size:11px">полутвёрдая · до 10,0 м</text>
+                </g>
+              </svg>
+            </figure>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--color-text);margin:12px 56px 40px;font-variant-numeric:tabular-nums">
+            <sc-for list="{{ trust }}" as="t" hint-placeholder-count="5">
+              <div style="padding:14px 16px 18px;border-left:1px solid var(--color-divider);display:flex;flex-direction:column;gap:2px"><span style="font-size:11px;color:var(--color-neutral-700);text-transform:uppercase;letter-spacing:.06em">{{ t.k }}</span><span style="font-size:14px">{{ t.v }}</span></div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <!-- D: CALC -->
+        <sc-if value="{{ isCalc }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:28px 56px 0;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--color-neutral-700);font-variant-numeric:tabular-nums"><span>Геология под дом · предварительная программа работ</span><span>Шаг {{ stepNo }} из {{ stepTotal }}</span></div>
+            <div style="display:grid;grid-template-columns:repeat({{ stepTotal }},1fr);gap:3px">
+              <sc-for list="{{ prog }}" as="p" hint-placeholder-count="6"><span style="height:8px;border-bottom:{{ p.b }}"></span></sc-for>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:64px;padding:36px 56px 48px">
+            <div style="display:flex;flex-direction:column;gap:20px;max-width:680px">
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <h2 style="font-size:40px;font-weight:400;margin:0">{{ cur.q }}</h2>
+                <p style="margin:0;font-size:15px;color:var(--color-neutral-800)">{{ cur.hint }}</p>
+              </div>
+              <sc-if value="{{ cur.isChoice }}" hint-placeholder-val="{{ true }}">
+                <div role="radiogroup" style="display:flex;flex-direction:column;gap:8px">
+                  <sc-for list="{{ opts }}" as="o" hint-placeholder-count="4">
+                    <button role="radio" aria-checked="{{ o.sel }}" onClick="{{ o.onClick }}" style="display:grid;grid-template-columns:22px 1fr auto;gap:14px;align-items:start;padding:14px 16px;border:1px solid {{ o.bc }};box-shadow:{{ o.sh }};border-radius:var(--radius-md);background:{{ o.bg }};text-align:left;cursor:pointer" style-hover="border-color:var(--color-accent)">
+                      <span style="width:18px;height:18px;margin-top:3px;border-radius:50%;border:1.5px {{ o.dotStyle }} {{ o.dotC }};background:{{ o.dotBg }};box-shadow:inset 0 0 0 4px var(--color-bg)"></span>
+                      <span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:17px">{{ o.l }}</span><span style="font-size:13px;color:var(--color-neutral-700)">{{ o.h }}</span></span>
+                      <sc-if value="{{ o.unk }}" hint-placeholder-val="{{ false }}"><span class="tag tag-neutral">по умолчанию</span></sc-if>
+                    </button>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ cur.isDims }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;flex-direction:column;gap:12px">
+                  <div style="display:flex;align-items:flex-end;gap:14px">
+                    <div class="field" style="width:180px"><label>Длина</label><div style="display:flex;align-items:center;border:1px solid {{ dimBorder }};border-radius:var(--radius-md);min-height:52px;padding:0 14px"><input inputmode="decimal" value="{{ L }}" onChange="{{ setL }}" onKeyDown="{{ enterNext }}" placeholder="12" style="flex:1;min-width:0;border:0;background:transparent;font:inherit;font-size:22px;font-variant-numeric:tabular-nums;outline:none;color:var(--color-text)"><span style="color:var(--color-neutral-700)">м</span></div></div>
+                    <span style="font-family:var(--font-heading);font-size:28px;padding-bottom:10px">×</span>
+                    <div class="field" style="width:180px"><label>Ширина</label><div style="display:flex;align-items:center;border:1px solid {{ dimBorder }};border-radius:var(--radius-md);min-height:52px;padding:0 14px"><input inputmode="decimal" value="{{ W }}" onChange="{{ setW }}" onKeyDown="{{ enterNext }}" placeholder="10" style="flex:1;min-width:0;border:0;background:transparent;font:inherit;font-size:22px;font-variant-numeric:tabular-nums;outline:none;color:var(--color-text)"><span style="color:var(--color-neutral-700)">м</span></div></div>
+                    <span style="font-size:15px;padding-bottom:14px;color:var(--color-neutral-800);font-variant-numeric:tabular-nums">{{ areaLabel }}</span>
+                  </div>
+                  <button class="btn btn-ghost" onClick="{{ dimsUnk }}" style="align-self:flex-start;min-height:44px">Не знаю размеры — примем 10 × 12 м</button>
+                </div>
+              </sc-if>
+              <sc-if value="{{ cur.isLoc }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;flex-direction:column;gap:14px">
+                  <div class="seg" role="radiogroup" style="align-self:flex-start">
+                    <label class="seg-opt" style="padding:10px 16px;font-size:14px"><input type="radio" name="locD" checked="{{ locCad }}" onChange="{{ modeCad }}">Кадастровый номер</label>
+                    <label class="seg-opt" style="padding:10px 16px;font-size:14px"><input type="radio" name="locD" checked="{{ locMap }}" onChange="{{ modeMap }}">Точка на карте</label>
+                  </div>
+                  <sc-if value="{{ locCad }}" hint-placeholder-val="{{ true }}">
+                    <div class="field" style="max-width:420px"><label>Кадастровый номер участка</label><input class="input" value="{{ cad }}" onChange="{{ setCad }}" onKeyDown="{{ enterNext }}" placeholder="66:41:0206014:37" style="min-height:52px;font-size:20px;font-variant-numeric:tabular-nums;letter-spacing:.02em;border-color:{{ dimBorder }}"></div>
+                  </sc-if>
+                  <sc-if value="{{ locMap }}" hint-placeholder-val="{{ false }}">
+                    <div onClick="{{ setPt }}" style="position:relative;height:260px;border:1px solid var(--color-divider);border-radius:var(--radius-md);cursor:crosshair;overflow:hidden;background-image:linear-gradient(var(--color-divider) 1px,transparent 1px),linear-gradient(90deg,var(--color-divider) 1px,transparent 1px);background-size:40px 40px">
+                      <span style="position:absolute;left:12px;top:10px;font-size:11px;color:var(--color-neutral-700);background:var(--color-bg);padding:2px 6px">Карта — заглушка. Нажмите, чтобы поставить точку</span>
+                      <sc-if value="{{ hasPt }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:{{ ptL }};top:{{ ptT }};width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;border:2px solid var(--color-accent);background:var(--color-bg)"></span></sc-if>
+                    </div>
+                    <span style="font-size:13px;color:var(--color-neutral-800);font-variant-numeric:tabular-nums">{{ ptLabel }}</span>
+                  </sc-if>
+                  <button class="btn btn-ghost" onClick="{{ locUnk }}" style="align-self:flex-start;min-height:44px">Пропустить — уточним по телефону</button>
+                </div>
+              </sc-if>
+              <sc-if value="{{ hasErr }}" hint-placeholder-val="{{ false }}">
+                <div role="alert" style="display:flex;gap:8px;align-items:center;font-size:14px;color:var(--color-accent-800);border-left:2px solid var(--color-accent);padding:6px 12px">{{ err }}</div>
+              </sc-if>
+              <div style="display:flex;gap:12px;margin-top:8px">
+                <button class="btn btn-secondary" onClick="{{ back }}" style="min-height:48px;padding-inline:18px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>Назад</button>
+                <button class="btn btn-primary" onClick="{{ next }}" style="min-height:48px;min-width:200px;font-size:16px;color:var(--color-accent-800)">{{ nextLabel }}</button>
+              </div>
+            </div>
+            <aside style="display:flex;flex-direction:column;gap:10px;align-self:start;border-top:1px solid var(--color-text);padding-top:12px">
+              <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-neutral-700)">Ваш объект</div>
+              <table style="border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums">
+                <tbody>
+                  <sc-for list="{{ summary }}" as="r" hint-placeholder-count="6">
+                    <tr><td style="padding:9px 0;border-bottom:1px solid var(--color-divider);color:var(--color-neutral-700)">{{ r.k }}</td><td style="padding:9px 0;border-bottom:1px solid var(--color-divider);text-align:right">{{ r.v }}</td></tr>
+                  </sc-for>
+                </tbody>
+              </table>
+              <p style="margin:6px 0 0;font-size:13px;color:var(--color-neutral-700)">Контакты не нужны, чтобы увидеть расчёт. Спросим их, только если захотите отправить его инженеру.</p>
+            </aside>
+          </div>
+        </sc-if>
+
+        <!-- D: RESULT -->
+        <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:32px 56px 0;display:flex;flex-direction:column;gap:8px">
+            <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-accent-800);font-variant-numeric:tabular-nums">Предварительная программа работ · № {{ r.no }}</div>
+            <h1 style="font-size:46px;font-weight:400;margin:0">{{ r.title }}</h1>
+          </div>
+          <div style="display:grid;grid-template-columns:minmax(0,8fr) minmax(0,4fr);gap:56px;padding:28px 56px 56px">
+            <div style="display:flex;flex-direction:column;gap:32px">
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:32px;border-top:1px solid var(--color-text);padding-top:16px">
+                <div style="display:flex;flex-direction:column;gap:10px">
+                  <h3 style="margin:0">Сколько скважин и почему</h3>
+                  <div style="display:flex;gap:28px;font-variant-numeric:tabular-nums">
+                    <div style="display:flex;flex-direction:column"><span style="font-family:var(--font-heading);font-size:40px;line-height:1">{{ r.n }}</span><span style="font-size:12px;color:var(--color-neutral-700)">скважины</span></div>
+                    <div style="display:flex;flex-direction:column"><span style="font-family:var(--font-heading);font-size:40px;line-height:1">{{ r.depth }} м</span><span style="font-size:12px;color:var(--color-neutral-700)">глубина каждой</span></div>
+                    <div style="display:flex;flex-direction:column"><span style="font-family:var(--font-heading);font-size:40px;line-height:1">{{ r.metres }} м</span><span style="font-size:12px;color:var(--color-neutral-700)">бурения всего</span></div>
+                  </div>
+                  <p style="margin:4px 0 0;font-size:15px;text-align:justify;hyphens:auto">{{ r.justify }}</p>
+                  <div style="display:flex;gap:8px;flex-wrap:wrap;font-variant-numeric:tabular-nums"><span style="display:inline-flex;border:1px solid var(--color-text);border-radius:var(--radius-sm);font-size:12px;line-height:1"><span style="padding:5px 6px;border-right:1px solid var(--color-text)">СП</span><span style="padding:5px 7px">47.13330.2016, п. 6.3</span></span><span style="display:inline-flex;border:1px solid var(--color-text);border-radius:var(--radius-sm);font-size:12px;line-height:1"><span style="padding:5px 6px;border-right:1px solid var(--color-text)">СП</span><span style="padding:5px 7px">446.1325800.2019, прил. Г</span></span></div>
+                </div>
+                <figure style="display:flex;flex-direction:column;gap:6px">{{ planD }}<figcaption>Схема расположения скважин на пятне застройки, без масштаба</figcaption></figure>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <h3 style="margin:0">Состав работ</h3>
+                <table class="table" style="font-size:14px;font-variant-numeric:tabular-nums">
+                  <thead><tr><th>Работа</th><th style="width:210px">Объём</th><th style="width:210px">Норматив</th><th style="width:120px;text-align:right">Стоимость</th></tr></thead>
+                  <tbody>
+                    <sc-for list="{{ r.works }}" as="w" hint-placeholder-count="5">
+                      <tr><td>{{ w.name }}</td><td>{{ w.qty }}</td><td><span style="display:inline-flex;border:1px solid var(--color-text);border-radius:var(--radius-sm);font-size:12px;line-height:1"><span style="padding:4px 6px;border-right:1px solid var(--color-text)">{{ w.nt }}</span><span style="padding:4px 7px">{{ w.nn }}</span></span></td><td style="text-align:right">{{ w.price }}</td></tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <h3 style="margin:0">Допущения</h3>
+                <sc-if value="{{ r.noAssump }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font-size:14px;color:var(--color-neutral-800)">Все параметры указали вы, допущений нет.</p></sc-if>
+                <sc-for list="{{ r.assump }}" as="a" hint-placeholder-count="2">
+                  <div style="display:grid;grid-template-columns:200px 1fr auto auto;gap:16px;align-items:center;padding:10px 0;border-bottom:1px solid var(--color-divider);font-size:14px"><span style="color:var(--color-neutral-700)">{{ a.k }}</span><span>{{ a.v }}</span><span class="tag tag-accent">принято по умолчанию</span><button class="btn btn-ghost" onClick="{{ a.edit }}" style="min-height:36px">Уточнить</button></div>
+                </sc-for>
+              </div>
+            </div>
+            <aside style="position:sticky;top:96px;align-self:start;display:flex;flex-direction:column;gap:14px;border:1px solid var(--color-divider);border-radius:var(--radius-md);padding:20px">
+              <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-neutral-700)">Предварительная стоимость</div>
+              <div style="font-family:var(--font-heading);font-size:44px;line-height:1;font-variant-numeric:tabular-nums">{{ r.total }}</div>
+              <table style="border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums">
+                <tbody>
+                  <sc-for list="{{ r.lines }}" as="l" hint-placeholder-count="2"><tr><td style="padding:7px 0;border-bottom:1px solid var(--color-divider);color:var(--color-neutral-700)">{{ l.k }}</td><td style="padding:7px 0;border-bottom:1px solid var(--color-divider);text-align:right">{{ l.v }}</td></tr></sc-for>
+                  <tr><td style="padding:7px 0;color:var(--color-neutral-700)">Срок</td><td style="padding:7px 0;text-align:right">{{ r.days }}</td></tr>
+                </tbody>
+              </table>
+              <sc-if value="{{ r.canAddTopo }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ addTopo }}" style="display:flex;flex-direction:column;gap:2px;text-align:left;padding:12px;border:1px dashed var(--color-accent);border-radius:var(--radius-md);background:transparent;cursor:pointer"><span style="font-size:14px">Добавить топосъёмку пакетом</span><span style="font-size:12px;color:var(--color-accent-800);font-variant-numeric:tabular-nums">−10% на всё · {{ r.topoOffer }}</span></button>
+              </sc-if>
+              <button class="btn btn-primary" onClick="{{ toContact }}" style="min-height:48px;font-size:16px;color:var(--color-accent-800)">Отправить инженеру</button>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="btn btn-secondary" onClick="{{ pdf }}" style="min-height:44px">Скачать PDF</button><button class="btn btn-secondary" onClick="{{ share }}" style="min-height:44px">Поделиться</button></div>
+              <p style="margin:0;font-size:12px;color:var(--color-neutral-700)">Предварительный расчёт на {{ today }}. Окончательный объём задаёт программа работ после выезда инженера.</p>
+            </aside>
+          </div>
+        </sc-if>
+
+        <!-- D: CONTACT -->
+        <sc-if value="{{ isContact }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;grid-template-columns:minmax(0,6fr) minmax(0,4fr);gap:64px;padding:40px 56px 56px">
+            <div style="display:flex;flex-direction:column;gap:18px;max-width:520px">
+              <button class="btn btn-ghost" onClick="{{ backToResult }}" style="align-self:flex-start;padding-left:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>К расчёту</button>
+              <h2 style="font-size:40px;font-weight:400;margin:0">Отправить расчёт инженеру</h2>
+              <p style="margin:0;font-size:15px;color:var(--color-neutral-800)">Инженер проверит параметры, уточнит допущения и перезвонит в рабочее время, обычно в течение часа.</p>
+              <div class="field"><label>Телефон</label><input class="input" type="tel" inputmode="tel" value="{{ phone }}" onChange="{{ setPhone }}" placeholder="+7 (___) ___-__-__" style="min-height:52px;font-size:18px;font-variant-numeric:tabular-nums;border-color:{{ phoneBorder }}"><sc-if value="{{ hasPhoneErr }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--color-accent-800);margin-top:4px">{{ phoneErr }}</div></sc-if></div>
+              <div class="field"><label>Как к вам обращаться</label><input class="input" value="{{ name }}" onChange="{{ setName }}" placeholder="Имя" style="min-height:52px;font-size:18px;border-color:{{ nameBorder }}"><sc-if value="{{ hasNameErr }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--color-accent-800);margin-top:4px">{{ nameErr }}</div></sc-if></div>
+              <div class="field"><label>Как удобнее связаться</label>
+                <div class="seg" role="radiogroup">
+                  <sc-for list="{{ vias }}" as="v" hint-placeholder-count="3"><label class="seg-opt" style="padding:12px 18px;font-size:14px"><input type="radio" name="viaD" checked="{{ v.sel }}" onChange="{{ v.onClick }}">{{ v.l }}</label></sc-for>
+                </div>
+              </div>
+              <sc-if value="{{ isErr }}" hint-placeholder-val="{{ false }}"><div role="alert" style="display:flex;flex-direction:column;gap:4px;border:1px solid var(--color-accent);border-radius:var(--radius-md);padding:12px 14px;font-size:14px"><span style="font-family:var(--font-heading);font-size:18px;font-weight:600">Не удалось отправить</span><span style="color:var(--color-neutral-800)">Сервер не ответил. Попробуйте ещё раз или позвоните: +7 343 000-00-00.</span></div></sc-if>
+              <sc-if value="{{ isOffline }}" hint-placeholder-val="{{ false }}"><div role="alert" style="display:flex;flex-direction:column;gap:4px;border:1px solid var(--color-accent);border-radius:var(--radius-md);padding:12px 14px;font-size:14px"><span style="font-family:var(--font-heading);font-size:18px;font-weight:600">Нет сети</span><span style="color:var(--color-neutral-800)">Заявка сохранена на устройстве и уйдёт, когда появится связь. Расчёт можно скачать в PDF уже сейчас.</span></div></sc-if>
+              <button class="btn btn-primary" onClick="{{ submit }}" disabled="{{ isSending }}" style="min-height:52px;font-size:17px;color:var(--color-accent-800);align-self:flex-start;min-width:260px">{{ submitLabel }}</button>
+              <p style="margin:0;font-size:12px;color:var(--color-neutral-700)">Нажимая кнопку, вы соглашаетесь с <a href="#" onClick="{{ stub }}">политикой обработки данных</a>. Номер не передаём третьим лицам и не используем для рассылок.</p>
+            </div>
+            <aside style="align-self:start;display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--color-text);padding-top:12px;font-variant-numeric:tabular-nums">
+              <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-neutral-700)">Расчёт № {{ r.no }}</div>
+              <div style="font-family:var(--font-heading);font-size:24px">{{ r.title }}</div>
+              <div style="font-family:var(--font-heading);font-size:36px">{{ r.total }}</div>
+              <div style="font-size:14px;color:var(--color-neutral-800)">{{ r.n }} скв. × {{ r.depth }} м · {{ r.days }}</div>
+            </aside>
+          </div>
+        </sc-if>
+
+        <!-- D: SENT -->
+        <sc-if value="{{ isSent }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:56px;display:flex;flex-direction:column;gap:18px;max-width:760px">
+            <div style="width:48px;height:48px;border-radius:50%;border:1px solid var(--color-accent);display:grid;place-items:center;color:var(--color-accent-700)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></div>
+            <h1 style="font-size:48px;font-weight:400;margin:0">Заявка № {{ reqNo }} принята</h1>
+            <p style="margin:0;font-size:16px;color:var(--color-neutral-800)">{{ sentText }}</p>
+            <div style="display:flex;flex-direction:column;border-top:1px solid var(--color-text);margin-top:8px">
+              <sc-for list="{{ nextSteps }}" as="n" hint-placeholder-count="3"><div style="display:grid;grid-template-columns:48px 1fr auto;gap:16px;padding:14px 0;border-bottom:1px solid var(--color-divider);align-items:baseline"><span style="font-family:var(--font-heading);font-size:18px;color:var(--color-accent-700);font-variant-numeric:tabular-nums">{{ n.no }}</span><span style="font-size:15px">{{ n.t }}</span><span style="font-size:13px;color:var(--color-neutral-700)">{{ n.w }}</span></div></sc-for>
+            </div>
+            <div style="display:flex;gap:12px;margin-top:8px"><button class="btn btn-secondary" onClick="{{ pdf }}" style="min-height:44px">Скачать PDF расчёта</button><button class="btn btn-ghost" onClick="{{ goHome }}" style="min-height:44px">На главную</button></div>
+          </div>
+        </sc-if>
+      </div>
+      <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+        <div role="status" style="position:absolute;left:50%;bottom:24px;transform:translateX(-50%);background:var(--color-bg);border:1px solid var(--color-text);border-radius:var(--radius-md);box-shadow:var(--shadow-md);padding:10px 16px;font-size:14px;z-index:5">{{ toast }}</div>
+      </sc-if>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ══════════ MOBILE ══════════ -->
+  <sc-if value="{{ showM }}" hint-placeholder-val="{{ true }}">
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div style="font-size:12px;color:var(--color-neutral-800);font-variant-numeric:tabular-nums">Mobile · 390</div>
+    <div data-screen-label="Mobile" style="width:390px;height:820px;background:var(--color-bg);box-shadow:var(--shadow-md);position:relative;overflow:hidden;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;gap:4px;padding:8px 10px 8px 20px;border-bottom:1px solid var(--color-divider);flex:none">
+        <button onClick="{{ goHome }}" class="nav-brand" style="letter-spacing:.12em;background:none;border:0;padding:0;cursor:pointer;text-align:left">ГЕОПЛАН</button>
+        <button class="btn btn-icon" onClick="{{ call }}" aria-label="Позвонить" style="width:44px;height:44px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.910a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></button>
+        <button class="btn btn-icon" onClick="{{ stub }}" aria-label="Меню" style="width:44px;height:44px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button>
+      </div>
+      <sc-if value="{{ isCalc }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:12px 20px 10px;border-bottom:1px solid var(--color-divider);display:flex;flex-direction:column;gap:8px;flex:none">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--color-neutral-700);font-variant-numeric:tabular-nums"><span>Геология под дом</span><span>Шаг {{ stepNo }} из {{ stepTotal }}</span></div>
+          <div style="display:grid;grid-template-columns:repeat({{ stepTotal }},1fr);gap:3px"><sc-for list="{{ prog }}" as="p" hint-placeholder-count="6"><span style="height:6px;border-bottom:{{ p.b }}"></span></sc-for></div>
+        </div>
+      </sc-if>
+      <div ref="{{ mRef }}" style="flex:1;overflow:auto">
+
+        <!-- M: HOME -->
+        <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+          <div style="padding:24px 20px 0;display:flex;flex-direction:column;gap:12px">
+            <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-accent-800)">Екатеринбург и область</div>
+            <h1 style="font-size:34px;font-weight:400;margin:0;line-height:1.05">Геология, геодезия и экология для строительства</h1>
+            <p style="margin:0;font-size:15px;color:var(--color-neutral-800)">Своя техника и лаборатория. Отчёты проходят экспертизу.</p>
+          </div>
+          <div style="margin:16px 20px 0;border-top:1px solid var(--color-text);display:flex;flex-direction:column">
+            <sc-for list="{{ scen }}" as="s" hint-placeholder-count="4">
+              <button onClick="{{ s.onClick }}" style="display:grid;grid-template-columns:32px 1fr 20px;gap:10px;align-items:center;min-height:64px;padding:8px 0;border:0;border-bottom:1px solid var(--color-divider);background:transparent;text-align:left;cursor:pointer"><span style="font-family:var(--font-heading);color:var(--color-accent-700);font-variant-numeric:tabular-nums">{{ s.no }}</span><span style="display:flex;flex-direction:column"><span style="font-family:var(--font-heading);font-size:20px;font-weight:600">{{ s.t }}</span><span style="font-size:12px;color:var(--color-neutral-700);font-variant-numeric:tabular-nums">{{ s.p }}</span></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent)"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
+            </sc-for>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 0;margin:20px 20px 24px;font-variant-numeric:tabular-nums">
+            <sc-for list="{{ trust }}" as="t" hint-placeholder-count="5"><div style="padding:0 12px;border-left:1px solid var(--color-divider);display:flex;flex-direction:column;min-width:0"><span style="font-size:10px;color:var(--color-neutral-700);text-transform:uppercase;letter-spacing:.06em">{{ t.k }}</span><span style="font-size:13px">{{ t.v }}</span></div></sc-for>
+          </div>
+        </sc-if>
+
+        <!-- M: CALC -->
+        <sc-if value="{{ isCalc }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:22px 20px 24px;display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <h2 style="font-size:29px;font-weight:400;margin:0">{{ cur.q }}</h2>
+              <p style="margin:0;font-size:14px;color:var(--color-neutral-800)">{{ cur.hint }}</p>
+            </div>
+            <sc-if value="{{ cur.isChoice }}" hint-placeholder-val="{{ true }}">
+              <div role="radiogroup" style="display:flex;flex-direction:column;gap:8px">
+                <sc-for list="{{ opts }}" as="o" hint-placeholder-count="4">
+                  <button role="radio" aria-checked="{{ o.sel }}" onClick="{{ o.onClick }}" style="display:grid;grid-template-columns:22px 1fr;gap:12px;align-items:start;padding:13px 14px;min-height:60px;border:1px solid {{ o.bc }};box-shadow:{{ o.sh }};border-radius:var(--radius-md);background:{{ o.bg }};text-align:left;cursor:pointer">
+                    <span style="width:18px;height:18px;margin-top:3px;border-radius:50%;border:1.5px {{ o.dotStyle }} {{ o.dotC }};background:{{ o.dotBg }};box-shadow:inset 0 0 0 4px var(--color-bg)"></span>
+                    <span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:16px">{{ o.l }}</span><span style="font-size:13px;color:var(--color-neutral-700)">{{ o.h }}</span></span>
+                  </button>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ cur.isDims }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:end">
+                  <div class="field"><label>Длина</label><div style="display:flex;align-items:center;border:1px solid {{ dimBorder }};border-radius:var(--radius-md);min-height:56px;padding:0 12px"><input inputmode="decimal" value="{{ L }}" onChange="{{ setL }}" placeholder="12" style="flex:1;min-width:0;border:0;background:transparent;font:inherit;font-size:22px;font-variant-numeric:tabular-nums;outline:none;color:var(--color-text)"><span style="color:var(--color-neutral-700)">м</span></div></div>
+                  <span style="font-family:var(--font-heading);font-size:26px;padding-bottom:12px">×</span>
+                  <div class="field"><label>Ширина</label><div style="display:flex;align-items:center;border:1px solid {{ dimBorder }};border-radius:var(--radius-md);min-height:56px;padding:0 12px"><input inputmode="decimal" value="{{ W }}" onChange="{{ setW }}" placeholder="10" style="flex:1;min-width:0;border:0;background:transparent;font:inherit;font-size:22px;font-variant-numeric:tabular-nums;outline:none;color:var(--color-text)"><span style="color:var(--color-neutral-700)">м</span></div></div>
+                </div>
+                <span style="font-size:14px;color:var(--color-neutral-800);font-variant-numeric:tabular-nums">{{ areaLabel }}</span>
+                <button class="btn btn-ghost" onClick="{{ dimsUnk }}" style="align-self:flex-start;min-height:44px;text-align:left">Не знаю — примем 10 × 12 м</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{ cur.isLoc }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <div class="seg" role="radiogroup" style="display:grid;grid-template-columns:1fr 1fr">
+                  <label class="seg-opt" style="justify-content:center;min-height:44px;font-size:14px"><input type="radio" name="locM" checked="{{ locCad }}" onChange="{{ modeCad }}">Кадастровый №</label>
+                  <label class="seg-opt" style="justify-content:center;min-height:44px;font-size:14px"><input type="radio" name="locM" checked="{{ locMap }}" onChange="{{ modeMap }}">Точка на карте</label>
+                </div>
+                <sc-if value="{{ locCad }}" hint-placeholder-val="{{ true }}">
+                  <div class="field"><label>Кадастровый номер участка</label><input class="input" inputmode="numeric" value="{{ cad }}" onChange="{{ setCad }}" placeholder="66:41:0206014:37" style="min-height:56px;font-size:19px;font-variant-numeric:tabular-nums;border-color:{{ dimBorder }}"></div>
+                </sc-if>
+                <sc-if value="{{ locMap }}" hint-placeholder-val="{{ false }}">
+                  <div onClick="{{ setPt }}" style="position:relative;height:220px;border:1px solid var(--color-divider);border-radius:var(--radius-md);overflow:hidden;background-image:linear-gradient(var(--color-divider) 1px,transparent 1px),linear-gradient(90deg,var(--color-divider) 1px,transparent 1px);background-size:36px 36px">
+                    <span style="position:absolute;left:10px;top:8px;font-size:11px;color:var(--color-neutral-700);background:var(--color-bg);padding:2px 6px">Карта — заглушка. Коснитесь участка</span>
+                    <sc-if value="{{ hasPt }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:{{ ptL }};top:{{ ptT }};width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;border:2px solid var(--color-accent);background:var(--color-bg)"></span></sc-if>
+                  </div>
+                  <span style="font-size:13px;color:var(--color-neutral-800);font-variant-numeric:tabular-nums">{{ ptLabel }}</span>
+                </sc-if>
+                <button class="btn btn-ghost" onClick="{{ locUnk }}" style="align-self:flex-start;min-height:44px">Пропустить — уточним по телефону</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{ hasErr }}" hint-placeholder-val="{{ false }}">
+              <div role="alert" style="font-size:14px;color:var(--color-accent-800);border-left:2px solid var(--color-accent);padding:6px 12px">{{ err }}</div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <!-- M: RESULT -->
+        <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:22px 20px 28px;display:flex;flex-direction:column;gap:22px">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-accent-800);font-variant-numeric:tabular-nums">Предварительная программа · № {{ r.no }}</div>
+              <h1 style="font-size:30px;font-weight:400;margin:0;line-height:1.08">{{ r.title }}</h1>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--color-text);padding-top:12px;font-variant-numeric:tabular-nums">
+              <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-family:var(--font-heading);font-size:38px;line-height:1">{{ r.total }}</span><span style="font-size:14px">{{ r.days }}</span></div>
+              <sc-for list="{{ r.lines }}" as="l" hint-placeholder-count="2"><div style="display:flex;justify-content:space-between;font-size:13px;color:var(--color-neutral-800);padding:4px 0;border-bottom:1px solid var(--color-divider)"><span>{{ l.k }}</span><span>{{ l.v }}</span></div></sc-for>
+              <sc-if value="{{ r.canAddTopo }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ addTopo }}" style="display:flex;flex-direction:column;gap:2px;text-align:left;padding:12px;margin-top:6px;border:1px dashed var(--color-accent);border-radius:var(--radius-md);background:transparent;cursor:pointer;min-height:56px"><span style="font-size:14px">Добавить топосъёмку пакетом</span><span style="font-size:12px;color:var(--color-accent-800)">−10% на всё · {{ r.topoOffer }}</span></button>
+              </sc-if>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px"><button class="btn btn-secondary" onClick="{{ pdf }}" style="min-height:44px">Скачать PDF</button><button class="btn btn-secondary" onClick="{{ share }}" style="min-height:44px">Поделиться</button></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <h3 style="margin:0;font-size:22px">Сколько скважин и почему</h3>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);font-variant-numeric:tabular-nums">
+                <div style="display:flex;flex-direction:column"><span style="font-family:var(--font-heading);font-size:30px;line-height:1">{{ r.n }}</span><span style="font-size:11px;color:var(--color-neutral-700)">скважины</span></div>
+                <div style="display:flex;flex-direction:column;border-left:1px solid var(--color-divider);padding-left:10px"><span style="font-family:var(--font-heading);font-size:30px;line-height:1">{{ r.depth }} м</span><span style="font-size:11px;color:var(--color-neutral-700)">глубина</span></div>
+                <div style="display:flex;flex-direction:column;border-left:1px solid var(--color-divider);padding-left:10px"><span style="font-family:var(--font-heading);font-size:30px;line-height:1">{{ r.metres }} м</span><span style="font-size:11px;color:var(--color-neutral-700)">бурения</span></div>
+              </div>
+              <figure style="margin:4px 0 0">{{ planM }}</figure>
+              <p style="margin:0;font-size:14px">{{ r.justify }}</p>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;font-variant-numeric:tabular-nums"><span style="display:inline-flex;border:1px solid var(--color-text);border-radius:var(--radius-sm);font-size:12px;line-height:1"><span style="padding:5px 6px;border-right:1px solid var(--color-text)">СП</span><span style="padding:5px 7px">47.13330.2016, п. 6.3</span></span><span style="display:inline-flex;border:1px solid var(--color-text);border-radius:var(--radius-sm);font-size:12px;line-height:1"><span style="padding:5px 6px;border-right:1px solid var(--color-text)">СП</span><span style="padding:5px 7px">446.1325800.2019</span></span></div>
+            </div>
+            <div style="display:flex;flex-direction:column">
+              <h3 style="margin:0 0 6px;font-size:22px">Состав работ</h3>
+              <sc-for list="{{ r.works }}" as="w" hint-placeholder-count="5">
+                <div style="display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:10px 0;border-bottom:1px solid var(--color-divider);font-variant-numeric:tabular-nums"><span style="font-size:15px">{{ w.name }}</span><span style="font-size:15px;text-align:right">{{ w.price }}</span><span style="font-size:12px;color:var(--color-neutral-700)">{{ w.qty }}</span><span style="justify-self:end;display:inline-flex;border:1px solid var(--color-text);border-radius:var(--radius-sm);font-size:11px;line-height:1"><span style="padding:3px 5px;border-right:1px solid var(--color-text)">{{ w.nt }}</span><span style="padding:3px 6px">{{ w.nn }}</span></span></div>
+              </sc-for>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <h3 style="margin:0;font-size:22px">Допущения</h3>
+              <sc-if value="{{ r.noAssump }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font-size:14px;color:var(--color-neutral-800)">Все параметры указали вы, допущений нет.</p></sc-if>
+              <sc-for list="{{ r.assump }}" as="a" hint-placeholder-count="2">
+                <div style="display:flex;flex-direction:column;gap:6px;padding:10px 0;border-bottom:1px solid var(--color-divider)"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span style="font-size:14px">{{ a.k }}: {{ a.v }}</span><button class="btn btn-ghost" onClick="{{ a.edit }}" style="min-height:44px">Уточнить</button></div><span class="tag tag-accent" style="align-self:flex-start">принято по умолчанию</span></div>
+              </sc-for>
+            </div>
+            <p style="margin:0;font-size:12px;color:var(--color-neutral-700)">Предварительный расчёт на {{ today }}. Окончательный объём задаёт программа работ после выезда инженера.</p>
+          </div>
+        </sc-if>
+
+        <!-- M: CONTACT -->
+        <sc-if value="{{ isContact }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:16px 20px 28px;display:flex;flex-direction:column;gap:16px">
+            <button class="btn btn-ghost" onClick="{{ backToResult }}" style="align-self:flex-start;padding-left:0;min-height:44px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>К расчёту · {{ r.total }}</button>
+            <h2 style="font-size:29px;font-weight:400;margin:0">Отправить расчёт инженеру</h2>
+            <p style="margin:0;font-size:14px;color:var(--color-neutral-800)">Инженер проверит параметры и перезвонит в рабочее время, обычно в течение часа.</p>
+            <div class="field"><label>Телефон</label><input class="input" type="tel" inputmode="tel" value="{{ phone }}" onChange="{{ setPhone }}" placeholder="+7 (___) ___-__-__" style="min-height:56px;font-size:18px;font-variant-numeric:tabular-nums;border-color:{{ phoneBorder }}"><sc-if value="{{ hasPhoneErr }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--color-accent-800);margin-top:4px">{{ phoneErr }}</div></sc-if></div>
+            <div class="field"><label>Как к вам обращаться</label><input class="input" value="{{ name }}" onChange="{{ setName }}" placeholder="Имя" style="min-height:56px;font-size:18px;border-color:{{ nameBorder }}"><sc-if value="{{ hasNameErr }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--color-accent-800);margin-top:4px">{{ nameErr }}</div></sc-if></div>
+            <div class="field"><label>Как удобнее связаться</label>
+              <div class="seg" role="radiogroup" style="display:grid;grid-template-columns:repeat(3,1fr)">
+                <sc-for list="{{ vias }}" as="v" hint-placeholder-count="3"><label class="seg-opt" style="justify-content:center;min-height:48px;font-size:14px"><input type="radio" name="viaM" checked="{{ v.sel }}" onChange="{{ v.onClick }}">{{ v.l }}</label></sc-for>
+              </div>
+            </div>
+            <sc-if value="{{ isErr }}" hint-placeholder-val="{{ false }}"><div role="alert" style="display:flex;flex-direction:column;gap:4px;border:1px solid var(--color-accent);border-radius:var(--radius-md);padding:12px;font-size:14px"><span style="font-family:var(--font-heading);font-size:18px;font-weight:600">Не удалось отправить</span><span style="color:var(--color-neutral-800)">Попробуйте ещё раз или позвоните.</span></div></sc-if>
+            <sc-if value="{{ isOffline }}" hint-placeholder-val="{{ false }}"><div role="alert" style="display:flex;flex-direction:column;gap:4px;border:1px solid var(--color-accent);border-radius:var(--radius-md);padding:12px;font-size:14px"><span style="font-family:var(--font-heading);font-size:18px;font-weight:600">Нет сети</span><span style="color:var(--color-neutral-800)">Заявка сохранена и уйдёт, когда появится связь.</span></div></sc-if>
+            <p style="margin:0;font-size:12px;color:var(--color-neutral-700)">Нажимая кнопку, вы соглашаетесь с политикой обработки данных.</p>
+          </div>
+        </sc-if>
+
+        <!-- M: SENT -->
+        <sc-if value="{{ isSent }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:32px 20px;display:flex;flex-direction:column;gap:14px">
+            <div style="width:44px;height:44px;border-radius:50%;border:1px solid var(--color-accent);display:grid;place-items:center;color:var(--color-accent-700)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></div>
+            <h1 style="font-size:32px;font-weight:400;margin:0">Заявка № {{ reqNo }} принята</h1>
+            <p style="margin:0;font-size:15px;color:var(--color-neutral-800)">{{ sentText }}</p>
+            <div style="display:flex;flex-direction:column;border-top:1px solid var(--color-text)">
+              <sc-for list="{{ nextSteps }}" as="n" hint-placeholder-count="3"><div style="display:grid;grid-template-columns:32px 1fr;gap:10px;padding:12px 0;border-bottom:1px solid var(--color-divider)"><span style="font-family:var(--font-heading);color:var(--color-accent-700);font-variant-numeric:tabular-nums">{{ n.no }}</span><span style="display:flex;flex-direction:column"><span style="font-size:15px">{{ n.t }}</span><span style="font-size:12px;color:var(--color-neutral-700)">{{ n.w }}</span></span></div></sc-for>
+            </div>
+            <button class="btn btn-secondary" onClick="{{ pdf }}" style="min-height:48px">Скачать PDF расчёта</button>
+          </div>
+        </sc-if>
+      </div>
+
+      <!-- M: bottom bars -->
+      <sc-if value="{{ barHome }}" hint-placeholder-val="{{ true }}">
+        <div style="flex:none;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 12px 14px;border-top:1px solid var(--color-divider)"><button class="btn btn-secondary" onClick="{{ call }}" style="min-height:48px;font-size:16px">Позвонить</button><button class="btn btn-primary" onClick="{{ startCalc }}" style="min-height:48px;font-size:16px;color:var(--color-accent-800)">Рассчитать</button></div>
+      </sc-if>
+      <sc-if value="{{ isCalc }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:none;display:grid;grid-template-columns:auto 1fr;gap:8px;padding:10px 12px 14px;border-top:1px solid var(--color-divider)"><button class="btn btn-secondary" onClick="{{ back }}" style="min-height:48px;padding-inline:16px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>Назад</button><button class="btn btn-primary" onClick="{{ next }}" style="min-height:48px;font-size:16px;color:var(--color-accent-800)">{{ nextLabel }}</button></div>
+      </sc-if>
+      <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:none;padding:10px 12px 14px;border-top:1px solid var(--color-divider)"><button class="btn btn-primary" onClick="{{ toContact }}" style="width:100%;min-height:48px;font-size:16px;color:var(--color-accent-800)">Отправить инженеру</button></div>
+      </sc-if>
+      <sc-if value="{{ isContact }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:none;padding:10px 12px 14px;border-top:1px solid var(--color-divider)"><button class="btn btn-primary" onClick="{{ submit }}" disabled="{{ isSending }}" style="width:100%;min-height:48px;font-size:16px;color:var(--color-accent-800)">{{ submitLabel }}</button></div>
+      </sc-if>
+      <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+        <div role="status" style="position:absolute;left:16px;right:16px;bottom:84px;background:var(--color-bg);border:1px solid var(--color-text);border-radius:var(--radius-md);box-shadow:var(--shadow-md);padding:10px 14px;font-size:14px;z-index:5">{{ toast }}</div>
+      </sc-if>
+    </div>
+  </div>
+  </sc-if>
+
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;sendOutcome&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;success&quot;,&quot;error&quot;,&quot;offline&quot;],&quot;default&quot;:&quot;success&quot;,&quot;tsType&quot;:&quot;'success'|'error'|'offline'&quot;,&quot;section&quot;:&quot;Прототип&quot;},&quot;frames&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;both&quot;,&quot;desktop&quot;,&quot;mobile&quot;],&quot;default&quot;:&quot;both&quot;,&quot;tsType&quot;:&quot;'both'|'desktop'|'mobile'&quot;,&quot;section&quot;:&quot;Прототип&quot;}}">
+class Component extends DCLogic {
+  STEPS = [
+    { id: 'obj', type: 'choice', q: 'Что строите?', hint: 'От типа объекта зависит, сколько нужно скважин и какой глубины.', opts: [
+      { v: 'house', l: 'Жилой дом', h: 'Каркасный, кирпичный, из бруса или газобетона' },
+      { v: 'basement', l: 'Дом с подвалом', h: 'Или с цокольным этажом: скважины глубже на 2 м' },
+      { v: 'light', l: 'Баня, гараж, беседка', h: 'Лёгкая постройка, хватит двух скважин' },
+      { v: 'unk', l: 'Не знаю', h: 'Примем жилой дом и отметим это в расчёте', unk: true } ] },
+    { id: 'floors', type: 'choice', q: 'Сколько этажей будет в доме?', hint: 'От этажности зависит нагрузка на грунт, а значит глубина скважин.', opts: [
+      { v: 1, l: 'Один этаж', h: 'Скважины до 8 м' },
+      { v: 2, l: 'Два этажа', h: 'Скважины до 10 м' },
+      { v: 3, l: 'Три и больше', h: 'Скважины до 12 м' },
+      { v: 'unk', l: 'Не знаю', h: 'Примем два этажа и отметим это в расчёте', unk: true } ] },
+    { id: 'dims', type: 'dims', q: 'Какого размера дом в плане?', hint: 'Длина и ширина пятна застройки по внешним стенам. Можно примерно.' },
+    { id: 'found', type: 'choice', q: 'Какой фундамент планируете?', hint: 'Под сваи бурим глубже: нужно знать грунт ниже острия сваи.', opts: [
+      { v: 'strip', l: 'Ленточный', h: 'Самый частый вариант для дома' },
+      { v: 'slab', l: 'Монолитная плита', h: 'Для слабых и пучинистых грунтов' },
+      { v: 'piles', l: 'Сваи', h: 'Винтовые или буронабивные, скважины глубже на 2 м' },
+      { v: 'unk', l: 'Не знаю', h: 'Примем ленточный, после изысканий подскажем подходящий', unk: true } ] },
+    { id: 'loc', type: 'loc', q: 'Где участок?', hint: 'Нужно, чтобы посчитать выезд и поднять архивные данные по соседним участкам.' },
+    { id: 'topo', type: 'choice', q: 'Топосъёмка участка уже есть?', hint: 'Проектировщику нужны и геология, и топосъёмка. Вместе дешевле, чем по отдельности.', opts: [
+      { v: 'need', l: 'Нет, сделайте вместе с геологией', h: 'Пакет «геология + топо»: скидка 10% на всё' },
+      { v: 'have', l: 'Есть, не старше двух лет', h: 'Посчитаем только геологию' },
+      { v: 'unk', l: 'Не знаю', h: 'Посчитаем пакет, от топосъёмки можно отказаться', unk: true } ] },
+  ];
+  LABELS = { obj: { house: 'Жилой дом', basement: 'Дом с подвалом', light: 'Баня, гараж' }, found: { strip: 'Ленточный', slab: 'Плита', piles: 'Сваи' } };
+  init = { screen: 'home', step: 0, ans: {}, L: '', W: '', locMode: 'cad', cad: '', pt: null, err: null, phone: '', name: '', via: 'call', send: 'idle', cErr: {}, toast: null, reqNo: null };
+  state = { ...this.init };
+  dRef = React.createRef(); mRef = React.createRef();
+
+  top() { [this.dRef, this.mRef].forEach(r => { if (r.current) r.current.scrollTop = 0; }); }
+  go(screen, extra = {}) { this.setState({ screen, err: null, ...extra }, () => this.top()); }
+  toast(t) { clearTimeout(this._t); this.setState({ toast: t }); this._t = setTimeout(() => this.setState({ toast: null }), 2600); }
+  steps() { return this.STEPS.filter(s => !(s.id === 'floors' && this.state.ans.obj === 'light')); }
+  num(v) { const n = parseFloat(String(v).replace(',', '.')); return isNaN(n) ? null : n; }
+  rub(n) { return Math.round(n).toLocaleString('ru-RU') + ' ₽'; }
+  plural(n, a, b, c) { const m = n % 10, h = n % 100; return (m === 1 && h !== 11) ? a : (m >= 2 && m <= 4 && (h < 10 || h >= 20)) ? b : c; }
+
+  validate(s) {
+    const { ans, L, W, locMode, cad, pt } = this.state;
+    if (s.type === 'choice') return ans[s.id] == null ? 'Выберите вариант. Если не уверены, выберите «Не знаю».' : null;
+    if (s.type === 'dims') {
+      if (ans.dims === 'unk') return null;
+      const l = this.num(L), w = this.num(W);
+      if (l == null || w == null) return 'Укажите длину и ширину в метрах или нажмите «Не знаю».';
+      if (l < 3 || l > 60 || w < 3 || w > 60) return 'Размеры частного дома обычно от 3 до 60 м. Проверьте значения.';
+      return null;
+    }
+    if (s.type === 'loc') {
+      if (ans.loc === 'unk') return null;
+      if (locMode === 'cad') return /^\d{2}:\d{2}:\d{6,7}:\d{1,5}$/.test(cad.trim()) ? null : 'Кадастровый номер выглядит так: 66:41:0206014:37';
+      return pt ? null : 'Отметьте участок на карте.';
+    }
+    return null;
+  }
+  next = () => {
+    const st = this.steps(), s = st[this.state.step];
+    const err = this.validate(s);
+    if (err) { this.setState({ err }); return; }
+    const ans = { ...this.state.ans };
+    if (s.type === 'dims' && ans.dims !== 'unk') ans.dims = 'set';
+    if (s.type === 'loc' && ans.loc !== 'unk') ans.loc = this.state.locMode;
+    if (this.state.step >= st.length - 1) this.go('result', { ans });
+    else this.setState({ ans, step: this.state.step + 1, err: null }, () => this.top());
+  };
+  back = () => { if (this.state.step === 0) this.go('home'); else this.setState({ step: this.state.step - 1, err: null }, () => this.top()); };
+  pick(id, v) { this.setState({ ans: { ...this.state.ans, [id]: v }, err: null }); }
+
+  calc() {
+    const { ans, L, W, cad, pt } = this.state;
+    const obj = ans.obj === 'unk' || !ans.obj ? 'house' : ans.obj;
+    const floors = obj === 'light' ? 1 : (ans.floors === 'unk' || !ans.floors ? 2 : ans.floors);
+    const found = ans.found === 'unk' || !ans.found ? 'strip' : ans.found;
+    const dimsUnk = ans.dims !== 'set';
+    const l = dimsUnk ? 12 : this.num(L), w = dimsUnk ? 10 : this.num(W);
+    const area = Math.round(l * w);
+    const depth = (obj === 'light' ? 6 : ({ 1: 8, 2: 10, 3: 12 })[floors]) + (obj === 'basement' ? 2 : 0) + (found === 'piles' ? 2 : 0);
+    const n = obj === 'light' ? 2 : area <= 120 ? 3 : area <= 250 ? 4 : 5;
+    const metres = n * depth;
+    const bore = metres * 2600, lab = n * 3 * 2200, trip = 7000, report = 14000;
+    const geo = bore + lab + trip + report;
+    const hasTopo = ans.topo === 'need' || ans.topo === 'unk' || !ans.topo;
+    const topo = 16000;
+    const disc = hasTopo ? Math.round((geo + topo) * 0.1 / 100) * 100 : 0;
+    const total = geo + (hasTopo ? topo : 0) - disc;
+    const days = 7 + (n > 3 ? 2 : 0);
+    const works = [
+      { name: 'Бурение скважин', qty: `${n} скв. × ${depth} м = ${metres} п. м`, nt: 'СП', nn: '446.1325800.2019', price: this.rub(bore) },
+      { name: 'Отбор проб и лабораторные испытания', qty: `${n * 3} ${this.plural(n * 3, 'проба', 'пробы', 'проб')} грунта`, nt: 'ГОСТ', nn: '5180-2015', price: this.rub(lab) },
+      { name: 'Выезд бригады и буровой установки', qty: dimsUnk && ans.loc === 'unk' ? 'до 50 км от города' : '1 выезд', nt: 'СП', nn: '47.13330.2016', price: this.rub(trip) },
+      { name: 'Технический отчёт', qty: '1 экз. + PDF', nt: 'СП', nn: '47.13330.2016', price: this.rub(report) },
+    ];
+    if (hasTopo) works.push({ name: 'Топографическая съёмка М 1:500', qty: 'участок до 15 соток', nt: 'СП', nn: '317.1325800.2017', price: this.rub(topo) });
+    const assump = [];
+    const edit = id => () => { const i = this.steps().findIndex(s => s.id === id); this.go('calc', { step: Math.max(0, i) }); };
+    if (ans.obj === 'unk') assump.push({ k: 'Тип объекта', v: 'жилой дом', edit: edit('obj') });
+    if (ans.floors === 'unk') assump.push({ k: 'Этажность', v: 'два этажа', edit: edit('floors') });
+    if (dimsUnk) assump.push({ k: 'Пятно застройки', v: '12 × 10 м', edit: edit('dims') });
+    if (ans.found === 'unk') assump.push({ k: 'Фундамент', v: 'ленточный', edit: edit('found') });
+    if (ans.loc === 'unk') assump.push({ k: 'Участок', v: 'в пределах 50 км от Екатеринбурга', edit: edit('loc') });
+    if (ans.topo === 'unk') assump.push({ k: 'Топосъёмка', v: 'нужна, включена в пакет', edit: edit('topo') });
+    const objName = obj === 'light' ? 'лёгкой постройки' : obj === 'basement' ? 'дома с подвалом' : `${floors === 1 ? 'одноэтажного' : floors === 2 ? 'двухэтажного' : 'трёхэтажного'} дома`;
+    const justify = `Для ${objName} с пятном ${l} × ${w} м (${area} м²) нужно ${n} ${this.plural(n, 'скважина', 'скважины', 'скважин')} по контуру здания. Глубина ${depth} м перекрывает зону, где грунт воспринимает нагрузку от ${found === 'piles' ? 'свай' : 'фундамента'}, с запасом на уровень грунтовых вод.`;
+    const lines = [{ k: 'Геология', v: this.rub(geo) }];
+    if (hasTopo) { lines.push({ k: 'Топосъёмка', v: this.rub(topo) }); lines.push({ k: 'Скидка за пакет, 10%', v: '−' + this.rub(disc) }); }
+    const locL = ans.loc === 'cad' ? cad : ans.loc === 'map' && pt ? 'точка на карте' : '—';
+    return {
+      no: 'П-0412', title: hasTopo ? 'Геология и топосъёмка под ' + (obj === 'light' ? 'баню или гараж' : 'дом') : 'Геология под ' + (obj === 'light' ? 'баню или гараж' : 'дом'),
+      n, depth, metres, area, l, w, justify, works, assump, noAssump: assump.length === 0, lines,
+      total: this.rub(total), days: `${days} рабочих дней`, canAddTopo: !hasTopo,
+      topoOffer: 'итого ' + this.rub(Math.round((geo + topo) * 0.9 / 100) * 100), locL,
+    };
+  }
+
+  plan(r, W, H) {
+    const e = React.createElement, pad = 34;
+    const k = Math.min((W - pad * 2) / r.l, (H - pad * 2) / r.w);
+    const rw = r.l * k, rh = r.w * k, x0 = (W - rw) / 2, y0 = (H - rh) / 2;
+    const c = [[x0, y0], [x0 + rw, y0], [x0 + rw, y0 + rh], [x0, y0 + rh]];
+    const pts = r.n === 2 ? [c[0], c[2]] : r.n === 3 ? [c[0], c[1], [x0 + rw / 2, y0 + rh]] : r.n === 4 ? c : [...c, [x0 + rw / 2, y0 + rh / 2]];
+    const ink = { stroke: 'var(--color-text)' }, t = { fontSize: 11, fill: 'var(--color-neutral-800)', fontFamily: 'var(--font-body)', fontVariantNumeric: 'tabular-nums' };
+    return e('svg', { viewBox: `0 0 ${W} ${H}`, width: '100%', style: { display: 'block', border: '1px solid var(--color-divider)', borderRadius: 'var(--radius-md)' } },
+      e('rect', { x: x0, y: y0, width: rw, height: rh, style: { fill: 'none', ...ink, strokeWidth: 1 } }),
+      e('line', { x1: x0, y1: y0 - 14, x2: x0 + rw, y2: y0 - 14, style: { stroke: 'var(--color-neutral-600)', strokeWidth: .8 } }),
+      e('text', { x: x0 + rw / 2, y: y0 - 19, textAnchor: 'middle', style: t }, `${String(r.l).replace('.', ',')} м`),
+      e('line', { x1: x0 + rw + 14, y1: y0, x2: x0 + rw + 14, y2: y0 + rh, style: { stroke: 'var(--color-neutral-600)', strokeWidth: .8 } }),
+      e('text', { x: x0 + rw + 19, y: y0 + rh / 2 + 4, style: t }, `${String(r.w).replace('.', ',')} м`),
+      ...pts.map((p, i) => e('g', { key: i },
+        e('circle', { cx: p[0], cy: p[1], r: 7, style: { fill: 'var(--color-bg)', stroke: 'var(--color-accent)', strokeWidth: 2 } }),
+        e('circle', { cx: p[0], cy: p[1], r: 2, style: { fill: 'var(--color-accent-700)' } }),
+        e('text', { x: p[0] + 10, y: p[1] + (p[1] > y0 + rh / 2 ? 16 : -8), style: { ...t, fill: 'var(--color-text)' } }, `Скв. ${i + 1}`))));
+  }
+
+  fmtPhone(raw) {
+    let d = raw.replace(/\D/g, '');
+    if (d[0] === '7' || d[0] === '8') d = d.slice(1);
+    d = d.slice(0, 10);
+    if (!d) return '';
+    let s = '+7 (' + d.slice(0, 3);
+    if (d.length > 3) s += ') ' + d.slice(3, 6);
+    if (d.length > 6) s += '-' + d.slice(6, 8);
+    if (d.length > 8) s += '-' + d.slice(8, 10);
+    return s;
+  }
+  submit = () => {
+    const digits = this.state.phone.replace(/\D/g, '').slice(1);
+    const cErr = {};
+    if (digits.length !== 10) cErr.phone = 'Проверьте номер: после +7 нужно 10 цифр.';
+    if (!this.state.name.trim()) cErr.name = 'Как к вам обращаться?';
+    if (Object.keys(cErr).length) { this.setState({ cErr }); return; }
+    this.setState({ cErr: {}, send: 'sending' });
+    setTimeout(() => {
+      const out = this.props.sendOutcome ?? 'success';
+      if (out === 'success') this.go('sent', { send: 'idle', reqNo: String(Math.floor(1000 + Math.random() * 9000)) });
+      else this.setState({ send: out });
+    }, 1200);
+  };
+
+  renderVals() {
+    const s = this.state, st = this.steps(), cur = st[Math.min(s.step, st.length - 1)];
+    const isCalc = s.screen === 'calc';
+    const r = this.calc();
+    const frames = this.props.frames ?? 'both';
+    const startCalc = () => this.go('calc', { step: 0 });
+    const scen = [
+      { no: '01', t: 'Строю дом', h: 'Геология и топосъёмка под фундамент', p: 'от 38 000 ₽', onClick: startCalc },
+      { no: '02', t: 'Проектирую объект', h: 'Комплексные изыскания под экспертизу', p: 'по ТЗ', onClick: () => this.toast('В прототипе собрана ветка «Строю дом»') },
+      { no: '03', t: 'Топосъёмка для газа или воды', h: 'План М 1:500 для подключения сетей', p: 'от 12 000 ₽', onClick: () => this.toast('В прототипе собрана ветка «Строю дом»') },
+      { no: '04', t: 'Границы и межевание', h: 'Вынос точек, межевой план', p: 'от 9 000 ₽', onClick: () => this.toast('В прототипе собрана ветка «Строю дом»') },
+    ];
+    const opts = cur.type === 'choice' ? cur.opts.map(o => {
+      const sel = s.ans[cur.id] === o.v;
+      return { ...o, sel, unk: !!o.unk && sel, onClick: () => this.pick(cur.id, o.v),
+        bc: sel ? 'var(--color-accent)' : 'var(--color-divider)', sh: sel ? 'inset 0 0 0 1px var(--color-accent)' : 'none',
+        bg: sel ? 'color-mix(in srgb, var(--color-accent) 8%, transparent)' : 'transparent',
+        dotC: sel ? 'var(--color-accent)' : 'var(--color-neutral-500)', dotBg: sel ? 'var(--color-accent)' : 'transparent', dotStyle: o.unk && !sel ? 'dashed' : 'solid' };
+    }) : [];
+    const prog = st.map((_, i) => ({ b: i < s.step ? '2px solid var(--color-accent)' : i === s.step ? '2px solid var(--color-accent-700)' : '1px solid var(--color-neutral-500)' }));
+    const a = s.ans, dash = '—';
+    const summary = [
+      { k: 'Объект', v: a.obj === 'unk' ? 'не знаю → дом' : this.LABELS.obj[a.obj] || dash },
+      { k: 'Этажность', v: a.obj === 'light' ? '1' : a.floors === 'unk' ? 'не знаю → 2' : a.floors || dash },
+      { k: 'Пятно', v: a.dims === 'unk' ? 'не знаю → 12 × 10 м' : a.dims === 'set' ? `${s.L} × ${s.W} м` : dash },
+      { k: 'Фундамент', v: a.found === 'unk' ? 'не знаю → ленточный' : this.LABELS.found[a.found] || dash },
+      { k: 'Участок', v: a.loc === 'unk' ? 'уточним' : a.loc ? r.locL : dash },
+      { k: 'Топосъёмка', v: a.topo === 'need' ? 'нужна, пакетом' : a.topo === 'have' ? 'есть' : a.topo === 'unk' ? 'не знаю → пакет' : dash },
+    ];
+    const l = this.num(s.L), w = this.num(s.W);
+    const cErr = s.cErr;
+    return {
+      showD: frames !== 'mobile', showM: frames !== 'desktop',
+      dRef: this.dRef, mRef: this.mRef,
+      isHome: s.screen === 'home', isCalc, isResult: s.screen === 'result', isContact: s.screen === 'contact', isSent: s.screen === 'sent',
+      barHome: s.screen === 'home' || s.screen === 'sent',
+      scen, trust: [
+        { k: 'СРО', v: 'СРО-И-000-01122009' }, { k: 'Лаборатория', v: 'Аттестат № 00-000' }, { k: 'Работаем', v: 'с 2009 года' }, { k: 'Объектов', v: '1 240' }, { k: 'Яндекс Карты', v: '4,9 · 212 отзывов' } ],
+      startCalc, goHome: () => this.go('home'),
+      stub: e => { e && e.preventDefault && e.preventDefault(); this.toast('Раздел не входит в этот прототип'); },
+      call: e => { e && e.preventDefault && e.preventDefault(); this.toast('Звонок: +7 343 000-00-00'); },
+      reset: () => this.setState({ ...this.init }, () => this.top()),
+      goResultDemo: () => this.go('result', { ans: { obj: 'house', floors: 'unk', dims: 'set', found: 'unk', loc: 'cad', topo: 'need' }, L: '12', W: '9', cad: '66:41:0206014:37', locMode: 'cad' }),
+      stepNo: s.step + 1, stepTotal: st.length, prog,
+      cur: { q: cur.q, hint: cur.hint, isChoice: cur.type === 'choice', isDims: cur.type === 'dims', isLoc: cur.type === 'loc' },
+      opts, summary, next: this.next, back: this.back,
+      nextLabel: s.step >= st.length - 1 ? 'Показать расчёт' : 'Далее',
+      enterNext: e => { if (e.key === 'Enter') this.next(); },
+      hasErr: !!s.err && isCalc, err: s.err,
+      L: s.L, W: s.W,
+      setL: e => this.setState({ L: e.target.value.replace(/[^\d.,]/g, ''), err: null, ans: { ...s.ans, dims: undefined } }),
+      setW: e => this.setState({ W: e.target.value.replace(/[^\d.,]/g, ''), err: null, ans: { ...s.ans, dims: undefined } }),
+      areaLabel: l && w ? `= ${Math.round(l * w)} м²` : 'площадь посчитаем сами',
+      dimBorder: s.err && isCalc ? 'var(--color-accent)' : 'var(--color-divider)',
+      dimsUnk: () => { this.setState({ ans: { ...s.ans, dims: 'unk' }, err: null }, this.next); },
+      locCad: s.locMode === 'cad', locMap: s.locMode === 'map',
+      modeCad: () => this.setState({ locMode: 'cad', err: null }), modeMap: () => this.setState({ locMode: 'map', err: null }),
+      cad: s.cad, setCad: e => this.setState({ cad: e.target.value.replace(/[^\d:]/g, '').slice(0, 20), err: null, ans: { ...s.ans, loc: undefined } }),
+      setPt: e => { const b = e.currentTarget.getBoundingClientRect(); this.setState({ pt: { x: (e.clientX - b.left) / b.width, y: (e.clientY - b.top) / b.height }, err: null, ans: { ...s.ans, loc: undefined } }); },
+      hasPt: !!s.pt, ptL: s.pt ? (s.pt.x * 100) + '%' : '0', ptT: s.pt ? (s.pt.y * 100) + '%' : '0',
+      ptLabel: s.pt ? `Точка: ${(56.95 - s.pt.y * 0.2).toFixed(4)}, ${(60.45 + s.pt.x * 0.3).toFixed(4)}` : 'Точка не выбрана',
+      locUnk: () => { this.setState({ ans: { ...s.ans, loc: 'unk' }, err: null }, this.next); },
+      r, planD: this.plan(r, 300, 220), planM: this.plan(r, 350, 220),
+      today: new Date().toLocaleDateString('ru-RU'),
+      addTopo: () => { this.setState({ ans: { ...s.ans, topo: 'need' } }); this.toast('Топосъёмка добавлена, скидка 10% применена'); },
+      pdf: () => this.toast('PDF «Предварительная программа работ» скачивается'),
+      share: () => this.toast('Ссылка на расчёт скопирована'),
+      toContact: () => this.go('contact', { send: 'idle' }), backToResult: () => this.go('result'),
+      phone: s.phone, setPhone: e => this.setState({ phone: this.fmtPhone(e.target.value), cErr: { ...cErr, phone: null } }),
+      name: s.name, setName: e => this.setState({ name: e.target.value, cErr: { ...cErr, name: null } }),
+      hasPhoneErr: !!cErr.phone, phoneErr: cErr.phone, phoneBorder: cErr.phone ? 'var(--color-accent)' : 'var(--color-divider)',
+      hasNameErr: !!cErr.name, nameErr: cErr.name, nameBorder: cErr.name ? 'var(--color-accent)' : 'var(--color-divider)',
+      vias: [['call', 'Звонок'], ['wa', 'WhatsApp'], ['tg', 'Telegram']].map(([v, lbl]) => ({ l: lbl, sel: s.via === v, onClick: () => this.setState({ via: v }) })),
+      submit: this.submit, isSending: s.send === 'sending', isErr: s.send === 'error', isOffline: s.send === 'offline',
+      submitLabel: s.send === 'sending' ? 'Отправляем…' : s.send === 'error' || s.send === 'offline' ? 'Отправить ещё раз' : 'Отправить расчёт',
+      reqNo: s.reqNo,
+      sentText: `Инженер позвонит на ${s.phone || 'ваш номер'} ${s.via === 'call' ? '' : 'или напишет в ' + (s.via === 'wa' ? 'WhatsApp ' : 'Telegram ')}в рабочее время, обычно в течение часа.`,
+      nextSteps: [
+        { no: '01', t: 'Инженер проверит расчёт и уточнит допущения', w: 'сегодня' },
+        { no: '02', t: 'Договор и выезд буровой бригады на участок', w: '2–3 дня' },
+        { no: '03', t: 'Технический отчёт в бумаге и PDF', w: r.days },
+      ],
+      hasToast: !!s.toast, toast: s.toast,
+    };
+  }
+}
+</script>
+</body>
+</html>

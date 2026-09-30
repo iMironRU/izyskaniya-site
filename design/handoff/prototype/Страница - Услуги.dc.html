@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/classical-4c742f67-1d29-4a03-bc1d-ef81b25fee22/styles.css">
+<script src="_ds/classical-4c742f67-1d29-4a03-bc1d-ef81b25fee22/_ds_bundle.js"></script>
+<script src="site-data.js"></script>
+<style>body{margin:0;background:var(--color-bg)}a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}button{font:inherit;color:inherit}</style>
+</helmet>
+<dc-import name="SiteHeader" current="uslugi" hint-size="100%,72px"></dc-import>
+<main style="padding:clamp(20px,3vw,32px) clamp(20px,4.4vw,56px) clamp(48px,6vw,80px);display:flex;flex-direction:column;gap:clamp(20px,3vw,32px)">
+  <nav aria-label="Хлебные крошки" style="font-size:13px;color:var(--color-neutral-700);display:flex;gap:8px;flex-wrap:wrap"><a href="#" onClick="{{ goHome }}" style="color:var(--color-neutral-700)">Главная</a><span>/</span><span>Услуги</span></nav>
+  <div style="display:flex;flex-direction:column;gap:10px;max-width:780px">
+    <h1 style="font-size:clamp(34px,4.4vw,54px);font-weight:400;margin:0;line-height:1.05">Услуги</h1>
+    <p style="margin:0;font-size:clamp(15px,1.4vw,17px);color:var(--color-neutral-800)">Семь направлений изысканий. Все работы, кроме гидрометеорологии, выполняем своими силами, без субподрядчиков.</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-neutral-700)">Ваша задача</span>
+    <div role="radiogroup" style="display:flex;flex-wrap:wrap;gap:8px">
+      <sc-for list="{{ filters }}" as="f" hint-placeholder-count="5"><button role="radio" aria-checked="{{ f.on }}" onClick="{{ f.go }}" style="min-height:44px;padding:0 16px;border:1px solid {{ f.bc }};border-radius:var(--radius-md);background:{{ f.bg }};color:{{ f.c }};font-size:14px;cursor:pointer">{{ f.t }}</button></sc-for>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:16px">
+    <sc-for list="{{ dirs }}" as="d" hint-placeholder-count="7">
+      <article class="card" style="padding:clamp(16px,2vw,24px);gap:12px;opacity:{{ d.op }};border-color:{{ d.bc }}">
+        <div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline"><a href="#" onClick="{{ d.go }}" style="font-family:var(--font-heading);font-size:clamp(22px,2vw,26px);font-weight:600;color:var(--color-text);text-decoration:none" style-hover="color:var(--color-accent-800)">{{ d.t }}</a><sc-if value="{{ d.match }}" hint-placeholder-val="{{ false }}"><span class="tag tag-accent">подходит</span></sc-if></div>
+        <p style="margin:0;font-size:14px;color:var(--color-neutral-800)">{{ d.h }}</p>
+        <div style="display:flex;gap:24px;font-variant-numeric:tabular-nums;border-top:1px solid var(--color-divider);border-bottom:1px solid var(--color-divider);padding:8px 0"><div style="display:flex;flex-direction:column"><span style="font-size:11px;color:var(--color-neutral-700);text-transform:uppercase;letter-spacing:.06em">Цена</span><span style="font-size:15px">{{ d.from }}</span></div><div style="display:flex;flex-direction:column"><span style="font-size:11px;color:var(--color-neutral-700);text-transform:uppercase;letter-spacing:.06em">Срок</span><span style="font-size:15px">{{ d.days }}</span></div></div>
+        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column">
+          <sc-for list="{{ d.list }}" as="s" hint-placeholder-count="3"><li><a href="#" onClick="{{ s.go }}" style="display:flex;justify-content:space-between;align-items:center;min-height:40px;font-size:14px;color:var(--color-text);text-decoration:none" style-hover="color:var(--color-accent-800)">{{ s.t }}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent)"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a></li></sc-for>
+        </ul>
+        <a href="#" onClick="{{ d.go }}" style="font-size:14px;margin-top:auto">Всё о направлении →</a>
+      </article>
+    </sc-for>
+  </div>
+  <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:20px 48px;border-top:1px solid var(--color-text);padding-top:24px">
+    <div style="display:flex;flex-direction:column;gap:8px"><h2 style="margin:0;font-size:clamp(26px,3vw,34px);font-weight:400">Не нашли свою задачу?</h2><p style="margin:0;font-size:15px;color:var(--color-neutral-800)">Опишите объект или пришлите ТЗ. Инженер подберёт состав работ и ответит в течение рабочего дня.</p></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><button class="btn btn-primary" onClick="{{ goTz }}" style="min-height:48px;font-size:16px;color:var(--color-accent-800)">Отправить ТЗ</button><a class="btn btn-secondary" href="tel:+73430000000" style="min-height:48px;font-size:16px;font-variant-numeric:tabular-nums">+7 343 000-00-00</a></div>
+  </section>
+</main>
+<dc-import name="SiteFooter" cta="{{ false }}" hint-size="100%,380px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { f: 'all' };
+  componentDidMount() {
+    if (!window.SITE) { this._p = setInterval(() => { if (window.SITE) { clearInterval(this._p); this.componentDidMount(); } }, 50); return; }
+    this._off = window.SITE.useMobile(this); this.forceUpdate();
+  }
+  componentWillUnmount() { clearInterval(this._p); this._off && this._off(); }
+  renderVals() {
+    const S = window.SITE || { DIRECTIONS: [], nav() {} };
+    const go = r => e => S.nav(r, e);
+    const f = this.state.f;
+    const F = [['all', 'Все направления'], ['dom', 'Под дом'], ['proekt', 'Под проект и экспертизу'], ['seti', 'Газ и вода'], ['granicy', 'Границы участка']];
+    const dirs = S.DIRECTIONS.map(d => ({ ...d, match: f !== 'all' && d.tasks.includes(f) }))
+      .sort((a, b) => (b.match ? 1 : 0) - (a.match ? 1 : 0))
+      .map(d => ({ ...d, op: f === 'all' || d.match ? 1 : 0.5, bc: d.match ? 'var(--color-accent)' : 'var(--color-divider)',
+        go: go(d.id === 'geologiya' ? 'geologiya' : d.id === 'geodeziya' ? 'topo-gaz' : 'uslugi'), list: d.services.map(([t, r]) => ({ t, go: go(r) })) }));
+    return {
+      filters: F.map(([k, t]) => ({ t, on: f === k, go: () => this.setState({ f: k }), bc: f === k ? 'var(--color-accent)' : 'var(--color-divider)', bg: f === k ? 'var(--color-accent-100)' : 'transparent', c: f === k ? 'var(--color-accent-800)' : 'var(--color-text)' })),
+      dirs, goHome: go('home'), goTz: go('proektirovshchikam'),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/classical-4c742f67-1d29-4a03-bc1d-ef81b25fee22/styles.css">
+<script src="_ds/classical-4c742f67-1d29-4a03-bc1d-ef81b25fee22/_ds_bundle.js"></script>
+<script src="site-data.js"></script>
+</helmet>
+<div style="display:flex;flex-direction:column;padding-bottom:{{ padB }}">
+  <sc-if value="{{ showCta }}" hint-placeholder-val="{{ true }}">
+    <section style="margin:0 clamp(20px,4.4vw,56px);padding:clamp(28px,4vw,48px) 0;border-top:1px solid var(--color-text);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:clamp(20px,3vw,40px);align-items:start">
+      <div style="display:flex;flex-direction:column;gap:8px"><h2 style="margin:0;font-size:clamp(28px,3.4vw,40px);font-weight:400">{{ ctaTitle }}</h2><p style="margin:0;font-size:15px;color:var(--color-neutral-800)">Выберите удобный способ. Форма с контактами появится, только когда вы сами её откроете.</p></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:0;border-top:1px solid var(--color-divider)">
+        <a href="#" onClick="{{ goCalc }}" style="display:flex;flex-direction:column;gap:4px;padding:16px 16px 16px 0;border-bottom:1px solid var(--color-divider);text-decoration:none;color:var(--color-text)" style-hover="color:var(--color-accent-800)"><span style="font-family:var(--font-heading);font-size:22px;font-weight:600">Рассчитать онлайн</span><span style="font-size:13px;color:var(--color-neutral-700)">Цена и состав работ за 2 минуты</span></a>
+        <a href="#" onClick="{{ goTz }}" style="display:flex;flex-direction:column;gap:4px;padding:16px 16px 16px 0;border-bottom:1px solid var(--color-divider);text-decoration:none;color:var(--color-text)" style-hover="color:var(--color-accent-800)"><span style="font-family:var(--font-heading);font-size:22px;font-weight:600">Отправить ТЗ</span><span style="font-size:13px;color:var(--color-neutral-700)">Смета в течение рабочего дня</span></a>
+        <a href="tel:+73430000000" style="display:flex;flex-direction:column;gap:4px;padding:16px 16px 16px 0;border-bottom:1px solid var(--color-divider);text-decoration:none;color:var(--color-text)" style-hover="color:var(--color-accent-800)"><span style="font-family:var(--font-heading);font-size:22px;font-weight:600;font-variant-numeric:tabular-nums">+7 343 000-00-00</span><span style="font-size:13px;color:var(--color-neutral-700)">пн–пт 8:00–19:00</span></a>
+      </div>
+    </section>
+  </sc-if>
+  <footer style="border-top:1px solid var(--color-divider);background:var(--color-surface);padding:clamp(28px,4vw,48px) clamp(20px,4.4vw,56px) 28px;display:flex;flex-direction:column;gap:28px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:28px 32px">
+      <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-neutral-700)">Услуги</span><sc-for list="{{ dirs }}" as="d" hint-placeholder-count="7"><a href="#" onClick="{{ d.go }}" style="font-size:14px;color:var(--color-text);text-decoration:none;padding:3px 0" style-hover="color:var(--color-accent-800)">{{ d.t }}</a></sc-for></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-neutral-700)">Разделы</span><sc-for list="{{ secs }}" as="d" hint-placeholder-count="8"><a href="#" onClick="{{ d.go }}" style="font-size:14px;color:var(--color-text);text-decoration:none;padding:3px 0" style-hover="color:var(--color-accent-800)">{{ d.t }}</a></sc-for></div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-variant-numeric:tabular-nums"><span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-neutral-700)">Контакты</span><a href="tel:+73430000000" style="font-family:var(--font-heading);font-size:22px;color:var(--color-text);text-decoration:none">+7 343 000-00-00</a><span style="font-size:14px">пн–пт 8:00–19:00, сб 9:00–15:00</span><a href="#" style="font-size:14px">info@geoplan.example</a><span style="font-size:14px;color:var(--color-neutral-800)">Екатеринбург, ул. Примерная, 1, офис 101</span><div style="display:flex;gap:14px;margin-top:4px;font-size:14px"><a href="#">Telegram</a><a href="#">ВКонтакте</a><a href="#">WhatsApp</a></div></div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-variant-numeric:tabular-nums"><span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-neutral-700)">Реквизиты</span><span style="font-size:14px">ООО «ГЕОПЛАН»</span><span style="font-size:14px">ИНН 6600000000</span><span style="font-size:14px">ОГРН 1096600000000</span><span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-neutral-700);margin-top:10px">Проверить в реестрах</span><a href="#" style="font-size:14px">Реестр членов СРО</a><a href="#" style="font-size:14px">Росаккредитация</a><a href="#" style="font-size:14px">ЕГРЮЛ</a></div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;border-top:1px solid var(--color-divider);padding-top:16px;font-size:12px;color:var(--color-neutral-700)"><span>© 2009–2026 ГЕОПЛАН. Данные на сайте — демо для прототипа.</span><a href="#" onClick="{{ goPrivacy }}" style="color:var(--color-neutral-800)">Политика конфиденциальности</a></div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;cta&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;ctaTitle&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Посчитаем и выедем на участок&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;noBar&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() {
+    const S = window.SITE;
+    if (!S) { this._p = setInterval(() => { if (window.SITE) { clearInterval(this._p); this.componentDidMount(); } }, 50); return; }
+    this._off = S.useMobile(this); this.forceUpdate();
+  }
+  componentWillUnmount() { clearInterval(this._p); this._off && this._off(); }
+  renderVals() {
+    const S = window.SITE || { DIRECTIONS: [], nav() {} };
+    const go = r => e => S.nav(r, e);
+    return {
+      showCta: this.props.cta ?? true,
+      ctaTitle: this.props.ctaTitle ?? 'Посчитаем и выедем на участок',
+      padB: this._mob && !(this.props.noBar ?? false) ? '76px' : '0px',
+      dirs: S.DIRECTIONS.map(d => ({ t: d.t, go: go(d.id === 'geologiya' ? 'geologiya' : 'uslugi') })),
+      secs: [['ceny', 'Цены'], ['obrazcy', 'Образцы отчётов'], ['obekty', 'Объекты'], ['o-kompanii', 'О компании'], ['kak-rabotaem', 'Как мы работаем'], ['proverka', 'Как проверить подрядчика'], ['voprosy', 'Вопросы и ответы'], ['kontakty', 'Контакты']].map(([r, t]) => ({ t, go: go(r) })),
+      goCalc: go('raschet'), goTz: go('proektirovshchikam'), goPrivacy: go('privacy'),
+    };
+  }
+}
+</script>
+</body>
+</html>
