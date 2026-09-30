@@ -1,0 +1,60 @@
+- id: length_m
+  service: geology
+  title: Какая длина у большей стороны дома?
+  hint: По проекту или примерно, в метрах.
+  why:
+    text: От размеров здания зависит, сколько скважин нужно.
+    norm: { code: "СП 47.13330.2016" }
+  kind: number
+  number: { unit: м, min: 3, max: 300, step: 0.5 }
+  show_if: { q: services, includes: geology }
+  unknown:
+    label: Не знаю
+    assume: 15
+    note: "Приняли 15 м по большей стороне."
+    demo: true
+
+- id: floors
+  service: geology
+  title: Сколько этажей?
+  hint: Вместе с мансардой. Про подвал спросим отдельно.
+  why:
+    text: От нагрузки на грунт зависит глубина скважин.
+    norm: { code: "СП 47.13330.2016" }
+  kind: choice
+  options:
+    - { value: "1", label: 1 этаж }
+    - { value: "2", label: 2 этажа }
+    - { value: "3", label: 3 этажа и выше, hint: "Нагрузка больше — скважины глубже" }
+  show_if: { q: services, includes: geology }
+  unknown:
+    label: Не знаю
+    assume: "3"
+    note: "Приняли 3 этажа — так глубина скважин точно достаточна."
+    demo: true
+
+- id: basement
+  service: geology
+  title: Будет подвал или цокольный этаж?
+  kind: boolean
+  show_if: { all: [{ q: services, includes: geology }, { q: object_type, not_in: [light] }] }
+  unknown:
+    label: Не знаю
+    assume: true
+    note: "Приняли, что подвал будет: скважины глубже."
+    demo: true
+
+- id: foundation
+  service: geology
+  title: Какой фундамент планируете?
+  kind: choice
+  options:
+    - { value: slab, label: Плита }
+    - { value: strip, label: Ленточный }
+    - { value: piles, label: Сваи, hint: "Винтовые или буронабивные" }
+  show_if: { q: services, includes: geology }
+  unknown:
+    label: Не знаю
+    assume: piles
+    note: "Приняли сваи — для них нужны самые глубокие скважины. Если будет плита или лента, станет дешевле."
+    demo: true

@@ -1,0 +1,131 @@
+- id: topo_purpose
+  service: topo
+  title: Для чего нужна топосъёмка?
+  kind: choice
+  options:
+    - { value: house, label: Для проекта дома или ГПЗУ }
+    - { value: gas, label: Для газа, hint: "Для техусловий и проекта газопровода" }
+    - { value: water, label: Для воды или канализации }
+    - { value: landscape, label: Для ландшафта или благоустройства }
+  show_if: { q: services, includes: topo }
+  unknown:
+    label: Не знаю
+    assume: house
+    note: "Посчитали как для проекта дома."
+    demo: false
+
+- id: topo_geometry
+  service: topo
+  title: Что снимаем?
+  kind: choice
+  options:
+    - { value: area, label: Участок, hint: "Площадная съёмка" }
+    - { value: linear, label: Трассу, hint: "Газопровод, водопровод, дорога" }
+  show_if: { q: services, includes: topo }
+  unknown:
+    label: Не знаю
+    assume: area
+    note: "Посчитали съёмку участка."
+    demo: false
+
+- id: area_ha
+  service: topo
+  title: Какая площадь участка?
+  hint: В гектарах. 10 соток = 0,1 га.
+  kind: number
+  number: { unit: га, min: 0.01, max: 500, step: 0.01 }
+  show_if: { all: [{ q: services, includes: topo }, { q: topo_geometry, in: [area] }] }
+  unknown:
+    label: Не знаю
+    assume: 0.25
+    note: "Приняли 25 соток."
+    demo: true
+
+- id: length_km
+  service: topo
+  title: Какая длина трассы?
+  kind: number
+  number: { unit: км, min: 0.05, max: 200, step: 0.05 }
+  show_if: { all: [{ q: services, includes: topo }, { q: topo_geometry, in: [linear] }] }
+  unknown:
+    label: Не знаю
+    assume: 1
+    note: "Приняли трассу 1 км."
+    demo: true
+
+- id: scale
+  service: topo
+  title: Какой нужен масштаб?
+  hint: Для частного дома обычно 1:500.
+  kind: choice
+  options:
+    - { value: "500", label: "1:500", hint: "Самый подробный" }
+    - { value: "1000", label: "1:1000" }
+    - { value: "2000", label: "1:2000", hint: "Для больших территорий" }
+  show_if: { all: [{ q: services, includes: topo }, { q: topo_geometry, in: [area] }] }
+  unknown:
+    label: Не знаю
+    assume: "500"
+    note: "Приняли 1:500 — его принимают для проекта дома и сетей."
+    demo: false
+
+- id: utilities
+  service: topo
+  title: Нужно снять подземные коммуникации?
+  hint: Трубы и кабели под землёй.
+  kind: boolean
+  show_if: { q: services, includes: topo }
+  unknown:
+    label: Не знаю
+    assume: true
+    note: "Включили съёмку коммуникаций: без неё план часто не принимают."
+    demo: false
+
+- id: trees
+  service: topo
+  title: Нужна подеревная съёмка?
+  hint: Каждое дерево на плане, с породой и диаметром.
+  kind: boolean
+  show_if: { all: [{ q: services, includes: topo }, { q: topo_geometry, in: [area] }] }
+  unknown:
+    label: Не знаю
+    assume: false
+    note: "Не включили. Понадобится, если на участке есть деревья под вырубку."
+    demo: false
+
+- id: stakeout
+  service: topo
+  title: Нужно вынести границы участка?
+  hint: Поставим межевые знаки на углах участка.
+  kind: boolean
+  show_if: { all: [{ q: services, includes: topo }, { q: topo_geometry, in: [area] }] }
+  unknown:
+    label: Не знаю
+    assume: false
+    note: "Не включили вынос границ."
+    demo: false
+
+- id: stakeout_points
+  service: topo
+  title: Сколько точек выносим?
+  hint: Обычно по углам участка — 4.
+  kind: number
+  number: { unit: точка, min: 1, max: 100, step: 1 }
+  show_if: { all: [{ q: services, includes: topo }, { q: stakeout, in: [true] }] }
+  unknown:
+    label: Не знаю
+    assume: 4
+    note: "Приняли 4 точки."
+    demo: true
+
+- id: approvals
+  service: topo
+  title: Согласовать план с эксплуатирующими службами?
+  hint: Газ, вода, электросети — если этого требует проектировщик.
+  kind: boolean
+  show_if: { q: services, includes: topo }
+  unknown:
+    label: Не знаю
+    assume: true
+    note: "Включили согласования: для техусловий они обычно нужны."
+    demo: false

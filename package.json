@@ -10,7 +10,7 @@
     "tokens": "node style-dictionary.config.js",
     "predev": "npm run tokens",
     "dev": "next dev --webpack",
-    "prebuild": "npm run tokens",
+    "prebuild": "npm run tokens && npm run data:check",
     "build": "next build --webpack",
     "typecheck": "tsc --noEmit",
     "lint": "npm run lint:js && npm run lint:css",
@@ -23,12 +23,15 @@
     "build-storybook": "storybook build -o storybook-static --quiet",
     "test:visual": "playwright test",
     "test:visual:docker": "sh tests/visual/docker.sh",
-    "test:visual:update": "sh tests/visual/docker.sh --update-snapshots"
+    "test:visual:update": "sh tests/visual/docker.sh --update-snapshots",
+    "data:report": "tsx scripts/data-report.ts",
+    "data:check": "tsx scripts/data-report.ts --check"
   },
   "dependencies": {
     "@fontsource/ibm-plex-mono": "5.3.0",
     "@fontsource/ibm-plex-sans": "5.3.0",
     "@fontsource/pt-serif": "5.3.0",
+    "js-yaml": "5.4.2",
     "next": "16.3.7",
     "react": "19.3.0",
     "react-dom": "19.3.0",
@@ -38,6 +41,7 @@
     "@playwright/test": "1.63.0",
     "@storybook/nextjs-vite": "10.6.1",
     "@tailwindcss/postcss": "4.3.3",
+    "@types/js-yaml": "4.0.9",
     "@types/node": "22.20.4",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
@@ -50,6 +54,7 @@
     "stylelint": "17.15.0",
     "stylelint-config-standard": "40.0.0",
     "tailwindcss": "4.3.3",
+    "tsx": "4.23.15",
     "typescript": "5.9.3",
     "vite": "8.3.1",
     "vitest": "5.0.2"

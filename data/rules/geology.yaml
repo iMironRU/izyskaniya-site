@@ -1,0 +1,117 @@
+# Правила объёма работ по инженерно-геологическим изысканиям.
+#
+# ВНИМАНИЕ: все таблицы и коэффициенты ниже — ДЕМО. Их нужно проверить и
+# заполнить инженеру-геологу. Пока правило не проверено, у него verified: false,
+# а в результате калькулятора показывается пометка «требует проверки инженером».
+# Пункты норматива (norm.clause) не указаны намеренно — только после проверки.
+
+service: geology
+title: Инженерно-геологические изыскания
+
+quantities:
+  # TODO: верифицировать инженером — число скважин от размеров и типа объекта
+  - id: boreholes
+    title: Количество скважин
+    unit: шт
+    expr:
+      if: { q: object_type, in: [light] }
+      then: { table: { q: length_m, rows: [{ max: 10, value: 1 }, { max: null, value: 2 }] } }
+      else:
+        table:
+          q: length_m
+          rows:
+            - { max: 15, value: 3 }
+            - { max: 25, value: 4 }
+            - { max: 40, value: 5 }
+            - { max: 60, value: 6 }
+            - { max: 100, value: 8 }
+            - { max: null, value: 10 }
+    basis: Скважины ставятся по контуру здания и в центре пятна застройки, чтобы увидеть грунты под всем фундаментом.
+    norm: { code: "СП 47.13330.2016" }
+    verified: false
+    demo: true
+
+  # TODO: верифицировать инженером — глубина скважин от фундамента, этажности и подвала
+  - id: depth_m
+    title: Глубина скважины
+    unit: м
+    expr:
+      if: { q: object_type, in: [light] }
+      then: 5
+      else:
+        sum:
+          - { lookup: { q: foundation, map: { slab: 6, strip: 8, piles: 12 } } }
+          - { lookup: { q: floors, map: { "1": 0, "2": 2, "3": 4 } } }
+          - { if: { q: basement, in: [true] }, then: 3, else: 0 }
+          - { if: { q: object_type, in: [commercial] }, then: 5, else: 0 }
+    basis: Скважина должна пройти ниже подошвы фундамента на глубину, где грунт ещё воспринимает нагрузку от здания.
+    norm: { code: "СП 47.13330.2016" }
+    verified: false
+    demo: true
+
+  - id: drilling_m
+    title: Общий объём бурения
+    unit: п.м
+    expr: { mul: [{ ref: boreholes }, { ref: depth_m }] }
+    basis: Число скважин × глубина.
+    verified: true
+    demo: false
+
+  # TODO: верифицировать инженером — частота отбора проб
+  - id: samples
+    title: Пробы грунта
+    unit: проба
+    expr: { mul: [{ ref: boreholes }, { ceil: { div: [{ ref: depth_m }, 3] } }] }
+    basis: Пробы отбираются из каждого слоя грунта, в среднем раз в 3 м по глубине скважины.
+    norm: { code: "СП 446.1325800.2019" }
+    verified: false
+    demo: true
+
+rules:
+  - id: drilling
+    rate: geo.drilling
+    qty: { ref: drilling_m }
+    basis: Бурение всех скважин на расчётную глубину.
+    norm: { code: "СП 47.13330.2016" }
+    verified: false   # TODO: верифицировать инженером
+    demo: true
+
+  - id: lab
+    rate: geo.lab
+    qty: { ref: samples }
+    basis: "Лабораторные испытания: состав, влажность, плотность, прочность грунтов."
+    norm: { code: "СП 446.1325800.2019" }
+    verified: false   # TODO: верифицировать инженером
+    demo: true
+
+  - id: water
+    rate: geo.water
+    qty: 1
+    basis: Если скважины вскроют подземные воды — проверим их агрессивность к бетону. Если воды нет, эту строку уберём.
+    norm: { code: "СП 47.13330.2016" }
+    verified: false   # TODO: верифицировать инженером
+    demo: true
+
+  - id: report
+    rate: geo.report
+    qty: 1
+    basis: Технический отчёт с разрезами, колонками скважин и рекомендациями для проектировщика фундамента.
+    norm: { code: "СП 47.13330.2016" }
+    verified: false   # TODO: верифицировать инженером
+    demo: true
+
+# TODO: верифицировать инженером — сроки
+duration_days:
+  min: { sum: [{ ceil: { div: [{ ref: drilling_m }, 40] } }, 10] }
+  max: { sum: [{ ceil: { div: [{ ref: drilling_m }, 25] } }, 20] }
+  demo: true
+
+checklist:
+  - text: Адрес или точка участка на карте
+  - text: Эскиз или проект дома с местом, где он будет стоять (если есть)
+    applies_if: { q: object_type, in: [house, light] }
+  - text: Свободный проезд для буровой установки к месту строительства
+  - text: Техническое задание на изыскания от проектировщика
+    applies_if: { q: object_type, in: [commercial] }
+  - text: ГПЗУ и схема планировочной организации участка
+    applies_if: { q: object_type, in: [commercial] }

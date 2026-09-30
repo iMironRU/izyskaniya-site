@@ -1,0 +1,63 @@
+# Общие вопросы. Порядок в файле = порядок показа.
+# У каждого вопроса, кроме lead_only, есть «не знаю» (unknown): подставляется
+# консервативное допущение, и оно явно показывается в результате.
+
+- id: services
+  service: common
+  title: Что нужно сделать?
+  kind: multi
+  options:
+    - { value: geology, label: Геология, hint: "Скважины и свойства грунтов — для расчёта фундамента" }
+    - { value: topo, label: Топосъёмка, hint: "План участка с рельефом и коммуникациями" }
+  unknown:
+    label: Не знаю, что нужно
+    assume: [geology, topo]
+    note: "Для строительства обычно нужны оба вида изысканий. Посчитали оба, инженер уточнит."
+    demo: false
+
+- id: object_type
+  service: common
+  title: Что строите?
+  kind: choice
+  options:
+    - { value: house, label: Жилой дом, hint: "Частный дом, ИЖС" }
+    - { value: light, label: "Баня, гараж, хозпостройка", hint: "Лёгкое одноэтажное здание" }
+    - { value: commercial, label: Коммерческий или многоквартирный объект, hint: "Магазин, склад, производство, МКД — цену покажем вилкой" }
+  unknown:
+    label: Пока не решил
+    assume: house
+    note: "Посчитали как для жилого дома."
+    demo: false
+
+- id: distance_km
+  service: common
+  title: Где участок?
+  hint: Отметьте точку на карте — посчитаем расстояние от офиса.
+  kind: number
+  number: { unit: км, min: 0, max: 2000, step: 1 }
+  unknown:
+    label: Не знаю точно
+    assume: 120
+    note: "Приняли выезд до 120 км. Точную стоимость выезда назовём, когда узнаем адрес."
+    demo: true
+
+- id: cadastral
+  service: common
+  title: Кадастровый номер участка
+  hint: Необязательно. Нужен только инженеру, в расчёте не участвует.
+  kind: text
+  lead_only: true
+
+- id: urgency
+  service: common
+  title: Как срочно?
+  kind: choice
+  options:
+    - { value: normal, label: Обычный срок }
+    - { value: fast, label: Быстрее обычного }
+    - { value: urgent, label: Срочно }
+  unknown:
+    label: Не важно
+    assume: normal
+    note: "Посчитали в обычный срок."
+    demo: false

@@ -1,0 +1,84 @@
+# Правила объёма работ по инженерно-геодезическим изысканиям (топосъёмка).
+# ВНИМАНИЕ: коэффициенты и сроки — ДЕМО, проверить инженеру-геодезисту.
+
+service: topo
+title: Инженерно-геодезические изыскания
+
+rules:
+  - id: survey_area
+    applies_if: { q: topo_geometry, in: [area] }
+    rate: { by: scale, map: { "500": topo.area.500, "1000": topo.area.1000, "2000": topo.area.2000 } }
+    qty: { answer: area_ha }
+    basis: Съёмка всей площади участка с рельефом, строениями и наземными сетями.
+    norm: { code: "СП 317.1325800.2017" }
+    verified: false   # TODO: верифицировать инженером
+    demo: true
+
+  - id: survey_linear
+    applies_if: { q: topo_geometry, in: [linear] }
+    rate: topo.linear
+    qty: { answer: length_km }
+    basis: Съёмка полосы вдоль трассы.
+    norm: { code: "СП 317.1325800.2017" }
+    verified: false   # TODO: верифицировать инженером
+    demo: true
+
+  # TODO: верифицировать инженером — ширина полосы для трассы (2 га на 1 км)
+  - id: utilities
+    applies_if: { q: utilities, in: [true] }
+    rate: topo.utilities
+    qty:
+      if: { q: topo_geometry, in: [area] }
+      then: { answer: area_ha }
+      else: { mul: [{ answer: length_km }, 2] }
+    basis: Поиск трубопроводов и кабелей под землёй приборами и по данным эксплуатирующих служб.
+    norm: { code: "СП 317.1325800.2017" }
+    verified: false
+    demo: true
+
+  - id: trees
+    applies_if: { q: trees, in: [true] }
+    rate: topo.trees
+    qty: { answer: area_ha }
+    basis: Каждое дерево наносится на план с породой и диаметром ствола.
+    verified: false   # TODO: верифицировать инженером
+    demo: true
+
+  - id: stakeout
+    applies_if: { q: stakeout, in: [true] }
+    rate: topo.stakeout
+    qty: { answer: stakeout_points }
+    basis: Вынос точек границ участка по координатам ЕГРН с закреплением на местности.
+    verified: false   # TODO: верифицировать инженером
+    demo: true
+
+  # TODO: верифицировать инженером — какие службы нужны для каждой цели
+  - id: approvals
+    applies_if: { q: approvals, in: [true] }
+    rate: topo.approval
+    qty: { lookup: { q: topo_purpose, map: { house: 3, gas: 1, water: 2, landscape: 1 } } }
+    basis: Согласование нанесённых сетей с их владельцами — газовой службой, водоканалом, электросетями.
+    verified: false
+    demo: true
+
+  - id: report
+    rate: topo.report
+    qty: 1
+    basis: Технический отчёт и топоплан в DWG и PDF.
+    norm: { code: "СП 317.1325800.2017" }
+    verified: false   # TODO: верифицировать инженером
+    demo: true
+
+# TODO: верифицировать инженером — сроки
+duration_days:
+  min: { sum: [5, { if: { q: approvals, in: [true] }, then: 10, else: 0 }] }
+  max: { sum: [10, { if: { q: approvals, in: [true] }, then: 20, else: 0 }] }
+  demo: true
+
+checklist:
+  - text: Кадастровый номер или выписка ЕГРН на участок
+  - text: Техусловия на подключение к газу
+    applies_if: { q: topo_purpose, in: [gas] }
+  - text: Техусловия на подключение к воде или канализации
+    applies_if: { q: topo_purpose, in: [water] }
+  - text: Доступ на участок в день съёмки

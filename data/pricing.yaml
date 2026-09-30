@@ -1,0 +1,50 @@
+# ЕДИНСТВЕННЫЙ источник цен. Из него считаются калькулятор, страница «Цены»
+# и цифры «от …» в карточках услуг. Цифр в вёрстке нет.
+#
+# ВСЕ ЗНАЧЕНИЯ НИЖЕ — ДЕМО (demo: true). Перед запуском заменить реальными
+# ценами компании и поставить demo: false.
+#
+# version меняйте при любой правке цен: версия попадает в ссылку «Поделиться»,
+# и по ней клиент видит, что расчёт пересчитан по новым ценам.
+
+version: "2026-09-30-demo"
+currency: RUB
+vat: none            # цены без НДС
+rounding: 100        # итог округляется до 100 ₽
+
+rates:
+  # ── Геология ──
+  - { id: geo.drilling,  service: geology, title: "Бурение скважин",                          unit: "п.м",    price: 1800,  demo: true }
+  - { id: geo.lab,       service: geology, title: "Лабораторные испытания грунтов",           unit: "проба",  price: 2500,  demo: true }
+  - { id: geo.water,     service: geology, title: "Химический анализ подземных вод",          unit: "проба",  price: 3500,  demo: true }
+  - { id: geo.report,    service: geology, title: "Технический отчёт по геологии",            unit: "объект", price: 15000, demo: true }
+
+  # ── Топосъёмка ──
+  - { id: topo.area.500,  service: topo, title: "Топографическая съёмка М 1:500",            unit: "га", price: 30000, min_charge: 12000, demo: true }
+  - { id: topo.area.1000, service: topo, title: "Топографическая съёмка М 1:1000",           unit: "га", price: 20000, min_charge: 12000, demo: true }
+  - { id: topo.area.2000, service: topo, title: "Топографическая съёмка М 1:2000",           unit: "га", price: 12000, min_charge: 12000, demo: true }
+  - { id: topo.linear,    service: topo, title: "Съёмка трассы линейного объекта",           unit: "км", price: 25000, min_charge: 12000, demo: true }
+  - { id: topo.utilities, service: topo, title: "Съёмка подземных коммуникаций",             unit: "га", price: 10000, min_charge: 5000,  demo: true }
+  - { id: topo.trees,     service: topo, title: "Подеревная съёмка",                         unit: "га", price: 8000,  min_charge: 4000,  demo: true }
+  - { id: topo.stakeout,  service: topo, title: "Вынос границ участка в натуру",             unit: "точка",  price: 1500, min_charge: 4500, demo: true }
+  - { id: topo.approval,  service: topo, title: "Согласование с эксплуатирующей службой",    unit: "служба", price: 3000, demo: true }
+  - { id: topo.report,    service: topo, title: "Технический отчёт по топосъёмке",           unit: "объект", price: 5000, demo: true }
+
+# Выезд считается один раз на заказ. Зона — по расстоянию от офиса в км.
+travel_zones:
+  - { id: z1, title: "до 30 км",     max_km: 30,   price: 0,     demo: true }
+  - { id: z2, title: "30–60 км",     max_km: 60,   price: 3000,  demo: true }
+  - { id: z3, title: "60–120 км",    max_km: 120,  price: 7000,  demo: true }
+  - { id: z4, title: "120–250 км",   max_km: 250,  price: 15000, demo: true }
+  - { id: z5, title: "дальше 250 км", max_km: null, price: null, demo: true }   # по согласованию → цена вилкой
+
+urgency:
+  - { id: normal, title: "Обычный срок", multiplier: 1.0, days_factor: 1.0, demo: true }
+  - { id: fast,   title: "Быстрее",      multiplier: 1.3, days_factor: 0.7, demo: true }
+  - { id: urgent, title: "Срочно",       multiplier: 1.6, days_factor: 0.5, demo: true }
+
+# Скидка на пакет «геология + топосъёмка» — от суммы работ без выезда.
+bundle_discount: { percent: 10, demo: true }
+
+# Вилка для коммерческих объектов и выезда «по согласованию».
+range: { low: 0.9, high: 1.5, demo: true }
