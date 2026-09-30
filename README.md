@@ -52,7 +52,7 @@ tokens/component/   точечные значения компонентов (bu
 
 Строки с классами, вынесенные в переменные, называйте `…Classes` (`variantClasses`), чтобы линтер их видел. Классы пишем обычными строками — так их правит Onlook.
 
-**Гейт 2 — снапшоты** (`tests/visual/`). Каждая стори Storybook снимается на телефоне (390 px) и десктопе (1280 px). Бейзлайны лежат в `tests/visual/__snapshots__/` и снимаются только в Docker-образе `mcr.microsoft.com/playwright:v1.63.0-noble`. Вне Docker конфиг Playwright откажется запускаться. Переснять можно локально (`npm run test:visual:update`) или в CI: Actions → CI → Run workflow → `update_snapshots`. Стори с тегом `no-snapshot` не снимаются.
+**Гейт 2 — снапшоты** (`tests/visual/`). Каждая стори Storybook снимается на телефоне (390 px) и десктопе (1280 px). Бейзлайны лежат в `tests/visual/__snapshots__/` и снимаются только в Docker-образе `mcr.microsoft.com/playwright:v1.63.0-noble`. Вне Docker конфиг Playwright откажется запускаться. Переснять можно локально (`npm run test:visual:update`) или в CI: Actions → CI → Run workflow → `update_snapshots`. Стори с тегом `no-snapshot` не снимаются, с тегом `phone-only` — снимаются только на телефоне.
 
 При обновлении `@playwright/test` меняйте версию образа в `tests/visual/docker.sh` и `.github/workflows/ci.yml`.
 

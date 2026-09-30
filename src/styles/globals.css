@@ -1,13 +1,6 @@
 @import 'tailwindcss';
 @import '../../build/css/tokens.css';
 @import '../../build/tailwind/theme.css';
-@import '@fontsource/pt-serif/400.css';
-@import '@fontsource/pt-serif/700.css';
-@import '@fontsource/ibm-plex-sans/400.css';
-@import '@fontsource/ibm-plex-sans/500.css';
-@import '@fontsource/ibm-plex-sans/600.css';
-@import '@fontsource/ibm-plex-mono/400.css';
-@import '@fontsource/ibm-plex-mono/500.css';
 
 @layer base {
   html {
@@ -18,8 +11,23 @@
     text-size-adjust: 100%;
   }
 
+  /* Свой маркер у FAQ-аккордеона: прячем системный треугольник (Safari — отдельно). */
+  summary {
+    list-style: none;
+  }
+
+  /* stylelint-disable-next-line selector-no-vendor-prefix */
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
   :focus-visible {
     outline: var(--tk-border-width-focus) solid var(--color-focus-ring);
     outline-offset: var(--tk-space-px);
   }
+}
+
+/* Отступ под «домашнюю полоску» iPhone для липких панелей. */
+@utility pb-safe {
+  padding-bottom: max(var(--tk-space-3), env(safe-area-inset-bottom));
 }
