@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      update_snapshots:
+        description: 'Переснять бейзлайны снапшотов и закоммитить их в эту ветку'
+        type: boolean
+        default: false
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gate1:
+    name: 'Гейт 1: токены, линтеры, типы, тесты, сборка'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm run tokens
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+  gate2:
+    name: 'Гейт 2: визуальная регрессия (Docker)'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
+      options: --ipc=host
+    env:
+      PLAYWRIGHT_DOCKER: '1'
+      HOME: /root
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci --no-audit --no-fund
+      - run: npm run build-storybook
+      - name: Сравнение с бейзлайнами
+        if: ${{ !inputs.update_snapshots }}
+        run: npx playwright test
+      - name: Пересъёмка бейзлайнов
+        if: ${{ inputs.update_snapshots }}
+        run: |
+          npx playwright test --update-snapshots
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tests/visual/__snapshots__
+          git diff --cached --quiet || git commit -m "Снапшоты: пересняты в CI" && git push
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            test-results
+          retention-days: 14

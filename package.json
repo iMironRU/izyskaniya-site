@@ -1,0 +1,57 @@
+{
+  "name": "izyskaniya-site",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "tokens": "node style-dictionary.config.js",
+    "predev": "npm run tokens",
+    "dev": "next dev --webpack",
+    "prebuild": "npm run tokens",
+    "build": "next build --webpack",
+    "typecheck": "tsc --noEmit",
+    "lint": "npm run lint:js && npm run lint:css",
+    "lint:js": "eslint .",
+    "lint:css": "stylelint \"src/**/*.css\"",
+    "test": "vitest run --passWithNoTests",
+    "prestorybook": "npm run tokens",
+    "storybook": "storybook dev -p 6006",
+    "prebuild-storybook": "npm run tokens",
+    "build-storybook": "storybook build -o storybook-static --quiet",
+    "test:visual": "playwright test",
+    "test:visual:docker": "sh tests/visual/docker.sh",
+    "test:visual:update": "sh tests/visual/docker.sh --update-snapshots"
+  },
+  "dependencies": {
+    "@fontsource/ibm-plex-mono": "5.3.0",
+    "@fontsource/ibm-plex-sans": "5.3.0",
+    "@fontsource/pt-serif": "5.3.0",
+    "next": "16.3.7",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@storybook/nextjs-vite": "10.6.1",
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/node": "22.20.4",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.3.7",
+    "eslint-plugin-better-tailwindcss": "4.7.0",
+    "http-server": "14.1.1",
+    "storybook": "10.6.1",
+    "style-dictionary": "4.4.0",
+    "stylelint": "17.15.0",
+    "stylelint-config-standard": "40.0.0",
+    "tailwindcss": "4.3.3",
+    "typescript": "5.9.3",
+    "vite": "8.3.1",
+    "vitest": "5.0.2"
+  }
+}

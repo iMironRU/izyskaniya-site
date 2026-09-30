@@ -3,3 +3,8 @@ build/
 out/
 .next/
 .DS_Store
+storybook-static/
+test-results/
+playwright-report/
+*.tsbuildinfo
+next-env.d.ts

@@ -1,0 +1,25 @@
+@import 'tailwindcss';
+@import '../../build/css/tokens.css';
+@import '../../build/tailwind/theme.css';
+@import '@fontsource/pt-serif/400.css';
+@import '@fontsource/pt-serif/700.css';
+@import '@fontsource/ibm-plex-sans/400.css';
+@import '@fontsource/ibm-plex-sans/500.css';
+@import '@fontsource/ibm-plex-sans/600.css';
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/500.css';
+
+@layer base {
+  html {
+    background-color: var(--color-bg-page);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    font-variant-numeric: tabular-nums;
+    text-size-adjust: 100%;
+  }
+
+  :focus-visible {
+    outline: var(--tk-border-width-focus) solid var(--color-focus-ring);
+    outline-offset: var(--tk-space-px);
+  }
+}

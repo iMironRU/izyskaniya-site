@@ -1,0 +1,10 @@
+{
+  "font": {
+    "family": {
+      "$type": "fontFamily",
+      "display": { "$value": "{typeface.serif}", "$description": "Заголовки" },
+      "body":    { "$value": "{typeface.sans}",  "$description": "Текст и интерфейс" },
+      "code":    { "$value": "{typeface.mono}",  "$description": "Коды нормативов, числа в таблицах" }
+    }
+  }
+}

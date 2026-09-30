@@ -1,0 +1,101 @@
+{
+  "color": {
+    "bg": {
+      "page": {
+        "$value": "{color.neutral.50}"
+      },
+      "surface": {
+        "$value": "{color.neutral.0}"
+      },
+      "subtle": {
+        "$value": "{color.neutral.100}"
+      },
+      "inverse": {
+        "$value": "{color.neutral.900}"
+      },
+      "$type": "color"
+    },
+    "text": {
+      "primary": {
+        "$value": "{color.neutral.900}"
+      },
+      "secondary": {
+        "$value": "{color.neutral.700}"
+      },
+      "disabled": {
+        "$value": "{color.neutral.600}"
+      },
+      "inverse": {
+        "$value": "{color.neutral.50}"
+      },
+      "accent": {
+        "$value": "{color.ochre.600}"
+      },
+      "$type": "color"
+    },
+    "border": {
+      "default": {
+        "$value": "{color.neutral.300}"
+      },
+      "subtle": {
+        "$value": "{color.neutral.200}"
+      },
+      "strong": {
+        "$value": "{color.neutral.900}"
+      },
+      "control": {
+        "$value": "{color.neutral.400}"
+      },
+      "$type": "color"
+    },
+    "accent": {
+      "default": {
+        "$value": "{color.ochre.600}"
+      },
+      "hover": {
+        "$value": "{color.ochre.700}"
+      },
+      "subtle": {
+        "$value": "{color.ochre.50}"
+      },
+      "muted": {
+        "$value": "{color.ochre.100}"
+      },
+      "$type": "color"
+    },
+    "focus": {
+      "ring": {
+        "$value": "{color.ochre.600}"
+      },
+      "$type": "color"
+    },
+    "status": {
+      "error": {
+        "$value": "{color.red.600}"
+      },
+      "error-subtle": {
+        "$value": "{color.red.50}"
+      },
+      "success": {
+        "$value": "{color.green.600}"
+      },
+      "success-subtle": {
+        "$value": "{color.green.50}"
+      },
+      "$type": "color"
+    },
+    "assumption": {
+      "$description": "Бейдж «принято по умолчанию» в калькуляторе",
+      "bg": {
+        "$value": "{color.ochre.100}"
+      },
+      "border": {
+        "$value": "{color.ochre.300}"
+      },
+      "fg": {
+        "$value": "{color.neutral.900}"
+      },
+      "$type": "color"
+    }
+  }
+}
