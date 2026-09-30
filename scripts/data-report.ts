@@ -4,6 +4,7 @@
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { loadCalcData } from '../src/engine/load';
+import { loadCompany } from '../src/site/load';
 
 const OUT = 'docs/DATA-STATUS.md';
 const data = loadCalcData();
@@ -48,6 +49,9 @@ table(
   ['Вопрос', 'Допущение'],
   data.questions.filter((q) => q.unknown?.demo).map((q) => [`\`${q.id}\` ${q.title}`, JSON.stringify(q.unknown!.assume)]),
 );
+rows.push('### Паспорт компании — `data/company.yaml`', '');
+const company = loadCompany();
+rows.push(company.demo ? '- Все реквизиты и контакты — заглушки. Координаты офиса (точка отсчёта зон выезда) — пример, заменить.' : '- Заполнено.', '');
 rows.push('### Сроки — `data/rules/`', '');
 rows.push(...data.services.filter((s) => s.duration_days.demo).map((s) => `- ${s.title}`), '');
 
@@ -67,7 +71,7 @@ for (const file of walk('data').sort()) {
   readFileSync(file, 'utf8')
     .split('\n')
     .forEach((line, i) => {
-      const m = line.match(/TODO: верифицировать инженером(.*)/);
+      const m = line.match(/TODO: (?:верифицировать инженером|указать)(.*)/);
       if (m) rows.push(`- \`${file}:${i + 1}\`${m[1].trim() ? ' ' + m[1].trim() : ''}`);
     });
 }

@@ -140,6 +140,8 @@ export const Question = z.strictObject({
   kind: z.enum(['choice', 'multi', 'number', 'boolean', 'text']),
   options: z.array(z.strictObject({ value: z.string(), label: z.string(), hint: z.string().optional() })).optional(),
   number: z.strictObject({ unit: Unit, min: z.number(), max: z.number(), step: z.number().positive() }).optional(),
+  // Особый ввод: map — точка на карте, ответом становится расстояние от офиса в км
+  ui: z.enum(['map']).optional(),
   // Вопрос только для заявки (кадастровый номер): в расчёте не участвует, «не знаю» не нужно.
   lead_only: z.boolean().optional(),
   unknown: z

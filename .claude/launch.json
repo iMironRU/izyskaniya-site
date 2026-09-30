@@ -1,7 +1,40 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "storybook-static", "runtimeExecutable": "npx", "runtimeArgs": ["http-server", "storybook-static", "-p", "6008", "-s"], "port": 6008 },
-    { "name": "storybook", "runtimeExecutable": "npm", "runtimeArgs": ["run", "storybook", "--", "--no-open"], "port": 6006 }
+    {
+      "name": "izyskaniya-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3100"
+      ],
+      "port": 3100
+    },
+    {
+      "name": "storybook-static",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "http-server",
+        "storybook-static",
+        "-p",
+        "6008",
+        "-s"
+      ],
+      "port": 6008
+    },
+    {
+      "name": "storybook",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "storybook",
+        "--",
+        "--no-open"
+      ],
+      "port": 6006
+    }
   ]
 }

@@ -7,6 +7,8 @@ import { formatCadastral, formatPhone } from '@/lib/format';
 
 interface FieldProps {
   label: string;
+  /** Подпись только для скринридера: вопрос уже в заголовке экрана */
+  labelHidden?: boolean;
   hint?: ReactNode;
   error?: string;
   /** Единица измерения справа от поля: «м», «га», «км» */
@@ -17,7 +19,7 @@ interface FieldProps {
 const controlClasses =
   'h-field-height w-full min-w-0 border border-field-border bg-field-bg px-3 font-body text-lg text-text-primary placeholder:text-text-disabled hover:border-field-border-hover focus-visible:border-field-border-focus disabled:cursor-not-allowed disabled:bg-field-bg-disabled aria-invalid:border-field-border-error';
 
-export function Field({ label, hint, error, unit, children }: FieldProps) {
+export function Field({ label, labelHidden, hint, error, unit, children }: FieldProps) {
   const id = useId();
   const hintId = hint ? `${id}-hint` : undefined;
   const errorId = error ? `${id}-error` : undefined;
@@ -26,7 +28,7 @@ export function Field({ label, hint, error, unit, children }: FieldProps) {
 
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="text-md font-semibold">
+      <label htmlFor={id} className={cn('text-md font-semibold', labelHidden && 'sr-only')}>
         {label}
       </label>
       {hint ? (
@@ -56,6 +58,7 @@ export function Field({ label, hint, error, unit, children }: FieldProps) {
 
 type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'id' | 'type'> & {
   label: string;
+  labelHidden?: boolean;
   hint?: ReactNode;
   error?: string;
 };
@@ -67,17 +70,17 @@ function withFormat(format: (s: string) => string, onChange?: (e: ChangeEvent<HT
   };
 }
 
-export function TextField({ label, hint, error, className, ...input }: InputProps) {
+export function TextField({ label, labelHidden, hint, error, className, ...input }: InputProps) {
   return (
-    <Field label={label} hint={hint} error={error}>
+    <Field label={label} labelHidden={labelHidden} hint={hint} error={error}>
       {(a11y) => <input type="text" {...input} {...a11y} className={cn(controlClasses, className)} />}
     </Field>
   );
 }
 
-export function NumberField({ label, hint, error, unit, className, ...input }: InputProps & { unit: string }) {
+export function NumberField({ label, labelHidden, hint, error, unit, className, ...input }: InputProps & { unit: string }) {
   return (
-    <Field label={label} hint={hint} error={error} unit={unit}>
+    <Field label={label} labelHidden={labelHidden} hint={hint} error={error} unit={unit}>
       {(a11y) => (
         <input
           type="text"
@@ -92,9 +95,9 @@ export function NumberField({ label, hint, error, unit, className, ...input }: I
   );
 }
 
-export function PhoneField({ label, hint, error, className, onChange, ...input }: InputProps) {
+export function PhoneField({ label, labelHidden, hint, error, className, onChange, ...input }: InputProps) {
   return (
-    <Field label={label} hint={hint} error={error}>
+    <Field label={label} labelHidden={labelHidden} hint={hint} error={error}>
       {(a11y) => (
         <input
           type="tel"
@@ -111,9 +114,9 @@ export function PhoneField({ label, hint, error, className, onChange, ...input }
   );
 }
 
-export function CadastralField({ label, hint, error, className, onChange, ...input }: InputProps) {
+export function CadastralField({ label, labelHidden, hint, error, className, onChange, ...input }: InputProps) {
   return (
-    <Field label={label} hint={hint} error={error}>
+    <Field label={label} labelHidden={labelHidden} hint={hint} error={error}>
       {(a11y) => (
         <input
           type="text"

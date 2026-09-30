@@ -11,6 +11,14 @@ import { getDefaultSelectors } from 'eslint-plugin-better-tailwindcss/defaults';
 const HEX = '/#[0-9a-fA-F]{3,8}\\b/';
 const PX = '/\\b\\d+(\\.\\d+)?px\\b/';
 
+const restricted = [
+  { selector: `Literal[value=${HEX}]`, message: 'Hex-цвет в коде запрещён: используйте токен.' },
+  { selector: `TemplateElement[value.raw=${HEX}]`, message: 'Hex-цвет в коде запрещён: используйте токен.' },
+  { selector: `Literal[value=${PX}]`, message: 'px в коде запрещены: используйте токен.' },
+  { selector: `TemplateElement[value.raw=${PX}]`, message: 'px в коде запрещены: используйте токен.' },
+  { selector: 'JSXAttribute[name.name="style"]', message: 'Инлайн-стили запрещены: только классы из токенов.' },
+];
+
 const config = [
   { ignores: ['.next/**', 'out/**', 'build/**', 'storybook-static/**', 'test-results/**', 'playwright-report/**', 'next-env.d.ts'] },
   ...nextVitals,
@@ -35,15 +43,13 @@ const config = [
         'error',
         { restrict: [{ pattern: '\\[.*\\]', message: 'Произвольное значение Tailwind «$0» запрещено: добавьте токен.' }] },
       ],
-      'no-restricted-syntax': [
-        'error',
-        { selector: `Literal[value=${HEX}]`, message: 'Hex-цвет в коде запрещён: используйте токен.' },
-        { selector: `TemplateElement[value.raw=${HEX}]`, message: 'Hex-цвет в коде запрещён: используйте токен.' },
-        { selector: `Literal[value=${PX}]`, message: 'px в коде запрещены: используйте токен.' },
-        { selector: `TemplateElement[value.raw=${PX}]`, message: 'px в коде запрещены: используйте токен.' },
-        { selector: 'JSXAttribute[name.name="style"]', message: 'Инлайн-стили запрещены: только классы из токенов.' },
-      ],
+      'no-restricted-syntax': ['error', ...restricted],
     },
+  },
+  {
+    // PDF: react-pdf принимает стили только через style={…} (это не CSS страницы). Hex и px по-прежнему запрещены.
+    files: ['src/**/pdf.tsx'],
+    rules: { 'no-restricted-syntax': ['error', ...restricted.filter((r) => !r.selector.startsWith('JSXAttribute'))] },
   },
   {
     // Витрина задаёт размеры вьюпортов в px — это не вёрстка сайта.
